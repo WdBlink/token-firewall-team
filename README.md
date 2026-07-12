@@ -107,7 +107,7 @@ state changes and low-frequency heartbeats.
 Or invoke the bundled Runtime directly:
 
 ```bash
-TF="python3 scripts/token_firewall.py"
+TF="python3 skills/token-firewall-team/scripts/token_firewall.py"
 
 # Check only the route you intend to use; preflight spends no model tokens.
 $TF runtime-preflight --runtime codex
@@ -119,7 +119,7 @@ $TF validate mission-contract.json
 $TF validate work-order.json
 ```
 
-A real Run additionally needs a clean Git repository, a full base Commit ID, a Run directory outside the source repository, and an explicit Worker route. See the [Runtime runbook](references/runbook.md) for complete commands.
+A real Run additionally needs a clean Git repository, a full base Commit ID, a Run directory outside the source repository, and an explicit Worker route. See the [Runtime runbook](skills/token-firewall-team/references/runbook.md) for complete commands.
 
 ## How It Works
 
@@ -155,10 +155,11 @@ Do not use it to justify weak acceptance criteria, to automate irreversible prod
 ## What's Inside
 
 ```text
-SKILL.md                 Agent workflow and routing rules
-references/              Protocol, Runtime runbook, and calibrated evidence
-scripts/token_firewall.py  Zero-dependency CLI entry point
-scripts/token_firewall_runtime/  Bundled Python Runtime and JSON Schemas
+skills/token-firewall-team/  Complete installable Skill bundle
+  SKILL.md                 Agent workflow and routing rules
+  references/              Protocol, Runtime runbook, and calibrated evidence
+  scripts/token_firewall.py  Zero-dependency CLI entry point
+  scripts/token_firewall_runtime/  Bundled Python Runtime and JSON Schemas
 tests/token_firewall/     92 protocol, Runtime, fault, archive, and evaluation tests
 evidence/labs/            Frozen pair records, hashes, reports, and deterministic charts
 docs/                     Human-facing architecture and evaluation notes

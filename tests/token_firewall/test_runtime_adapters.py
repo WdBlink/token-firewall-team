@@ -28,7 +28,15 @@ from tests.token_firewall.fixtures import runtime_worker_report
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PACKAGE = ROOT / "scripts" / "token_firewall_runtime" / "tools" / "token_firewall"
+PACKAGE = (
+    ROOT
+    / "skills"
+    / "token-firewall-team"
+    / "scripts"
+    / "token_firewall_runtime"
+    / "tools"
+    / "token_firewall"
+)
 SCHEMA = PACKAGE / "schemas" / "runtime-worker-report.schema.json"
 VERIFIER_SCHEMA = PACKAGE / "schemas" / "runtime-verifier-report.schema.json"
 

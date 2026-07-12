@@ -27,7 +27,7 @@ The Claude route's apparent 100% Token reduction is not a saving: no candidate r
 The directories under [`evidence/labs/`](../evidence/labs/) contain the frozen protocol, normalized pair records, content hashes, JSON summaries, Markdown reports, and deterministic SVG charts for each route. Run a new immutable lab snapshot with:
 
 ```bash
-python3 scripts/token_firewall.py evaluation-lab-run \
+python3 skills/token-firewall-team/scripts/token_firewall.py evaluation-lab-run \
   protocol.json pair-*.json \
   --lab-id next-snapshot --out-dir /path/to/new/empty/output
 ```

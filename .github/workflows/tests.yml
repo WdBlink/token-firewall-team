@@ -20,14 +20,14 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          text = Path("SKILL.md").read_text(encoding="utf-8")
+          text = Path("skills/token-firewall-team/SKILL.md").read_text(encoding="utf-8")
           assert text.startswith("---\n")
           assert "name: token-firewall-team" in text.split("---", 2)[1]
           assert "description:" in text.split("---", 2)[1]
           PY
       - name: Run Runtime tests
         env:
-          PYTHONPATH: scripts/token_firewall_runtime
+          PYTHONPATH: skills/token-firewall-team/scripts/token_firewall_runtime
         run: python -m unittest discover -s tests/token_firewall -v
       - name: Check CLI entry point
-        run: python scripts/token_firewall.py --help >/dev/null
+        run: python skills/token-firewall-team/scripts/token_firewall.py --help >/dev/null
