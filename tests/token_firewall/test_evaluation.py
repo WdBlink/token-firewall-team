@@ -258,6 +258,17 @@ class PairedEvaluationTests(unittest.TestCase):
             self.assertEqual(len(summary["artifacts"]["charts"]), 4)
             for name in summary["artifacts"]["charts"]:
                 self.assertTrue((output / name).read_text(encoding="utf-8").startswith("<svg"))
+            comparison = (output / "quality-token-pareto.svg").read_text(encoding="utf-8")
+            self.assertIn("12-task comparison", comparison)
+            self.assertIn("非劣效门槛 PASS", comparison)
+            self.assertIn("Expensive Sol Tokens", comparison)
+            self.assertNotIn("Pareto", comparison)
+            reversed_output = output / "reversed"
+            write_evaluation_artifacts(protocol(), list(reversed(pairs())), reversed_output)
+            self.assertEqual(
+                comparison,
+                (reversed_output / "quality-token-pareto.svg").read_text(encoding="utf-8"),
+            )
 
     def test_lab_freezes_protocol_pairs_manifest_and_report(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

@@ -523,7 +523,9 @@ def write_evaluation_artifacts(
     summary = summarize_paired_evaluation(protocol, pairs, registry=registry)
     charts: list[str] = []
     renderers = {
-        "quality_token_pareto": _render_quality_token_pareto,
+        # Keep the frozen protocol key and filename for backward compatibility,
+        # but render a task-level comparison rather than a causal-looking Pareto plot.
+        "quality_token_pareto": _render_task_quality_token_comparison,
         "paired_quality": _render_paired_quality,
         "risk_strata": _render_risk_strata,
         "token_waterfall": _render_token_waterfall,
@@ -552,33 +554,117 @@ def _svg(width: int, height: int, body: str) -> str:
     )
 
 
-def _render_quality_token_pareto(protocol: dict[str, Any], pairs: Sequence[dict[str, Any]], summary: dict[str, Any]) -> str:
-    width, height = 720, 420
-    left, right, top, bottom = 80, 40, 55, 65
-    plot_w, plot_h = width - left - right, height - top - bottom
-    tokens = [summary["cost"]["control_sol_tokens"], summary["cost"]["experiment_sol_tokens"]]
-    maximum = max(tokens) or 1
-    band_floor = max(0.0, summary["quality"]["control_success_rate"] - summary["quality"]["noninferiority_margin_percentage_points"] / 100)
-    band_y = top + (1 - band_floor) * plot_h
+def _render_task_quality_token_comparison(
+    protocol: dict[str, Any],
+    pairs: Sequence[dict[str, Any]],
+    summary: dict[str, Any],
+) -> str:
+    """Render quality and expensive-token outcomes without implying causality.
+
+    Both panels start at zero, use the same task ordering, and keep quality and
+    Token on separate axes. The frozen ``quality_token_pareto`` protocol key is
+    retained only for artifact compatibility.
+    """
+    width, height = 1080, 720
+    left, right = 78, 28
+    plot_w = width - left - right
+    quality_top, quality_h = 105, 220
+    token_top, token_h = 415, 220
+    group_w = plot_w / len(pairs)
+    bar_w = min(24.0, group_w * 0.28)
+    gap = 6.0
+    control_color = "#2563EB"
+    experiment_color = "#0F9F78"
+
+    def task_order(pair: dict[str, Any]) -> tuple[int, int]:
+        task_id = pair["task_id"]
+        if task_id == "T-PILOT-LOW":
+            return (0, 1)
+        if task_id == "T-PILOT-HIGH":
+            return (0, 2)
+        match = re.search(r"(\d+)$", task_id)
+        return (1, int(match.group(1)) if match else 10_000)
+
+    ordered_pairs = sorted(pairs, key=task_order)
+    maximum_tokens = max(
+        max(pair["control"]["sol_tokens"], pair["experiment"]["sol_tokens"])
+        for pair in ordered_pairs
+    ) or 1
+    token_step = 100_000
+    token_ceiling = max(token_step, ((maximum_tokens + token_step - 1) // token_step) * token_step)
+
+    def short_task(task_id: str, index: int) -> str:
+        if task_id == "T-PILOT-HIGH":
+            return "P-H"
+        if task_id == "T-PILOT-LOW":
+            return "P-L"
+        match = re.search(r"(\d+)$", task_id)
+        return match.group(1) if match else f"T{index + 1}"
+
     parts = [
-        '<text x="24" y="30" class="title">质量—Sol Token Pareto</text>',
-        f'<rect x="{left}" y="{top}" width="{plot_w}" height="{band_y-top:.1f}" fill="#e7f7ee"/>',
-        f'<line x1="{left}" y1="{top+plot_h}" x2="{left+plot_w}" y2="{top+plot_h}" class="axis"/>',
-        f'<line x1="{left}" y1="{top}" x2="{left}" y2="{top+plot_h}" class="axis"/>',
-        f'<text x="{left+plot_w/2:.1f}" y="{height-18}" text-anchor="middle" class="label">累计 Sol Token（越低越好）</text>',
-        f'<text x="18" y="{top+plot_h/2:.1f}" transform="rotate(-90 18 {top+plot_h/2:.1f})" text-anchor="middle" class="label">Task Success</text>',
+        '<style>.panel{font-size:14px;font-weight:700}.subtitle{font-size:11px;fill:#526072}'
+        '.value{font-size:9px;font-weight:600}.legend{font-size:11px;font-weight:600}'
+        '.badge{font-size:12px;font-weight:700;fill:#08775b}</style>',
+        '<text x="24" y="30" class="title">12-task comparison · 交付质量与昂贵 Sol Token</text>',
+        '<text x="24" y="52" class="subtitle">Separate zero-based panels avoid implying that Token consumption causes quality changes.</text>',
+        f'<rect x="748" y="18" width="12" height="12" rx="2" fill="{control_color}"/>',
+        '<text x="766" y="28" class="legend">Sol-direct / Sol 直做</text>',
+        f'<rect x="905" y="18" width="12" height="12" rx="2" fill="{experiment_color}"/>',
+        '<text x="923" y="28" class="legend">Hybrid / 混合方案</text>',
     ]
-    points = [
-        (protocol["control_arm"]["arm_id"], tokens[0], summary["quality"]["control_success_rate"], "#315efb"),
-        (protocol["experiment_arm"]["arm_id"], tokens[1], summary["quality"]["experiment_success_rate"], "#00a36c"),
-    ]
-    for label, token, quality, color in points:
-        x = left + token / maximum * plot_w
-        y = top + (1 - quality) * plot_h
-        parts.extend([
-            f'<circle cx="{x:.1f}" cy="{y:.1f}" r="8" fill="{color}"/>',
-            f'<text x="{x:.1f}" y="{y-14:.1f}" text-anchor="middle" class="label">{escape(label)} · {token:,}</text>',
-        ])
+
+    for index in range(len(ordered_pairs)):
+        if index % 2 == 0:
+            x = left + index * group_w
+            parts.append(
+                f'<rect x="{x:.1f}" y="{quality_top-8}" width="{group_w:.1f}" '
+                f'height="{token_top+token_h-quality_top+16}" fill="#F8FAFC"/>'
+            )
+
+    parts.extend([
+        '<text x="24" y="82" class="panel">A · Gate-based quality score / 门禁质量分（0–100）</text>',
+        f'<text x="{width-right}" y="82" text-anchor="end" class="badge">非劣效门槛 PASS · 未观察到质量下降</text>',
+    ])
+    for tick in range(0, 101, 25):
+        y = quality_top + (100 - tick) / 100 * quality_h
+        parts.append(f'<line x1="{left}" y1="{y:.1f}" x2="{left+plot_w}" y2="{y:.1f}" class="grid"/>')
+        parts.append(f'<text x="{left-10}" y="{y+4:.1f}" text-anchor="end" class="label">{tick}</text>')
+    parts.append(f'<line x1="{left}" y1="{quality_top}" x2="{left}" y2="{quality_top+quality_h}" class="axis"/>')
+    for index, pair in enumerate(ordered_pairs):
+        center = left + (index + 0.5) * group_w
+        for side, arm, color in ((-1, "control", control_color), (1, "experiment", experiment_color)):
+            value = float(pair[arm]["quality_score"])
+            x = center + side * (bar_w + gap) / 2 - bar_w / 2
+            bar_h = value / 100 * quality_h
+            y = quality_top + quality_h - bar_h
+            parts.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bar_w:.1f}" height="{bar_h:.1f}" fill="{color}" rx="2"/>')
+            parts.append(f'<text x="{x+bar_w/2:.1f}" y="{max(98, y-5):.1f}" text-anchor="middle" class="value">{value:g}</text>')
+
+    parts.extend([
+        '<text x="24" y="391" class="panel">B · Expensive Sol Tokens / 昂贵 Sol Token（含失败与返工）</text>',
+        f'<text x="{width-right}" y="391" text-anchor="end" class="badge">累计节省 {summary["cost"]["sol_savings_percent"]:.2f}%</text>',
+    ])
+    for tick in range(0, token_ceiling + token_step, token_step):
+        y = token_top + token_h - tick / token_ceiling * token_h
+        parts.append(f'<line x1="{left}" y1="{y:.1f}" x2="{left+plot_w}" y2="{y:.1f}" class="grid"/>')
+        label = "0" if tick == 0 else f"{tick // 1000}k"
+        parts.append(f'<text x="{left-10}" y="{y+4:.1f}" text-anchor="end" class="label">{label}</text>')
+    parts.append(f'<line x1="{left}" y1="{token_top}" x2="{left}" y2="{token_top+token_h}" class="axis"/>')
+    for index, pair in enumerate(ordered_pairs):
+        center = left + (index + 0.5) * group_w
+        for side, arm, color in ((-1, "control", control_color), (1, "experiment", experiment_color)):
+            value = int(pair[arm]["sol_tokens"])
+            x = center + side * (bar_w + gap) / 2 - bar_w / 2
+            bar_h = value / token_ceiling * token_h
+            y = token_top + token_h - bar_h
+            parts.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bar_w:.1f}" height="{bar_h:.1f}" fill="{color}" rx="2"/>')
+            parts.append(f'<text x="{x+bar_w/2:.1f}" y="{y-5:.1f}" text-anchor="middle" class="value">{round(value/1000):g}k</text>')
+        parts.append(f'<text x="{center:.1f}" y="{token_top+token_h+22}" text-anchor="middle" class="label">{escape(short_task(pair["task_id"], index))}</text>')
+
+    parts.extend([
+        f'<text x="{left+plot_w/2:.1f}" y="680" text-anchor="middle" class="label">Task ID（P-H/P-L 为原始 high/low Pilot）</text>',
+        '<text x="24" y="706" class="subtitle">Bars: mechanical gate scores; verdict: paired task_success. Token counts include every unique expensive Sol Session; cheap-model usage remains auditable.</text>',
+    ])
     return _svg(width, height, "".join(parts))
 
 

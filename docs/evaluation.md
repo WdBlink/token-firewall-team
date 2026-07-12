@@ -54,6 +54,8 @@ Claude's apparent 100% Token reduction is not a saving: no candidate reached acc
 
 The frozen lab under [`evidence/labs/terra-route-n12-001/`](../evidence/labs/terra-route-n12-001/) contains the protocol, normalized pair records, content hashes, JSON summary, Markdown report, and deterministic SVG charts. The fixtures, contracts, hidden suites, and randomized schedule are under [`experiments/terra-route-n12-001/`](../experiments/terra-route-n12-001/).
 
+The task-level comparison chart uses separate zero-based panels for quality and expensive Sol Tokens. The frozen protocol key and historical filename `quality-token-pareto.svg` are retained for compatibility, but the rendered chart is no longer a Pareto scatter plot and makes no Token→quality causal claim.
+
 Run a new immutable snapshot from normalized pair records with:
 
 ```bash

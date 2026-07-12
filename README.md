@@ -61,8 +61,10 @@ Token Firewall turns the expensive model into a bounded chief reviewer. It decom
 The primary Terra study contains 12 paired tasks spanning feature, bug-fix, refactor, and integration work across all three risk tiers. Each arm started from the same frozen commit and acceptance contract. A task counted as successful only after the public gate, deferred hidden tests, anonymous bounded review, scope checks, and complete usage evidence all passed.
 
 <div align="center">
-  <img alt="Quality and cumulative expensive-model tokens across 12 paired tasks" src=".github/assets/terra-n12-quality-token-pareto.svg" width="860">
+  <img alt="Per-task delivery quality and expensive Sol Token comparison across 12 paired tasks" src=".github/assets/terra-n12-task-comparison.svg" width="960">
 </div>
+
+The two zero-based panels share the same task order but use separate axes. They show the intended claim—delivery quality remained non-inferior while expensive-model Token use fell—without implying that Token consumption caused the observed quality differences.
 
 | Study / route | Paired tasks | Success vs Sol-direct | Mean quality | Control Sol tokens | Route Sol tokens | Sol reduction | Verdict |
 |---|---:|---|---:|---:|---:|---:|---|
