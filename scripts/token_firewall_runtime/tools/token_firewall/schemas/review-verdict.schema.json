@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "token-firewall/review-verdict@0.1",
+  "title": "Token Firewall Review Verdict",
+  "type": "object",
+  "required": [
+    "schema", "verdict", "reviewed_commit", "findings", "coverage_gaps",
+    "residual_risks", "requested_context", "reviewer", "escalation_reason"
+  ],
+  "properties": {
+    "schema": {"type": "string", "const": "token-firewall/review-verdict@0.1"},
+    "verdict": {"type": "string", "enum": ["PASS", "REWORK", "ESCALATE"]},
+    "reviewed_commit": {"type": "string", "pattern": "^[a-fA-F0-9]{7,64}$"},
+    "findings": {"type": "array", "items": {"$ref": "#/$defs/finding"}},
+    "coverage_gaps": {"type": "array", "items": {"type": "string"}},
+    "residual_risks": {"type": "array", "items": {"type": "string"}},
+    "requested_context": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["path", "start", "end", "reason"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "start": {"type": ["integer", "null"], "minimum": 1},
+          "end": {"type": ["integer", "null"], "minimum": 1},
+          "reason": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "reviewer": {
+      "type": "object", "required": ["model", "session_id"],
+      "properties": {
+        "model": {"type": "string", "minLength": 1},
+        "session_id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "escalation_reason": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "required": ["finding_id", "severity", "spec_id", "file", "line", "issue", "required_fix", "evidence"],
+      "properties": {
+        "finding_id": {"type": "string"},
+        "severity": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+        "spec_id": {"type": ["string", "null"]},
+        "file": {"type": ["string", "null"]},
+        "line": {"type": ["integer", "null"], "minimum": 1},
+        "issue": {"type": "string"},
+        "required_fix": {"type": "string"},
+        "evidence": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

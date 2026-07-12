@@ -1,0 +1,41 @@
+{
+  "schema": "token-firewall/risk-token-budget-policy@0.1",
+  "object_id": "budget_calibrated_pilot_002",
+  "revision": 2,
+  "created_at": "2026-07-11T23:12:00+08:00",
+  "content_sha256": "cd20e84aa558fd6d59cc42beedfc81920d045c15020565ddf7a3bb483018a424",
+  "tiers": {
+    "low": {
+      "required_review": "m3-then-sol",
+      "planning_sol_max": 10000,
+      "review_sol_max": 160000,
+      "total_sol_max": 170000,
+      "minimum_sol_savings_percent": 70,
+      "max_rework_rounds": 1
+    },
+    "medium": {
+      "required_review": "terra-then-sol",
+      "planning_sol_max": 20000,
+      "review_sol_max": 180000,
+      "total_sol_max": 200000,
+      "minimum_sol_savings_percent": 65,
+      "max_rework_rounds": 2
+    },
+    "high": {
+      "required_review": "sol-deep-review",
+      "planning_sol_max": 50000,
+      "review_sol_max": 150000,
+      "total_sol_max": 220000,
+      "minimum_sol_savings_percent": 60,
+      "max_rework_rounds": 2
+    },
+    "critical": {
+      "required_review": "sol-deep-review",
+      "planning_sol_max": 100000,
+      "review_sol_max": 600000,
+      "total_sol_max": 700000,
+      "minimum_sol_savings_percent": 50,
+      "max_rework_rounds": 1
+    }
+  }
+}

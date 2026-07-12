@@ -1,0 +1,22 @@
+{
+  "content_sha256": "3a82465b895b51c54a6410ed0c1b3d42dad8ae329b5c66938413c2f191f080c0",
+  "created_at": "2026-07-11T23:11:57+08:00",
+  "dataset_sha256": "b62a244a125558761fb49467f38740a4a6219158b7bdf0ab1a7a41f8e402bcfb",
+  "lab_id": "a-route-model-only-001",
+  "object_id": "lab_a-route-model-only-001",
+  "pairs": [
+    {
+      "pair_id": "pilot-low-m3-model-only",
+      "path": "pairs/pilot-low-m3-model-only.json",
+      "sha256": "1f08ac264d13b1e2d473856e4d5bed31a4e4fce344c7e41d5cba69184d5041ff"
+    },
+    {
+      "pair_id": "pilot-high-m3",
+      "path": "pairs/pilot-high-m3.json",
+      "sha256": "6fa3b3da123a1d2a172673f89473b862372a092bd71edb7ae3e0b1b3e6f6a1fa"
+    }
+  ],
+  "protocol_ref": "protocol.json",
+  "protocol_sha256": "a5a0cd725892bf0608d1caf6ec92e71950591494827b3aa97d27a995d3ef7b81",
+  "schema": "token-firewall/evaluation-lab-manifest@0.1"
+}

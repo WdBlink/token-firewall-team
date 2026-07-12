@@ -1,0 +1,28 @@
+{
+  "schema": "token-firewall/external-observability-policy@0.1",
+  "object_id": "obs_external_runtime_default",
+  "revision": 1,
+  "created_at": "2026-07-11T00:00:00+08:00",
+  "content_sha256": "a5de1bf04e5e8324bfb773e8b3a1824534ee6561d433880256d47452b579a05f",
+  "heartbeat_seconds": 60,
+  "stalled_after_seconds": 180,
+  "display": {
+    "state_changes_immediate": true,
+    "low_frequency_heartbeat": true,
+    "show_session_id": true,
+    "show_usage": true,
+    "show_terminal_output": false
+  },
+  "privacy": {
+    "record_prompts": false,
+    "record_responses": false,
+    "record_tool_content": false,
+    "record_chain_of_thought": false,
+    "hash_payloads": true
+  },
+  "terminal_actions": {
+    "auto_kill_stalled": false,
+    "notify_on_delivery": true,
+    "notify_on_failure": true
+  }
+}

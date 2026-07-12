@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "token-firewall/external-observability-policy@0.1",
+  "title": "Token Firewall External Observability Policy",
+  "type": "object",
+  "required": [
+    "schema", "object_id", "revision", "created_at", "content_sha256",
+    "heartbeat_seconds", "stalled_after_seconds", "display", "privacy", "terminal_actions"
+  ],
+  "properties": {
+    "schema": {"const": "token-firewall/external-observability-policy@0.1"},
+    "object_id": {"type": "string", "pattern": "^obs_[A-Za-z0-9_.-]+$"},
+    "revision": {"type": "integer", "minimum": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "content_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "heartbeat_seconds": {"type": "integer", "minimum": 15, "maximum": 600},
+    "stalled_after_seconds": {"type": "integer", "minimum": 30, "maximum": 7200},
+    "display": {
+      "type": "object",
+      "required": ["state_changes_immediate", "low_frequency_heartbeat", "show_session_id", "show_usage", "show_terminal_output"],
+      "properties": {
+        "state_changes_immediate": {"type": "boolean"},
+        "low_frequency_heartbeat": {"type": "boolean"},
+        "show_session_id": {"type": "boolean"},
+        "show_usage": {"type": "boolean"},
+        "show_terminal_output": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "privacy": {
+      "type": "object",
+      "required": ["record_prompts", "record_responses", "record_tool_content", "record_chain_of_thought", "hash_payloads"],
+      "properties": {
+        "record_prompts": {"type": "boolean"},
+        "record_responses": {"type": "boolean"},
+        "record_tool_content": {"type": "boolean"},
+        "record_chain_of_thought": {"type": "boolean"},
+        "hash_payloads": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "terminal_actions": {
+      "type": "object",
+      "required": ["auto_kill_stalled", "notify_on_delivery", "notify_on_failure"],
+      "properties": {
+        "auto_kill_stalled": {"type": "boolean"},
+        "notify_on_delivery": {"type": "boolean"},
+        "notify_on_failure": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

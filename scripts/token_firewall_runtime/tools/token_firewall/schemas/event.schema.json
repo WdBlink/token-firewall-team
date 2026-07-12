@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "token-firewall/event@0.1",
+  "title": "Token Firewall Event",
+  "type": "object",
+  "required": ["schema", "event_id", "mission_id", "at", "producer", "kind"],
+  "properties": {
+    "schema": {"const": "token-firewall/event@0.1"},
+    "event_id": {"type": "string", "pattern": "^evt_[A-Za-z0-9_.-]+$"},
+    "mission_id": {"type": "string", "pattern": "^msn_[A-Za-z0-9_.-]+$"},
+    "task_id": {"type": ["string", "null"]},
+    "at": {"type": "string", "format": "date-time"},
+    "producer": {
+      "type": "object", "required": ["role", "session_id"],
+      "properties": {
+        "role": {"type": "string", "minLength": 1},
+        "session_id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "kind": {"type": "string", "pattern": "^(mission|work|test|verification|review|trace)\\.[a-z0-9_.-]+$"},
+    "payload_ref": {"type": "string", "minLength": 1},
+    "payload_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}
+  },
+  "additionalProperties": false
+}

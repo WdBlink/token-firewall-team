@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "token-firewall/runtime-worker-report@0.1",
+  "title": "Token Firewall Runtime Worker Report",
+  "type": "object",
+  "required": [
+    "schema", "status", "summary", "spec_results", "tests", "deviations",
+    "uncertainties", "failed_attempts_summary", "changed_files_claim",
+    "context_slices", "commit", "blockers"
+  ],
+  "properties": {
+    "schema": {"const": "token-firewall/runtime-worker-report@0.1"},
+    "status": {"enum": ["DELIVERED", "CHANGES_READY", "BLOCKED", "NEEDS_REPLAN"]},
+    "summary": {"type": "string", "minLength": 1, "maxLength": 4000},
+    "spec_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["spec_id", "status", "evidence_summary"],
+        "properties": {
+          "spec_id": {"type": "string", "pattern": "^SPEC-[A-Za-z0-9_.-]+$"},
+          "status": {"enum": ["pass", "fail", "blocked"]},
+          "evidence_summary": {"type": "string", "minLength": 1, "maxLength": 2000}
+        },
+        "additionalProperties": false
+      }
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["command", "exit_code", "summary"],
+        "properties": {
+          "command": {"type": "string", "minLength": 1},
+          "exit_code": {"type": "integer"},
+          "summary": {"type": "string", "maxLength": 2000}
+        },
+        "additionalProperties": false
+      }
+    },
+    "deviations": {"type": "array", "items": {"type": "string"}},
+    "uncertainties": {"type": "array", "items": {"type": "string"}},
+    "failed_attempts_summary": {"type": "array", "items": {"type": "string"}},
+    "changed_files_claim": {
+      "type": "array", "uniqueItems": true,
+      "items": {"$ref": "#/$defs/repo_path"}
+    },
+    "context_slices": {
+      "type": "array", "maxItems": 10,
+      "items": {
+        "type": "object", "required": ["path", "start", "end", "reason"],
+        "properties": {
+          "path": {"$ref": "#/$defs/repo_path"},
+          "start": {"type": "integer", "minimum": 1},
+          "end": {"type": "integer", "minimum": 1},
+          "reason": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "commit": {
+      "oneOf": [
+        {
+          "type": "object", "required": ["head_commit", "message"],
+          "properties": {
+            "head_commit": {"type": "string", "pattern": "^[a-fA-F0-9]{7,64}$"},
+            "message": {"type": "string", "minLength": 1, "maxLength": 500}
+          },
+          "additionalProperties": false
+        },
+        {"type": "null"}
+      ]
+    },
+    "blockers": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "usage": {
+      "type": "object",
+      "properties": {
+        "input_tokens": {"type": "integer", "minimum": 0},
+        "output_tokens": {"type": "integer", "minimum": 0},
+        "cache_read_tokens": {"type": "integer", "minimum": 0},
+        "total_tokens": {"type": "integer", "minimum": 0},
+        "cost_usd": {"type": "number", "minimum": 0}
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {"status": {"const": "DELIVERED"}, "commit": {"type": "object"}}
+    },
+    {
+      "properties": {
+        "status": {"const": "CHANGES_READY"},
+        "commit": {"type": "null"},
+        "blockers": {"type": "array", "maxItems": 0}
+      },
+      "required": ["blockers"]
+    },
+    {
+      "properties": {
+        "status": {"enum": ["BLOCKED", "NEEDS_REPLAN"]},
+        "commit": {"type": "null"},
+        "blockers": {"type": "array", "minItems": 1}
+      },
+      "required": ["blockers"]
+    }
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "repo_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    }
+  }
+}

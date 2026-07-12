@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Token Firewall Codex Verifier Structured Output",
+  "type": "object",
+  "required": [
+    "schema", "status", "reviewed_commit", "summary", "spec_results",
+    "findings", "coverage_gaps", "requested_context"
+  ],
+  "properties": {
+    "schema": {"type": "string", "const": "token-firewall/runtime-verifier-report@0.1"},
+    "status": {"type": "string", "enum": ["PASS", "FAIL", "BLOCKED"]},
+    "reviewed_commit": {"type": "string", "pattern": "^[a-fA-F0-9]{7,64}$"},
+    "summary": {"type": "string", "minLength": 1, "maxLength": 4000},
+    "spec_results": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["spec_id", "status", "evidence"],
+        "properties": {
+          "spec_id": {"type": "string", "pattern": "^SPEC-[A-Za-z0-9_.-]+$"},
+          "status": {"type": "string", "enum": ["pass", "fail", "blocked"]},
+          "evidence": {"type": "string", "minLength": 1, "maxLength": 2000}
+        },
+        "additionalProperties": false
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/finding"}
+    },
+    "coverage_gaps": {"type": "array", "items": {"type": "string"}},
+    "requested_context": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "reason"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "reason": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "required": ["finding_id", "severity", "spec_id", "file", "line", "issue", "evidence"],
+      "properties": {
+        "finding_id": {"type": "string", "minLength": 1},
+        "severity": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+        "spec_id": {"type": ["string", "null"]},
+        "file": {"type": ["string", "null"]},
+        "line": {"type": ["integer", "null"], "minimum": 1},
+        "issue": {"type": "string", "minLength": 1},
+        "evidence": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  }
+}

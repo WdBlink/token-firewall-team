@@ -1,0 +1,130 @@
+[
+  {
+    "content_sha256": "836f01a4cd39866c92ce6e34fadae962ef6057514537a9059e1bfb96b654fb5d",
+    "control": {
+      "all_model_tokens": 271282,
+      "arm_id": "D",
+      "elapsed_seconds": 162.361,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5165-ab1a-73e2-ae64-7ddd1c57a66a",
+        "019f5152-e9a0-7843-acf0-87da04723216"
+      ],
+      "sol_tokens": 271282,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment": {
+      "all_model_tokens": 782897,
+      "arm_id": "E",
+      "elapsed_seconds": 309.023,
+      "hidden_status": "not_run",
+      "high_critical_findings": 0,
+      "quality_score": 15.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "not_run",
+      "session_ids": [
+        "9e3c1ea6-f7ea-4cdd-bcd6-395f0d169a8e",
+        "5672ec0c-88df-4198-8ba1-ba5e9bf87bc5",
+        "448d8be6-5aad-4655-a695-a4a851f7b08f"
+      ],
+      "sol_tokens": 0,
+      "task_success": false,
+      "usage_complete": false
+    },
+    "experiment_id": "token-firewall-claude-route-002",
+    "object_id": "pair_pilot-low-claude-model-only",
+    "pair_id": "pilot-low-claude-model-only",
+    "provenance": {
+      "campaign_mode": "single",
+      "control_record_sha256": "b5309d29a1300857ce9388cf33467d0d243c12c4b719540a40bdfc087292a426",
+      "experiment_record_sha256": [
+        "3f562d030007fed67bac289f1a4a4bb072544dadadd4f9d945afcdfd860cda66",
+        "09bf1a7f1b42bff623db205e658619a88ff926cb3cb8c863c317d8994e8af7c8",
+        "ecde0bb0190a83755b4f1c61ad541c4f04d44af630285bbe1f9c36b2df18b5ab"
+      ],
+      "failed_attempt_record_sha256": [
+        "3f562d030007fed67bac289f1a4a4bb072544dadadd4f9d945afcdfd860cda66",
+        "09bf1a7f1b42bff623db205e658619a88ff926cb3cb8c863c317d8994e8af7c8"
+      ],
+      "normalizer_revision": "benchmark-to-pair@0.2",
+      "source_run_ids": [
+        "run_pilot_low_d_009",
+        "run_pilot_low_e_004",
+        "run_pilot_low_e_005",
+        "run_pilot_low_e_006"
+      ]
+    },
+    "risk": "low",
+    "schema": "token-firewall/evaluation-pair@0.1",
+    "task_content_sha256": "4a4cc1d50ff98ad29154ac8bd4c1b2c31a9eb4acfbacd01ae9d611ec7f89f53a",
+    "task_id": "T-PILOT-LOW",
+    "task_type": "bugfix"
+  },
+  {
+    "content_sha256": "a6381db77a0bb840896ab78269f295ca2b4232599daac1f763ab621411e659d3",
+    "control": {
+      "all_model_tokens": 327643,
+      "arm_id": "D",
+      "elapsed_seconds": 452.084,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5197-3a47-7d91-9619-6c166faa9cf3",
+        "019f5192-edd6-70f0-a231-2f69a7045753"
+      ],
+      "sol_tokens": 327643,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment": {
+      "all_model_tokens": 790011,
+      "arm_id": "E",
+      "elapsed_seconds": 251.19,
+      "hidden_status": "not_run",
+      "high_critical_findings": 0,
+      "quality_score": 0.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "not_run",
+      "session_ids": [
+        "1b80e80d-b173-442c-b642-9aa4b6d9b66b",
+        "895fe3a6-5357-46b0-97f8-a05f1159c854"
+      ],
+      "sol_tokens": 0,
+      "task_success": false,
+      "usage_complete": false
+    },
+    "experiment_id": "token-firewall-claude-route-002",
+    "object_id": "pair_pilot-high-claude",
+    "pair_id": "pilot-high-claude",
+    "provenance": {
+      "campaign_mode": "single",
+      "control_record_sha256": "ec5c6e20f2965bc93f3da023033dd22cc290cba21383b80dc0ab682c70136a36",
+      "experiment_record_sha256": [
+        "7b1aa0b36c230697c6af844398b5981bbfcc298995a81843ea909c5689fde0ba",
+        "5a72eb6149e075688798d8b197f31dbe279d5d4ffcbc9b3c02c4f2604dbc8e80"
+      ],
+      "failed_attempt_record_sha256": [
+        "7b1aa0b36c230697c6af844398b5981bbfcc298995a81843ea909c5689fde0ba"
+      ],
+      "normalizer_revision": "benchmark-to-pair@0.2",
+      "source_run_ids": [
+        "run_pilot_high_d_004",
+        "run_pilot_high_e_004",
+        "run_pilot_high_e_005"
+      ]
+    },
+    "risk": "high",
+    "schema": "token-firewall/evaluation-pair@0.1",
+    "task_content_sha256": "ac88c5c02ad46fb2807c8b236c52c386371b89155b54f4ef78f0420188db009f",
+    "task_id": "T-PILOT-HIGH",
+    "task_type": "bugfix"
+  }
+]

@@ -1,0 +1,72 @@
+{
+  "content_sha256": "1f08ac264d13b1e2d473856e4d5bed31a4e4fce344c7e41d5cba69184d5041ff",
+  "control": {
+    "all_model_tokens": 271282,
+    "arm_id": "D",
+    "elapsed_seconds": 162.361,
+    "hidden_status": "pass",
+    "high_critical_findings": 0,
+    "quality_score": 100.0,
+    "quality_score_source": "mechanical-gates@0.1",
+    "review_verdict": "PASS",
+    "session_ids": [
+      "019f5165-ab1a-73e2-ae64-7ddd1c57a66a",
+      "019f5152-e9a0-7843-acf0-87da04723216"
+    ],
+    "sol_tokens": 271282,
+    "task_success": true,
+    "usage_complete": true
+  },
+  "experiment": {
+    "all_model_tokens": 2623670,
+    "arm_id": "A",
+    "elapsed_seconds": 860.299,
+    "hidden_status": "pass",
+    "high_critical_findings": 0,
+    "quality_score": 100.0,
+    "quality_score_source": "mechanical-gates@0.1",
+    "review_verdict": "PASS",
+    "session_ids": [
+      "mvs_c112d293b1be4f5cb25a81ef3d406fdf",
+      "mvs_2340bf1f7dce4e2d9b91cc557dff2c3a",
+      "019f5172-2e28-7523-b408-8daf5d176a51",
+      "mvs_8dc046f021e942caa27707c0ca35b886",
+      "019f517b-2bbb-7480-a3a0-5268822656a0",
+      "019f5178-bee1-7193-8109-51a5b970af1e",
+      "mvs_8b0e671455a44ee78495b55981f6c6a0"
+    ],
+    "sol_tokens": 141741,
+    "task_success": true,
+    "usage_complete": true
+  },
+  "experiment_id": "token-firewall-m3-route-002",
+  "object_id": "pair_pilot-low-m3-model-only",
+  "pair_id": "pilot-low-m3-model-only",
+  "provenance": {
+    "campaign_mode": "rework",
+    "control_record_sha256": "b5309d29a1300857ce9388cf33467d0d243c12c4b719540a40bdfc087292a426",
+    "experiment_record_sha256": [
+      "57360301ea86c149e6042f9bbb9bacb91b097bd4b475e5ecd3a9188c552954ca",
+      "631944d007f077881292b4f15c358c117d75d6168874fa19ab03ea7b0617ba51",
+      "e87c19d50c4b4f1e01dfebedaefe27d5501a773fd6cd56dcc95f5c88481a9714",
+      "3cfbe67bcbb846db0d108fc5ce0fc7bc601deafb6d39240258e84535d8e8f481"
+    ],
+    "failed_attempt_record_sha256": [
+      "57360301ea86c149e6042f9bbb9bacb91b097bd4b475e5ecd3a9188c552954ca",
+      "631944d007f077881292b4f15c358c117d75d6168874fa19ab03ea7b0617ba51"
+    ],
+    "normalizer_revision": "benchmark-to-pair@0.2",
+    "source_run_ids": [
+      "run_pilot_low_d_009",
+      "run_pilot_low_a_004",
+      "run_pilot_low_a_005",
+      "run_pilot_low_a_006",
+      "run_pilot_low_b_001"
+    ]
+  },
+  "risk": "low",
+  "schema": "token-firewall/evaluation-pair@0.1",
+  "task_content_sha256": "4a4cc1d50ff98ad29154ac8bd4c1b2c31a9eb4acfbacd01ae9d611ec7f89f53a",
+  "task_id": "T-PILOT-LOW",
+  "task_type": "bugfix"
+}

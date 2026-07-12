@@ -1,0 +1,57 @@
+{
+  "artifacts": {
+    "charts": [
+      "quality-token-pareto.svg",
+      "paired-quality.svg",
+      "risk-strata.svg",
+      "token-waterfall.svg"
+    ],
+    "markdown_report": "evaluation-report.md"
+  },
+  "content_sha256": "f14cf7bf39bf158d8235df72c476b5c2e57dc058ec4f166494cb918b8231eaef",
+  "cost": {
+    "control_sol_tokens": 598925,
+    "experiment_sol_tokens": 242649,
+    "sol_savings_percent": 59.49,
+    "target_met": false,
+    "target_percent": 70
+  },
+  "experiment_id": "token-firewall-m3-route-002",
+  "pair_content_sha256": [
+    "1f08ac264d13b1e2d473856e4d5bed31a4e4fce344c7e41d5cba69184d5041ff",
+    "6fa3b3da123a1d2a172673f89473b862372a092bd71edb7ae3e0b1b3e6f6a1fa"
+  ],
+  "pilot_gate": "FAIL",
+  "protocol_content_sha256": "a5a0cd725892bf0608d1caf6ec92e71950591494827b3aa97d27a995d3ef7b81",
+  "quality": {
+    "ci95_lower_percentage_points": 0.0,
+    "ci95_upper_percentage_points": 0.0,
+    "control_mean_score": 100.0,
+    "control_success_rate": 1.0,
+    "critical_regressions": 0,
+    "difference_percentage_points": 0.0,
+    "experiment_mean_score": 100.0,
+    "experiment_success_rate": 1.0,
+    "noninferior": true,
+    "noninferiority_margin_percentage_points": 5
+  },
+  "sample_size": 2,
+  "schema": "token-firewall/evaluation-summary@0.1",
+  "strata": [
+    {
+      "control_success_rate": 1.0,
+      "experiment_success_rate": 1.0,
+      "pairs": 1,
+      "risk": "low"
+    },
+    {
+      "control_success_rate": 1.0,
+      "experiment_success_rate": 1.0,
+      "pairs": 1,
+      "risk": "high"
+    }
+  ],
+  "sufficient_sample": false,
+  "usage_complete": true,
+  "verdict": "INSUFFICIENT_SAMPLE"
+}

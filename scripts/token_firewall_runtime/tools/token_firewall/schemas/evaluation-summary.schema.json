@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "token-firewall/evaluation-summary@0.1",
+  "title": "Token Firewall Evaluation Summary",
+  "type": "object",
+  "required": [
+    "schema", "content_sha256", "experiment_id", "protocol_content_sha256",
+    "pair_content_sha256", "sample_size", "sufficient_sample", "usage_complete",
+    "quality", "cost", "strata", "artifacts", "verdict"
+  ],
+  "properties": {
+    "schema": {"const": "token-firewall/evaluation-summary@0.1"},
+    "content_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "experiment_id": {"type": "string", "minLength": 1},
+    "protocol_content_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "pair_content_sha256": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}},
+    "sample_size": {"type": "integer", "minimum": 1},
+    "sufficient_sample": {"type": "boolean"},
+    "usage_complete": {"type": "boolean"},
+    "quality": {
+      "type": "object",
+      "required": [
+        "control_success_rate", "experiment_success_rate", "difference_percentage_points",
+        "ci95_lower_percentage_points", "ci95_upper_percentage_points", "noninferiority_margin_percentage_points",
+        "noninferior", "critical_regressions", "control_mean_score", "experiment_mean_score"
+      ],
+      "properties": {
+        "control_success_rate": {"type": "number", "minimum": 0, "maximum": 1},
+        "experiment_success_rate": {"type": "number", "minimum": 0, "maximum": 1},
+        "difference_percentage_points": {"type": "number", "minimum": -100, "maximum": 100},
+        "ci95_lower_percentage_points": {"type": "number", "minimum": -100, "maximum": 100},
+        "ci95_upper_percentage_points": {"type": "number", "minimum": -100, "maximum": 100},
+        "noninferiority_margin_percentage_points": {"type": "number", "minimum": 0, "maximum": 25},
+        "noninferior": {"type": "boolean"},
+        "critical_regressions": {"type": "integer", "minimum": 0},
+        "control_mean_score": {"type": "number", "minimum": 0, "maximum": 100},
+        "experiment_mean_score": {"type": "number", "minimum": 0, "maximum": 100}
+      },
+      "additionalProperties": false
+    },
+    "cost": {
+      "type": "object",
+      "required": ["control_sol_tokens", "experiment_sol_tokens", "sol_savings_percent", "target_percent", "target_met"],
+      "properties": {
+        "control_sol_tokens": {"type": "integer", "minimum": 0},
+        "experiment_sol_tokens": {"type": "integer", "minimum": 0},
+        "sol_savings_percent": {"type": ["number", "null"]},
+        "target_percent": {"type": "number", "minimum": 0, "maximum": 100},
+        "target_met": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "strata": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["risk", "pairs", "control_success_rate", "experiment_success_rate"],
+        "properties": {
+          "risk": {"enum": ["low", "medium", "high"]},
+          "pairs": {"type": "integer", "minimum": 1},
+          "control_success_rate": {"type": "number", "minimum": 0, "maximum": 1},
+          "experiment_success_rate": {"type": "number", "minimum": 0, "maximum": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "required": ["markdown_report", "charts"],
+      "properties": {
+        "markdown_report": {"type": "string", "minLength": 1},
+        "charts": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": false
+    },
+    "verdict": {"enum": ["PASS", "FAIL", "INSUFFICIENT_SAMPLE"]},
+    "pilot_gate": {"enum": ["PASS", "FAIL"]}
+  },
+  "additionalProperties": false
+}

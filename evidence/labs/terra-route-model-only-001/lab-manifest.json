@@ -1,0 +1,22 @@
+{
+  "content_sha256": "5b707a118d164d9f6437ff4a12224f4804966023f0ba180aa82ca20e09fbfad6",
+  "created_at": "2026-07-11T23:11:57+08:00",
+  "dataset_sha256": "f4c984eae0fc9004dbe297ded7c4ed066a321b8738695d1cc954afb5edbdb306",
+  "lab_id": "c-route-model-only-001",
+  "object_id": "lab_c-route-model-only-001",
+  "pairs": [
+    {
+      "pair_id": "pilot-low-terra-model-only",
+      "path": "pairs/pilot-low-terra-model-only.json",
+      "sha256": "c74d2994a0d792f1d987c9b7edb8cfe7dde12c2293cf68389db139ad17e21acc"
+    },
+    {
+      "pair_id": "pilot-high-terra",
+      "path": "pairs/pilot-high-terra.json",
+      "sha256": "9bb614a8d616a38f068d6c1346739690dc5de2cc9f1d2231d7663fed09f6a30a"
+    }
+  ],
+  "protocol_ref": "protocol.json",
+  "protocol_sha256": "f86c7d5deb19caf85927462b597dadd04dec1fd98f3f6aff24626d041cca95ac",
+  "schema": "token-firewall/evaluation-lab-manifest@0.1"
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "token-firewall/evaluation-pair@0.1",
+  "title": "Token Firewall Paired Evaluation Observation",
+  "type": "object",
+  "required": [
+    "schema", "object_id", "content_sha256", "experiment_id", "pair_id", "task_id",
+    "risk", "task_type", "task_content_sha256", "provenance", "control", "experiment"
+  ],
+  "properties": {
+    "schema": {"const": "token-firewall/evaluation-pair@0.1"},
+    "object_id": {"type": "string", "pattern": "^pair_[A-Za-z0-9_.-]+$"},
+    "content_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "experiment_id": {"type": "string", "minLength": 1},
+    "pair_id": {"type": "string", "minLength": 1},
+    "task_id": {"type": "string", "minLength": 1},
+    "risk": {"enum": ["low", "medium", "high"]},
+    "task_type": {"type": "string", "minLength": 1},
+    "task_content_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "provenance": {
+      "type": "object",
+      "required": ["normalizer_revision", "campaign_mode", "control_record_sha256", "experiment_record_sha256", "source_run_ids"],
+      "properties": {
+        "normalizer_revision": {"enum": ["benchmark-to-pair@0.1", "benchmark-to-pair@0.2"]},
+        "campaign_mode": {"enum": ["single", "rework"]},
+        "control_record_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+        "experiment_record_sha256": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}
+        },
+        "failed_attempt_record_sha256": {
+          "type": "array", "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}
+        },
+        "failed_control_attempt_record_sha256": {
+          "type": "array", "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}
+        },
+        "source_run_ids": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": false
+    },
+    "control": {"$ref": "#/$defs/outcome"},
+    "experiment": {"$ref": "#/$defs/outcome"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "outcome": {
+      "type": "object",
+      "required": [
+        "arm_id", "task_success", "quality_score", "sol_tokens", "all_model_tokens",
+        "elapsed_seconds", "high_critical_findings", "hidden_status", "review_verdict",
+        "usage_complete", "session_ids", "quality_score_source"
+      ],
+      "properties": {
+        "arm_id": {"type": "string", "minLength": 1},
+        "task_success": {"type": "boolean"},
+        "quality_score": {"type": "number", "minimum": 0, "maximum": 100},
+        "sol_tokens": {"type": "integer", "minimum": 0},
+        "all_model_tokens": {"type": "integer", "minimum": 0},
+        "elapsed_seconds": {"type": "number", "minimum": 0},
+        "high_critical_findings": {"type": "integer", "minimum": 0},
+        "hidden_status": {"enum": ["pass", "fail", "not_run", "error"]},
+        "review_verdict": {"enum": ["PASS", "REWORK", "ESCALATE", "not_run"]},
+        "usage_complete": {"type": "boolean"},
+        "session_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "quality_score_source": {"enum": ["mechanical-gates@0.1", "blinded-rubric@0.1"]}
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "token-firewall/evaluation-protocol@0.1",
+  "title": "Token Firewall Evaluation Protocol",
+  "type": "object",
+  "required": [
+    "schema", "object_id", "revision", "created_at", "content_sha256", "experiment_id",
+    "control_arm", "experiment_arm", "primary_outcome", "cost_outcome", "sampling",
+    "blinding", "accounting", "reporting"
+  ],
+  "properties": {
+    "schema": {"const": "token-firewall/evaluation-protocol@0.1"},
+    "object_id": {"type": "string", "pattern": "^eval_[A-Za-z0-9_.-]+$"},
+    "revision": {"type": "integer", "minimum": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "content_sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "experiment_id": {"type": "string", "minLength": 1},
+    "control_arm": {"$ref": "#/$defs/arm"},
+    "experiment_arm": {"$ref": "#/$defs/arm"},
+    "primary_outcome": {
+      "type": "object",
+      "required": ["name", "noninferiority_margin_percentage_points", "critical_regressions_allowed"],
+      "properties": {
+        "name": {"const": "task_success"},
+        "noninferiority_margin_percentage_points": {"type": "number", "minimum": 0, "maximum": 25},
+        "critical_regressions_allowed": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "cost_outcome": {
+      "type": "object",
+      "required": ["name", "minimum_sol_savings_percent"],
+      "properties": {
+        "name": {"const": "cumulative_sol_tokens"},
+        "minimum_sol_savings_percent": {"type": "number", "minimum": 0, "maximum": 100}
+      },
+      "additionalProperties": false
+    },
+    "sampling": {
+      "type": "object",
+      "required": ["minimum_pairs", "bootstrap_samples", "random_seed", "risk_levels", "task_types"],
+      "properties": {
+        "minimum_pairs": {"type": "integer", "minimum": 2},
+        "bootstrap_samples": {"type": "integer", "minimum": 100, "maximum": 100000},
+        "random_seed": {"type": "integer", "minimum": 0},
+        "risk_levels": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["low", "medium", "high"]}},
+        "task_types": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": false
+    },
+    "blinding": {
+      "type": "object",
+      "required": ["candidate_identity_hidden", "fresh_reviewer_session", "hidden_tests_after_model_stages"],
+      "properties": {
+        "candidate_identity_hidden": {"type": "boolean"},
+        "fresh_reviewer_session": {"type": "boolean"},
+        "hidden_tests_after_model_stages": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "accounting": {
+      "type": "object",
+      "required": ["include_failures", "include_rework", "deduplicate_by"],
+      "properties": {
+        "include_failures": {"type": "boolean"},
+        "include_rework": {"type": "boolean"},
+        "deduplicate_by": {"const": "session_id"}
+      },
+      "additionalProperties": false
+    },
+    "reporting": {
+      "type": "object",
+      "required": ["confidence_level", "charts"],
+      "properties": {
+        "confidence_level": {"const": 0.95},
+        "charts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"enum": ["quality_token_pareto", "paired_quality", "risk_strata", "token_waterfall"]}
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "arm": {
+      "type": "object",
+      "required": ["arm_id", "route"],
+      "properties": {
+        "arm_id": {"type": "string", "minLength": 1},
+        "route": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "artifacts": {
+    "charts": [
+      "quality-token-pareto.svg",
+      "paired-quality.svg",
+      "risk-strata.svg",
+      "token-waterfall.svg"
+    ],
+    "markdown_report": "evaluation-report.md"
+  },
+  "content_sha256": "a704fb7d09753e029374d3e5b4ad99b1528622d2f402fd80a65e585d3ee88979",
+  "cost": {
+    "control_sol_tokens": 598925,
+    "experiment_sol_tokens": 142312,
+    "sol_savings_percent": 76.24,
+    "target_met": true,
+    "target_percent": 70
+  },
+  "experiment_id": "token-firewall-terra-route-002",
+  "pair_content_sha256": [
+    "9bb614a8d616a38f068d6c1346739690dc5de2cc9f1d2231d7663fed09f6a30a",
+    "c74d2994a0d792f1d987c9b7edb8cfe7dde12c2293cf68389db139ad17e21acc"
+  ],
+  "pilot_gate": "PASS",
+  "protocol_content_sha256": "f86c7d5deb19caf85927462b597dadd04dec1fd98f3f6aff24626d041cca95ac",
+  "quality": {
+    "ci95_lower_percentage_points": 0.0,
+    "ci95_upper_percentage_points": 0.0,
+    "control_mean_score": 100.0,
+    "control_success_rate": 1.0,
+    "critical_regressions": 0,
+    "difference_percentage_points": 0.0,
+    "experiment_mean_score": 100.0,
+    "experiment_success_rate": 1.0,
+    "noninferior": true,
+    "noninferiority_margin_percentage_points": 5
+  },
+  "sample_size": 2,
+  "schema": "token-firewall/evaluation-summary@0.1",
+  "strata": [
+    {
+      "control_success_rate": 1.0,
+      "experiment_success_rate": 1.0,
+      "pairs": 1,
+      "risk": "low"
+    },
+    {
+      "control_success_rate": 1.0,
+      "experiment_success_rate": 1.0,
+      "pairs": 1,
+      "risk": "high"
+    }
+  ],
+  "sufficient_sample": false,
+  "usage_complete": true,
+  "verdict": "INSUFFICIENT_SAMPLE"
+}

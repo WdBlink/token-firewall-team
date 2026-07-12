@@ -1,0 +1,57 @@
+{
+  "artifacts": {
+    "charts": [
+      "quality-token-pareto.svg",
+      "paired-quality.svg",
+      "risk-strata.svg",
+      "token-waterfall.svg"
+    ],
+    "markdown_report": "evaluation-report.md"
+  },
+  "content_sha256": "0a90fe169f3fcf5c728f086ea84b0143f989f0a2dee7bddfd2668db704e3abff",
+  "cost": {
+    "control_sol_tokens": 598925,
+    "experiment_sol_tokens": 0,
+    "sol_savings_percent": 100.0,
+    "target_met": true,
+    "target_percent": 70
+  },
+  "experiment_id": "token-firewall-claude-route-002",
+  "pair_content_sha256": [
+    "836f01a4cd39866c92ce6e34fadae962ef6057514537a9059e1bfb96b654fb5d",
+    "a6381db77a0bb840896ab78269f295ca2b4232599daac1f763ab621411e659d3"
+  ],
+  "pilot_gate": "FAIL",
+  "protocol_content_sha256": "df8469baf945e19e80d16fd479369489a270a2eb8e722fed2e06585e107faa7b",
+  "quality": {
+    "ci95_lower_percentage_points": -100.0,
+    "ci95_upper_percentage_points": -100.0,
+    "control_mean_score": 100.0,
+    "control_success_rate": 1.0,
+    "critical_regressions": 0,
+    "difference_percentage_points": -100.0,
+    "experiment_mean_score": 7.5,
+    "experiment_success_rate": 0.0,
+    "noninferior": false,
+    "noninferiority_margin_percentage_points": 5
+  },
+  "sample_size": 2,
+  "schema": "token-firewall/evaluation-summary@0.1",
+  "strata": [
+    {
+      "control_success_rate": 1.0,
+      "experiment_success_rate": 0.0,
+      "pairs": 1,
+      "risk": "low"
+    },
+    {
+      "control_success_rate": 1.0,
+      "experiment_success_rate": 0.0,
+      "pairs": 1,
+      "risk": "high"
+    }
+  ],
+  "sufficient_sample": false,
+  "usage_complete": false,
+  "verdict": "INSUFFICIENT_SAMPLE"
+}

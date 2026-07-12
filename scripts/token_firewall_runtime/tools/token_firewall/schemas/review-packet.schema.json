@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "token-firewall/review-packet@0.1",
+  "title": "Token Firewall Review Packet",
+  "type": "object",
+  "required": [
+    "schema", "object_id", "mission_id", "revision", "created_at", "created_by",
+    "content_sha256", "scope", "mission_summary", "risk", "commit_range", "diff_summary",
+    "context_slices", "requirements_coverage", "unresolved_disagreements", "evidence_index", "packet_budget"
+  ],
+  "properties": {
+    "schema": {"const": "token-firewall/review-packet@0.1"},
+    "object_id": {"type": "string", "pattern": "^rp_[A-Za-z0-9_.-]+$"},
+    "mission_id": {"type": "string", "pattern": "^msn_[A-Za-z0-9_.-]+$"},
+    "revision": {"type": "integer", "minimum": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "created_by": {"$ref": "#/$defs/creator"},
+    "supersedes": {"type": ["string", "null"]},
+    "content_sha256": {"$ref": "#/$defs/sha256"},
+    "scope": {"enum": ["task", "mission"]},
+    "task_id": {"type": "string", "pattern": "^T-[A-Za-z0-9_.-]+$"},
+    "mission_summary": {"type": "string", "maxLength": 4000},
+    "objective": {"type": "string"},
+    "risk": {"$ref": "#/$defs/risk"},
+    "commit_range": {
+      "type": "object", "required": ["base", "head"],
+      "properties": {"base": {"$ref": "#/$defs/commit"}, "head": {"$ref": "#/$defs/commit"}},
+      "additionalProperties": false
+    },
+    "diff_summary": {
+      "type": "object", "required": ["files", "additions", "deletions", "patch_ref"],
+      "properties": {
+        "files": {"type": "integer", "minimum": 0},
+        "additions": {"type": "integer", "minimum": 0},
+        "deletions": {"type": "integer", "minimum": 0},
+        "patch_ref": {"$ref": "#/$defs/evidence_ref"}
+      },
+      "additionalProperties": false
+    },
+    "inline_diff": {"type": "string"},
+    "context_slices": {
+      "type": "array", "maxItems": 20,
+      "items": {
+        "type": "object", "required": ["path", "start", "end", "reason"],
+        "properties": {
+          "path": {"$ref": "#/$defs/repo_path"},
+          "start": {"type": "integer", "minimum": 1},
+          "end": {"type": "integer", "minimum": 1},
+          "reason": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "requirements_coverage": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "required": ["spec_id", "status", "evidence_ref"],
+        "properties": {
+          "spec_id": {"type": "string"},
+          "status": {"enum": ["pass", "fail", "blocked"]},
+          "evidence_ref": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "acceptance_contract": {
+      "type": "array", "maxItems": 50,
+      "items": {
+        "type": "object",
+        "required": ["spec_id", "statement", "positive_cases", "negative_cases", "semantic_boundaries"],
+        "properties": {
+          "spec_id": {"type": "string", "minLength": 1},
+          "statement": {"type": "string", "minLength": 1},
+          "positive_cases": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["case_id", "action", "expected"], "properties": {"case_id": {"type": "string"}, "action": {"type": "string"}, "expected": {"type": "string"}}, "additionalProperties": false}},
+          "negative_cases": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["case_id", "action", "expected_rejection"], "properties": {"case_id": {"type": "string"}, "action": {"type": "string"}, "expected_rejection": {"type": "string"}}, "additionalProperties": false}},
+          "semantic_boundaries": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["boundary_id", "dimension", "inside", "outside", "rule"], "properties": {"boundary_id": {"type": "string"}, "dimension": {"type": "string"}, "inside": {"type": "string"}, "outside": {"type": "string"}, "rule": {"type": "string"}}, "additionalProperties": false}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "verifier_findings": {"type": "array", "items": {"$ref": "#/$defs/finding"}},
+    "unresolved_disagreements": {"type": "array", "items": {"type": "string"}},
+    "previous_review_delta": {"type": ["string", "null"]},
+    "evidence_index": {"type": "array", "items": {"$ref": "#/$defs/evidence_ref"}},
+    "packet_budget": {
+      "type": "object", "required": ["estimated_tokens", "max_tokens"],
+      "properties": {
+        "estimated_tokens": {"type": "integer", "minimum": 0},
+        "max_tokens": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "integration_commit": {"$ref": "#/$defs/commit"},
+    "included_tasks": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "required": ["task_id", "delivery_manifest_ref"],
+        "properties": {
+          "task_id": {"type": "string"},
+          "delivery_manifest_ref": {"$ref": "#/$defs/evidence_ref"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "full_regression": {
+      "type": "object", "required": ["status", "evidence_ref"],
+      "properties": {
+        "status": {"enum": ["pass", "fail", "blocked"]},
+        "evidence_ref": {"$ref": "#/$defs/evidence_ref"}
+      },
+      "additionalProperties": false
+    },
+    "unresolved_risks": {"type": "array", "items": {"type": "string"}}
+  },
+  "oneOf": [
+    {
+      "required": ["task_id", "objective", "verifier_findings"],
+      "properties": {"scope": {"const": "task"}},
+      "not": {"required": ["integration_commit"]}
+    },
+    {
+      "required": ["integration_commit", "included_tasks", "full_regression", "unresolved_risks"],
+      "properties": {"scope": {"const": "mission"}},
+      "not": {"required": ["task_id"]}
+    }
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "commit": {"type": "string", "pattern": "^[a-fA-F0-9]{7,64}$"},
+    "repo_path": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"},
+    "creator": {
+      "type": "object", "required": ["role", "runtime", "model", "session_id"],
+      "properties": {
+        "role": {"type": "string", "minLength": 1},
+        "runtime": {"type": "string", "minLength": 1},
+        "model": {"type": "string", "minLength": 1},
+        "session_id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "risk": {
+      "type": "object", "required": ["level", "reasons"],
+      "properties": {
+        "level": {"enum": ["low", "medium", "high", "critical"]},
+        "reasons": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "evidence_ref": {
+      "type": "object", "required": ["path", "sha256", "bytes"],
+      "properties": {
+        "path": {"$ref": "#/$defs/repo_path"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "bytes": {"type": "integer", "minimum": 0},
+        "mime_type": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "finding": {
+      "type": "object",
+      "required": ["finding_id", "severity", "spec_id", "file", "line", "issue", "required_fix", "evidence"],
+      "properties": {
+        "finding_id": {"type": "string"},
+        "severity": {"enum": ["low", "medium", "high", "critical"]},
+        "spec_id": {"type": ["string", "null"]},
+        "file": {"type": ["string", "null"]},
+        "line": {"type": ["integer", "null"], "minimum": 1},
+        "issue": {"type": "string"},
+        "required_fix": {"type": "string"},
+        "evidence": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "token-firewall/mission-contract@0.1",
+  "title": "Token Firewall Mission Contract",
+  "type": "object",
+  "required": [
+    "schema", "object_id", "mission_id", "revision", "created_at",
+    "created_by", "content_sha256", "goal", "success_outcomes",
+    "invariants", "non_goals", "risk_boundaries", "approval_boundaries",
+    "overall_acceptance", "sol_token_budget"
+  ],
+  "properties": {
+    "schema": {"const": "token-firewall/mission-contract@0.1"},
+    "object_id": {"type": "string", "pattern": "^mc_[A-Za-z0-9_.-]+$"},
+    "mission_id": {"type": "string", "pattern": "^msn_[A-Za-z0-9_.-]+$"},
+    "revision": {"type": "integer", "minimum": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "created_by": {"$ref": "#/$defs/creator"},
+    "supersedes": {"type": ["string", "null"]},
+    "content_sha256": {"$ref": "#/$defs/sha256"},
+    "goal": {"type": "string", "minLength": 8},
+    "success_outcomes": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "required": ["id", "statement", "evidence"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^OUT-[0-9]+$"},
+          "statement": {"type": "string", "minLength": 4},
+          "evidence": {"type": "string", "minLength": 4}
+        },
+        "additionalProperties": false
+      }
+    },
+    "invariants": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "required": ["id", "statement", "severity"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^INV-[0-9]+$"},
+          "statement": {"type": "string", "minLength": 4},
+          "severity": {"enum": ["low", "medium", "high", "critical"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "non_goals": {"type": "array", "items": {"type": "string"}},
+    "risk_boundaries": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["pattern", "review_level"],
+        "properties": {
+          "pattern": {"type": "string", "minLength": 1},
+          "review_level": {"enum": ["m3", "terra", "terra-then-sol", "sol-deep-review"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "approval_boundaries": {
+      "type": "object",
+      "required": ["external_writes", "destructive_actions", "scope_expansion"],
+      "properties": {
+        "external_writes": {"type": "boolean"},
+        "destructive_actions": {"type": "boolean"},
+        "scope_expansion": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "overall_acceptance": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^(OUT|INV)-[0-9]+$"}
+    },
+    "sol_token_budget": {
+      "type": "object",
+      "required": ["planning_max", "review_max", "escalation_requires_reason"],
+      "properties": {
+        "planning_max": {"type": "integer", "minimum": 1},
+        "review_max": {"type": "integer", "minimum": 1},
+        "escalation_requires_reason": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "creator": {
+      "type": "object", "required": ["role", "runtime", "model", "session_id"],
+      "properties": {
+        "role": {"type": "string", "minLength": 1},
+        "runtime": {"type": "string", "minLength": 1},
+        "model": {"type": "string", "minLength": 1},
+        "session_id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  }
+}

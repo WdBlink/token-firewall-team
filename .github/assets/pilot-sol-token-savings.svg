@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="480" viewBox="0 0 1000 480" role="img" aria-labelledby="title desc">
+  <title id="title">Directional pilot: Sol tokens by route</title>
+  <desc id="desc">Control used 598925 Sol tokens, M3 loop used 242649, Terra loop used 142312. Claude Sonnet produced no accepted task, so its zero Sol review tokens are not comparable.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1020"/><stop offset="1" stop-color="#151b31"/></linearGradient>
+    <linearGradient id="control" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#667085"/><stop offset="1" stop-color="#98a2b3"/></linearGradient>
+    <linearGradient id="m3" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#6941c6"/><stop offset="1" stop-color="#9e77ed"/></linearGradient>
+    <linearGradient id="terra" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#057a55"/><stop offset="1" stop-color="#32d583"/></linearGradient>
+    <pattern id="failed" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="10" fill="#f97066"/></pattern>
+  </defs>
+  <rect width="1000" height="480" rx="22" fill="url(#bg)"/>
+  <text x="48" y="54" fill="#f2f4f7" font-family="ui-sans-serif,system-ui" font-size="24" font-weight="700">Sol reviewer tokens — directional pilot</text>
+  <text x="48" y="82" fill="#98a2b3" font-family="ui-sans-serif,system-ui" font-size="14">Two frozen tasks · accepted outcome required · lower is better</text>
+  <line x1="80" y1="390" x2="940" y2="390" stroke="#344054"/>
+  <line x1="80" y1="140" x2="940" y2="140" stroke="#344054" stroke-dasharray="5 7"/>
+  <text x="28" y="145" fill="#667085" font-family="ui-monospace,monospace" font-size="12">600k</text>
+  <rect x="115" y="140" width="120" height="250" rx="8" fill="url(#control)"/>
+  <rect x="315" y="289" width="120" height="101" rx="8" fill="url(#m3)"/>
+  <rect x="515" y="331" width="120" height="59" rx="8" fill="url(#terra)"/>
+  <rect x="715" y="350" width="120" height="40" rx="8" fill="url(#failed)" opacity="0.85"/>
+  <g fill="#f2f4f7" font-family="ui-sans-serif,system-ui" text-anchor="middle">
+    <text x="175" y="126" font-size="16" font-weight="700">598,925</text>
+    <text x="375" y="275" font-size="16" font-weight="700">242,649</text>
+    <text x="575" y="317" font-size="16" font-weight="700">142,312</text>
+    <text x="775" y="336" font-size="14" font-weight="700">not comparable</text>
+    <text x="175" y="421" font-size="14">Sol direct</text>
+    <text x="375" y="421" font-size="14">M3 loop</text>
+    <text x="575" y="421" font-size="14">Terra loop</text>
+    <text x="775" y="421" font-size="14">Claude Sonnet</text>
+  </g>
+  <g font-family="ui-sans-serif,system-ui" text-anchor="middle">
+    <text x="375" y="448" fill="#b692f6" font-size="13">59.49% fewer · 2/2 accepted</text>
+    <text x="575" y="448" fill="#6ce9a6" font-size="13">76.24% fewer · 2/2 accepted</text>
+    <text x="775" y="448" fill="#fda29b" font-size="13">0/2 accepted</text>
+  </g>
+  <text x="940" y="82" text-anchor="end" fill="#fdb022" font-family="ui-monospace,monospace" font-size="13">n=2 · insufficient sample</text>
+</svg>

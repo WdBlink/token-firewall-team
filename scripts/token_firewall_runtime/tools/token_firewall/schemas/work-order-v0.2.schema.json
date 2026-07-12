@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "token-firewall/work-order@0.2",
+  "title": "Token Firewall Work Order v0.2",
+  "type": "object",
+  "required": [
+    "schema", "object_id", "mission_id", "revision", "created_at", "created_by", "content_sha256",
+    "task_id", "parent_task_id", "objective", "rationale", "dependencies", "context_refs",
+    "allowed_paths", "forbidden_paths", "invariants", "acceptance_specs", "required_deliverables",
+    "limits", "stop_conditions", "risk", "assignment"
+  ],
+  "properties": {
+    "schema": {"const": "token-firewall/work-order@0.2"},
+    "object_id": {"type": "string", "pattern": "^wo_[A-Za-z0-9_.-]+$"},
+    "mission_id": {"type": "string", "pattern": "^msn_[A-Za-z0-9_.-]+$"},
+    "revision": {"type": "integer", "minimum": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "created_by": {"$ref": "#/$defs/creator"},
+    "supersedes": {"type": ["string", "null"]},
+    "content_sha256": {"$ref": "#/$defs/sha256"},
+    "task_id": {"type": "string", "pattern": "^T-[A-Za-z0-9_.-]+$"},
+    "parent_task_id": {"type": ["string", "null"]},
+    "objective": {"type": "string", "minLength": 8},
+    "rationale": {"type": "string", "minLength": 8},
+    "dependencies": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "context_refs": {"type": "array", "items": {"$ref": "#/$defs/context_ref"}},
+    "allowed_paths": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/repo_path"}},
+    "forbidden_paths": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/repo_path"}},
+    "invariants": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^INV-[0-9]+$"}},
+    "acceptance_specs": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "statement", "validator", "positive_cases", "negative_cases", "semantic_boundaries"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^SPEC-[A-Za-z0-9_.-]+$"},
+          "statement": {"type": "string", "minLength": 4},
+          "validator": {"$ref": "#/$defs/validator"},
+          "positive_cases": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/positive_case"}},
+          "negative_cases": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/negative_case"}},
+          "semantic_boundaries": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/boundary"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "required_deliverables": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["git_commit", "patch", "test_results", "artifacts"]}},
+    "limits": {
+      "type": "object",
+      "required": ["max_changed_files", "max_diff_lines", "max_rework_rounds", "wall_clock_minutes"],
+      "properties": {
+        "max_changed_files": {"type": "integer", "minimum": 1},
+        "max_diff_lines": {"type": "integer", "minimum": 1},
+        "max_rework_rounds": {"type": "integer", "minimum": 0, "maximum": 10},
+        "wall_clock_minutes": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "stop_conditions": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 2}},
+    "risk": {
+      "type": "object", "required": ["level", "reasons", "required_review"],
+      "properties": {
+        "level": {"enum": ["low", "medium", "high", "critical"]},
+        "reasons": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 2}},
+        "required_review": {"enum": ["m3-then-sol", "terra-then-sol", "sol-deep-review"]}
+      },
+      "additionalProperties": false
+    },
+    "assignment": {
+      "type": "object", "required": ["preferred_model", "workspace_mode", "network"],
+      "properties": {
+        "preferred_model": {"type": "string", "minLength": 1},
+        "workspace_mode": {"enum": ["isolated-worktree", "isolated-copy"]},
+        "network": {"enum": ["deny-by-default", "allow-listed", "allowed"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "repo_path": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"},
+    "creator": {"type": "object", "required": ["role", "runtime", "model", "session_id"], "properties": {"role": {"type": "string", "minLength": 1}, "runtime": {"type": "string", "minLength": 1}, "model": {"type": "string", "minLength": 1}, "session_id": {"type": "string", "minLength": 1}}, "additionalProperties": false},
+    "context_ref": {"type": "object", "required": ["path", "sha256", "purpose"], "properties": {"path": {"$ref": "#/$defs/repo_path"}, "sha256": {"$ref": "#/$defs/sha256"}, "purpose": {"type": "string", "minLength": 1}}, "additionalProperties": false},
+    "validator": {"oneOf": [
+      {"type": "object", "required": ["kind", "command"], "properties": {"kind": {"const": "command"}, "command": {"type": "string", "minLength": 1}, "timeout_seconds": {"type": "integer", "minimum": 1, "maximum": 3600}}, "additionalProperties": false},
+      {"type": "object", "required": ["kind", "evidence_schema"], "properties": {"kind": {"const": "evidence"}, "evidence_schema": {"type": "string", "minLength": 1}}, "additionalProperties": false}
+    ]},
+    "positive_case": {"type": "object", "required": ["case_id", "setup", "action", "expected"], "properties": {"case_id": {"type": "string", "pattern": "^POS-[A-Za-z0-9_.-]+$"}, "setup": {"type": "string", "minLength": 2}, "action": {"type": "string", "minLength": 2}, "expected": {"type": "string", "minLength": 2}}, "additionalProperties": false},
+    "negative_case": {"type": "object", "required": ["case_id", "setup", "action", "expected_rejection"], "properties": {"case_id": {"type": "string", "pattern": "^NEG-[A-Za-z0-9_.-]+$"}, "setup": {"type": "string", "minLength": 2}, "action": {"type": "string", "minLength": 2}, "expected_rejection": {"type": "string", "minLength": 2}}, "additionalProperties": false},
+    "boundary": {"type": "object", "required": ["boundary_id", "dimension", "inside", "outside", "rule"], "properties": {"boundary_id": {"type": "string", "pattern": "^BOUND-[A-Za-z0-9_.-]+$"}, "dimension": {"type": "string", "minLength": 2}, "inside": {"type": "string", "minLength": 2}, "outside": {"type": "string", "minLength": 2}, "rule": {"type": "string", "minLength": 4}}, "additionalProperties": false}
+  }
+}
