@@ -7,7 +7,8 @@
 
   <p><strong>English</strong> | <a href="README.zh-CN.md">中文</a></p>
 
-  <p><strong>Spend frontier-model tokens on judgment, not implementation.</strong></p>
+  <p><strong>59–76% fewer Sol tokens in the current Pilot—with the same 2/2 accepted outcomes as Sol-direct.</strong></p>
+  <p><sub>No delivery-quality loss was observed in this <code>n=2</code> Pilot. Directional evidence, not yet a general non-inferiority claim.</sub></p>
 </div>
 
 <div align="center">
@@ -31,6 +32,10 @@
 <br>
 
 [Agent Skills](https://agentskills.io) compatible. The bundled Runtime uses only the Python standard library; Codex CLI, Claude Code, and MiniMax Code are optional execution transports.
+
+> **Pilot result:** M3 and Terra both matched Sol-direct's 100% task success rate (`2/2` vs `2/2`) and mean quality score (`100` vs `100`), while reducing expensive Sol tokens by **59.49%** and **76.24%**. In other words, **this Pilot observed substantial Token savings without an observed reduction in delivery quality**.
+>
+> **Evidence boundary:** this is a two-task directional Pilot, not proof that quality is unaffected across all task types. The frozen protocol requires at least 12 pairs and broader coverage before a release-grade non-inferiority claim.
 
 ---
 
@@ -58,13 +63,13 @@ Token Firewall turns the expensive model into a bounded chief reviewer. It decom
   <img alt="Directional pilot showing Sol reviewer tokens by route" src=".github/assets/pilot-sol-token-savings.svg" width="860">
 </div>
 
-| Route | Accepted tasks | Control Sol tokens | Route Sol tokens | Sol reduction | Frozen verdict |
-|---|---:|---:|---:|---:|---|
-| M3 loop | 2/2 | 598,925 | 242,649 | 59.49% | `INSUFFICIENT_SAMPLE` |
-| Terra loop | 2/2 | 598,925 | 142,312 | 76.24% | `INSUFFICIENT_SAMPLE` |
-| Claude Sonnet loop | 0/2 | 598,925 | 0 | Not interpretable | `INSUFFICIENT_SAMPLE` |
+| Route | Success vs Sol-direct | Observed quality change | Control Sol tokens | Route Sol tokens | Sol reduction | Frozen verdict |
+|---|---:|---|---:|---:|---:|---|
+| M3 loop | 100% → 100% | None observed (`100` → `100`) | 598,925 | 242,649 | **59.49%** | `INSUFFICIENT_SAMPLE` |
+| Terra loop | 100% → 100% | None observed (`100` → `100`) | 598,925 | 142,312 | **76.24%** | `INSUFFICIENT_SAMPLE` |
+| Claude Sonnet loop | 100% → 0% | Quality regression (`100` → `7.5`) | 598,925 | 0 | Not interpretable | `INSUFFICIENT_SAMPLE` |
 
-The M3 and Terra routes retained accepted outcomes on both Pilot tasks while using fewer Sol tokens. Claude Sonnet consumed no Sol review tokens because neither candidate reached final review; that is a quality failure, not a 100% saving.
+For M3 and Terra, both the success rate and frozen mean quality score matched the Sol-direct control in this Pilot; no delivery-quality loss was observed on these two tasks. Claude Sonnet consumed no Sol review tokens because neither candidate reached final review; that is a quality failure, not a 100% saving.
 
 The experiment froze base commits, public validators, deferred hidden tests, blind Sol review, Session-level usage accounting, and all failures/retries. The protocol requires at least 12 task pairs plus broader task coverage before a release decision.
 
