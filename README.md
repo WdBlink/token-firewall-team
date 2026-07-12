@@ -5,6 +5,8 @@
     <img alt="Token Firewall" src=".github/logo-light.svg" width="520">
   </picture>
 
+  <p><strong>English</strong> | <a href="README.zh-CN.md">中文</a></p>
+
   <p><strong>Spend frontier-model tokens on judgment, not implementation.</strong></p>
 </div>
 
