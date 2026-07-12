@@ -1,0 +1,72 @@
+{
+  "content_sha256": "e9439f83576d0af3644659a45107bbba1c17cd928d8a2e06d8b707f8691a5402",
+  "created_at": "2026-07-12T15:56:34+08:00",
+  "dataset_sha256": "6b6f55afa51a8f6abcdc6fed6ee9f06cf47f836c7cc37c063227ff19ae0d0f9e",
+  "lab_id": "terra-route-n12-001",
+  "object_id": "lab_terra-route-n12-001",
+  "pairs": [
+    {
+      "pair_id": "pilot-high-terra",
+      "path": "pairs/pilot-high-terra.json",
+      "sha256": "9bb614a8d616a38f068d6c1346739690dc5de2cc9f1d2231d7663fed09f6a30a"
+    },
+    {
+      "pair_id": "pilot-low-terra-model-only",
+      "path": "pairs/pilot-low-terra-model-only.json",
+      "sha256": "c74d2994a0d792f1d987c9b7edb8cfe7dde12c2293cf68389db139ad17e21acc"
+    },
+    {
+      "pair_id": "eval-03-duration-terra",
+      "path": "pairs/eval-03-duration-terra.json",
+      "sha256": "bcbaaf7b3dad06659d91ab69386c7acbd6d8d72a67f3222c6f738b8d7e777af4"
+    },
+    {
+      "pair_id": "eval-04-canonical-query-terra",
+      "path": "pairs/eval-04-canonical-query-terra.json",
+      "sha256": "f4205ef9b8c3c2d039873faf654fc57753cdbbe056bac9fb4a9ca5919502bac8"
+    },
+    {
+      "pair_id": "eval-05-stable-unique-terra",
+      "path": "pairs/eval-05-stable-unique-terra.json",
+      "sha256": "0b41c3b192e3230fbe45253f57b359d341a923ff3936fcc7a3e4346f595c37ec"
+    },
+    {
+      "pair_id": "eval-06-deep-merge-terra",
+      "path": "pairs/eval-06-deep-merge-terra.json",
+      "sha256": "66ad7643ac6d7f22cc5773345cac032637df4f9e06883d8c4d186b5ca2fc3d88"
+    },
+    {
+      "pair_id": "eval-07-pagination-terra",
+      "path": "pairs/eval-07-pagination-terra.json",
+      "sha256": "a6e355d723d64aa64da9d8f9c0f60d770b490dff4cdc0fd1f71d5db3103fdc77"
+    },
+    {
+      "pair_id": "eval-09-safe-join-terra",
+      "path": "pairs/eval-09-safe-join-terra.json",
+      "sha256": "677d87f306a4d852044222c333c7eccbd93613e1874092852f5f9bd240ec4976"
+    },
+    {
+      "pair_id": "eval-10-merge-patch-terra",
+      "path": "pairs/eval-10-merge-patch-terra.json",
+      "sha256": "e31c74228ca9331e106ddd2ea00191841d6801ed6f373f1dccd0e308035c83cc"
+    },
+    {
+      "pair_id": "eval-11-topological-order-terra",
+      "path": "pairs/eval-11-topological-order-terra.json",
+      "sha256": "e66ee6ec45ba752b26b6710dc229a709a79c4456da18665a876869cfd9d2d81b"
+    },
+    {
+      "pair_id": "eval-12-read-through-cache-terra",
+      "path": "pairs/eval-12-read-through-cache-terra.json",
+      "sha256": "30e12a4d57b10914279dfa90f89dcf39a128622be4df7277e5030007e0a49126"
+    },
+    {
+      "pair_id": "eval-13-batch-items-terra",
+      "path": "pairs/eval-13-batch-items-terra.json",
+      "sha256": "bd17e9476e6d3b99a11bcc44bfd387d854fb9e01e1d69afa42a13eb4f9e9d87c"
+    }
+  ],
+  "protocol_ref": "protocol.json",
+  "protocol_sha256": "f86c7d5deb19caf85927462b597dadd04dec1fd98f3f6aff24626d041cca95ac",
+  "schema": "token-firewall/evaluation-lab-manifest@0.1"
+}

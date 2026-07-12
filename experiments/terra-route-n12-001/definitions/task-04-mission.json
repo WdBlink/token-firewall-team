@@ -1,0 +1,54 @@
+{
+  "approval_boundaries": {
+    "destructive_actions": false,
+    "external_writes": false,
+    "scope_expansion": false
+  },
+  "content_sha256": "7124d28afbc278be74d0292ad1b9c66a10adb11739a7ce0973ed3b2b6ec19c2a",
+  "created_at": "2026-07-12T15:00:00+08:00",
+  "created_by": {
+    "model": "gpt-5.6-sol",
+    "role": "mission-architect",
+    "runtime": "codex",
+    "session_id": "suite-design-frozen"
+  },
+  "goal": "生成可用于签名的确定性 RFC3986 查询串。",
+  "invariants": [
+    {
+      "id": "INV-001",
+      "severity": "critical",
+      "statement": "不得修改公开测试或任务范围外文件，且实现不得引入第三方依赖"
+    }
+  ],
+  "mission_id": "msn_eval_04_001",
+  "non_goals": [
+    "不修改其他基准函数",
+    "不修改公开测试",
+    "不引入第三方依赖"
+  ],
+  "object_id": "mc_eval_04",
+  "overall_acceptance": [
+    "OUT-001",
+    "INV-001"
+  ],
+  "revision": 1,
+  "risk_boundaries": [
+    {
+      "pattern": "排序发生在 RFC3986 编码之后；不得使用 application/x-www-form-urlencoded 的 + 空格语义。",
+      "review_level": "terra-then-sol"
+    }
+  ],
+  "schema": "token-firewall/mission-contract@0.1",
+  "sol_token_budget": {
+    "escalation_requires_reason": true,
+    "planning_max": 12000,
+    "review_max": 90000
+  },
+  "success_outcomes": [
+    {
+      "evidence": "公开测试、独立验证、匿名终审与延后隐藏测试通过",
+      "id": "OUT-001",
+      "statement": "实现 canonical_query：严格字符串二元组、UTF-8 百分号编码、按编码后 key/value 排序并保留重复项。"
+    }
+  ]
+}

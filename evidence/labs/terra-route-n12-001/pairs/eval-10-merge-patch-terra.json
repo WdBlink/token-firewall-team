@@ -1,0 +1,58 @@
+{
+  "content_sha256": "e31c74228ca9331e106ddd2ea00191841d6801ed6f373f1dccd0e308035c83cc",
+  "control": {
+    "all_model_tokens": 286537,
+    "arm_id": "D",
+    "elapsed_seconds": 360.632,
+    "hidden_status": "pass",
+    "high_critical_findings": 0,
+    "quality_score": 100.0,
+    "quality_score_source": "mechanical-gates@0.1",
+    "review_verdict": "PASS",
+    "session_ids": [
+      "019f5522-7b4a-7890-975b-73bfec8f1485",
+      "019f551f-4a17-7ed1-8594-e98b575c3907"
+    ],
+    "sol_tokens": 286537,
+    "task_success": true,
+    "usage_complete": true
+  },
+  "experiment": {
+    "all_model_tokens": 276964,
+    "arm_id": "C",
+    "elapsed_seconds": 451.045,
+    "hidden_status": "pass",
+    "high_critical_findings": 0,
+    "quality_score": 100.0,
+    "quality_score_source": "mechanical-gates@0.1",
+    "review_verdict": "PASS",
+    "session_ids": [
+      "019f5540-71fa-7e23-8420-395be1f79783",
+      "019f553e-34a1-7900-89de-18b3bbbbf128",
+      "019f553b-d065-79e3-87f1-10f7f8ccbb6b"
+    ],
+    "sol_tokens": 70298,
+    "task_success": true,
+    "usage_complete": true
+  },
+  "experiment_id": "token-firewall-terra-route-002",
+  "object_id": "pair_eval-10-merge-patch-terra",
+  "pair_id": "eval-10-merge-patch-terra",
+  "provenance": {
+    "campaign_mode": "single",
+    "control_record_sha256": "412d6a10e97d2d6380b74ed04b405904393a5fc5b083799480160ca83a50bb3b",
+    "experiment_record_sha256": [
+      "de8d8c4b06cb4ad1203a4292a276fe195b99fcf8e6fc53fab144244cd95dfffd"
+    ],
+    "normalizer_revision": "benchmark-to-pair@0.1",
+    "source_run_ids": [
+      "run_eval_10_d_001",
+      "run_eval_10_c_001"
+    ]
+  },
+  "risk": "medium",
+  "schema": "token-firewall/evaluation-pair@0.1",
+  "task_content_sha256": "2c3fb2bbdc389d14493cd1557a2cc5c364f01dbeec825e38cb044aaa5f1ffe09",
+  "task_id": "T-EVAL-10",
+  "task_type": "feature"
+}

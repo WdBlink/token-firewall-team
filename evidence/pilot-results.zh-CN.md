@@ -1,5 +1,7 @@
 # Token Firewall Runtime Pilot 结果
 
+> 本页保留 2026-07-11 的原始两任务方向性 Pilot。后续 12 组 Terra 配对扩展实验已达到冻结样本/覆盖门槛，节省 70.79% 的 Sol Token，并在未观察到交付质量下降的情况下通过非劣效门禁；参见 [扩展实验报告](labs/terra-route-n12-001/report/evaluation-report.md) 与 [方法说明](../docs/evaluation.md)。M3 与 Claude 的结论仍仅限本页的 `n=2` Pilot。
+
 日期：2026-07-11
 状态：工程闭环完成；统计证据仍不足以作发布级非劣效声明。
 

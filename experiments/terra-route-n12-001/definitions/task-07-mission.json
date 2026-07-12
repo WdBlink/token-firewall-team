@@ -1,0 +1,54 @@
+{
+  "approval_boundaries": {
+    "destructive_actions": false,
+    "external_writes": false,
+    "scope_expansion": false
+  },
+  "content_sha256": "7e33ff3fc9ddcdc3f88a6ed44997c173ad0e8a36583e311af24638eb59a57f1c",
+  "created_at": "2026-07-12T15:00:00+08:00",
+  "created_by": {
+    "model": "gpt-5.6-sol",
+    "role": "mission-architect",
+    "runtime": "codex",
+    "session_id": "suite-design-frozen"
+  },
+  "goal": "可靠地消费游标分页接口而不无限循环。",
+  "invariants": [
+    {
+      "id": "INV-001",
+      "severity": "critical",
+      "statement": "不得修改公开测试或任务范围外文件，且实现不得引入第三方依赖"
+    }
+  ],
+  "mission_id": "msn_eval_07_001",
+  "non_goals": [
+    "不修改其他基准函数",
+    "不修改公开测试",
+    "不引入第三方依赖"
+  ],
+  "object_id": "mc_eval_07",
+  "overall_acceptance": [
+    "OUT-001",
+    "INV-001"
+  ],
+  "revision": 1,
+  "risk_boundaries": [
+    {
+      "pattern": "只有 None 表示终止；继续游标必须是非空字符串且每次唯一。",
+      "review_level": "terra-then-sol"
+    }
+  ],
+  "schema": "token-firewall/mission-contract@0.1",
+  "sol_token_budget": {
+    "escalation_requires_reason": true,
+    "planning_max": 12000,
+    "review_max": 90000
+  },
+  "success_outcomes": [
+    {
+      "evidence": "公开测试、独立验证、匿名终审与延后隐藏测试通过",
+      "id": "OUT-001",
+      "statement": "实现 collect_pages：从 None 游标开始，按序聚合 items，在 next_cursor=None 结束，并拒绝循环、畸形响应和页数越界。"
+    }
+  ]
+}

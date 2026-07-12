@@ -85,7 +85,7 @@ Do not route based only on file count. Authentication, data loss, external side 
 - Never count a cheap model's claim as verified evidence. Rerun approved validators and inspect Git truth.
 - Keep failed calls, retries, timeout Sessions, and rework in evaluation accounting.
 - Distinguish gross accounted tokens from vendor-native tokens. Optimize the expensive Sol total; retain both measures for audit.
-- Refuse a release claim when usage is incomplete or the frozen Evaluation Protocol lacks enough pairs. A directional Pilot PASS is not statistical non-inferiority.
+- Refuse a release claim when usage is incomplete or the frozen Evaluation Protocol lacks enough pairs. Keep conclusions route- and dataset-specific even after a non-inferiority gate passes; never transfer Terra evidence to M3, Claude, or a different task distribution without replication.
 
 ## Recover Safely
 

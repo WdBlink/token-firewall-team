@@ -1,0 +1,58 @@
+{
+  "content_sha256": "e66ee6ec45ba752b26b6710dc229a709a79c4456da18665a876869cfd9d2d81b",
+  "control": {
+    "all_model_tokens": 344444,
+    "arm_id": "D",
+    "elapsed_seconds": 378.646,
+    "hidden_status": "pass",
+    "high_critical_findings": 1,
+    "quality_score": 55.0,
+    "quality_score_source": "mechanical-gates@0.1",
+    "review_verdict": "REWORK",
+    "session_ids": [
+      "019f5534-51dd-7082-ac42-801c93ab2828",
+      "019f5531-6f9e-7b30-9111-0d0fa4cdd992"
+    ],
+    "sol_tokens": 344444,
+    "task_success": false,
+    "usage_complete": true
+  },
+  "experiment": {
+    "all_model_tokens": 378590,
+    "arm_id": "C",
+    "elapsed_seconds": 631.177,
+    "hidden_status": "fail",
+    "high_critical_findings": 0,
+    "quality_score": 60.0,
+    "quality_score_source": "mechanical-gates@0.1",
+    "review_verdict": "PASS",
+    "session_ids": [
+      "019f552d-3070-7fb0-843f-5234d903a522",
+      "019f552a-8980-7e12-b054-e1abf59636a5",
+      "019f5527-77c7-7e91-b76e-b3ce02cfcbde"
+    ],
+    "sol_tokens": 135253,
+    "task_success": false,
+    "usage_complete": true
+  },
+  "experiment_id": "token-firewall-terra-route-002",
+  "object_id": "pair_eval-11-topological-order-terra",
+  "pair_id": "eval-11-topological-order-terra",
+  "provenance": {
+    "campaign_mode": "single",
+    "control_record_sha256": "4eeeab414caf850ce459115e047f1d62cb5cb4108364c1b371c41b37e83d0bd4",
+    "experiment_record_sha256": [
+      "269a5fbf5ea6afd1a5ac6c7a9270773a11692d8c598462f3adb1c3c2d44b6936"
+    ],
+    "normalizer_revision": "benchmark-to-pair@0.1",
+    "source_run_ids": [
+      "run_eval_11_d_001",
+      "run_eval_11_c_001"
+    ]
+  },
+  "risk": "medium",
+  "schema": "token-firewall/evaluation-pair@0.1",
+  "task_content_sha256": "e459fc75d61fc21ae7d796c3a8e9306e36046fb6796ab124ba7c1663ae330c0c",
+  "task_id": "T-EVAL-11",
+  "task_type": "refactor"
+}

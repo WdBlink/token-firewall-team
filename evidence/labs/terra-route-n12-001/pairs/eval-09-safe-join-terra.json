@@ -1,0 +1,64 @@
+{
+  "content_sha256": "677d87f306a4d852044222c333c7eccbd93613e1874092852f5f9bd240ec4976",
+  "control": {
+    "all_model_tokens": 257543,
+    "arm_id": "D",
+    "elapsed_seconds": 339.45,
+    "hidden_status": "pass",
+    "high_critical_findings": 0,
+    "quality_score": 100.0,
+    "quality_score_source": "mechanical-gates@0.1",
+    "review_verdict": "PASS",
+    "session_ids": [
+      "019f5548-01fd-7d02-b85d-7eab4fa220a5",
+      "019f5545-1ab8-77c1-a0b9-b4eab7a32e96"
+    ],
+    "sol_tokens": 257543,
+    "task_success": true,
+    "usage_complete": true
+  },
+  "experiment": {
+    "all_model_tokens": 533631,
+    "arm_id": "C",
+    "elapsed_seconds": 702.374,
+    "hidden_status": "pass",
+    "high_critical_findings": 0,
+    "quality_score": 100.0,
+    "quality_score_source": "mechanical-gates@0.1",
+    "review_verdict": "PASS",
+    "session_ids": [
+      "019f553e-de48-7732-a49d-1ac0d03c9bc1",
+      "019f553b-d57e-7251-bde2-4112b0438237",
+      "019f5547-281a-79b0-bfae-c509c9845ead",
+      "019f5544-8aa4-7c22-910d-865b7fbef535"
+    ],
+    "sol_tokens": 74475,
+    "task_success": true,
+    "usage_complete": true
+  },
+  "experiment_id": "token-firewall-terra-route-002",
+  "object_id": "pair_eval-09-safe-join-terra",
+  "pair_id": "eval-09-safe-join-terra",
+  "provenance": {
+    "campaign_mode": "single",
+    "control_record_sha256": "693ddaf6b1529d286e141698e143f4e551cbd43c52a6af7bba8023334e9e8632",
+    "experiment_record_sha256": [
+      "8ff6d97ee5dc26184b365c787fce2456b4299117f27b0c3344b25ea6f1e09753",
+      "f460ec981120cac914ca62f11150abf821dd41a4becfa23df1963a3b34aac304"
+    ],
+    "failed_attempt_record_sha256": [
+      "8ff6d97ee5dc26184b365c787fce2456b4299117f27b0c3344b25ea6f1e09753"
+    ],
+    "normalizer_revision": "benchmark-to-pair@0.2",
+    "source_run_ids": [
+      "run_eval_09_d_001",
+      "run_eval_09_c_001",
+      "run_eval_09_c_002"
+    ]
+  },
+  "risk": "high",
+  "schema": "token-firewall/evaluation-pair@0.1",
+  "task_content_sha256": "9b96c2a9c93e27ecd1893d5b6491456dd4b15a07cf9ec2bbeaa9477d57b3d139",
+  "task_id": "T-EVAL-09",
+  "task_type": "bugfix"
+}

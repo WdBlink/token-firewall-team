@@ -1,0 +1,100 @@
+{
+  "acceptance_specs": [
+    {
+      "id": "SPEC-08-001",
+      "negative_cases": [
+        {
+          "action": "调用目标函数",
+          "case_id": "NEG-08-001",
+          "expected_rejection": "失败关闭且不产生部分副作用",
+          "setup": "负数、加号、小数、Unicode 数字和无效日期抛出错误"
+        }
+      ],
+      "positive_cases": [
+        {
+          "action": "调用目标函数",
+          "case_id": "POS-08-001",
+          "expected": "得到合同指定结果",
+          "setup": "'120' 与两分钟后的 GMT 日期都返回 120"
+        },
+        {
+          "action": "调用目标函数",
+          "case_id": "POS-08-002",
+          "expected": "得到合同指定结果",
+          "setup": "超大延迟截断到 max_delay"
+        }
+      ],
+      "semantic_boundaries": [
+        {
+          "boundary_id": "BOUND-08-001",
+          "dimension": "任务语义边界",
+          "inside": "'120' 与两分钟后的 GMT 日期都返回 120",
+          "outside": "负数、加号、小数、Unicode 数字和无效日期抛出错误",
+          "rule": "只修剪 ASCII SP/HTAB；now 必须是 aware datetime，日期按 UTC 秒向上取整。"
+        }
+      ],
+      "statement": "实现 parse_retry_after：支持 ASCII 十进制秒数与 IMF-fixdate，过去日期归零，并按 max_delay 截断。",
+      "validator": {
+        "command": "python3 -m unittest tests.test_tasks.RetryAfterTests -v",
+        "kind": "command",
+        "timeout_seconds": 30
+      }
+    }
+  ],
+  "allowed_paths": [
+    "src/tasks.py"
+  ],
+  "assignment": {
+    "network": "deny-by-default",
+    "preferred_model": "benchmark-assigned",
+    "workspace_mode": "isolated-worktree"
+  },
+  "content_sha256": "46f2da747a7f9678b2cd13c69ceb583a2471dbce4d5d9534b0d31b4ce2b65cdc",
+  "context_refs": [],
+  "created_at": "2026-07-12T15:00:00+08:00",
+  "created_by": {
+    "model": "gpt-5.6-sol",
+    "role": "decomposition-lead",
+    "runtime": "codex",
+    "session_id": "suite-design-frozen"
+  },
+  "dependencies": [],
+  "forbidden_paths": [
+    "tests/**",
+    "src/__init__.py"
+  ],
+  "invariants": [
+    "INV-001"
+  ],
+  "limits": {
+    "max_changed_files": 1,
+    "max_diff_lines": 180,
+    "max_rework_rounds": 1,
+    "wall_clock_minutes": 25
+  },
+  "mission_id": "msn_eval_08_001",
+  "object_id": "wo_T_EVAL_08_r1",
+  "objective": "实现 parse_retry_after：支持 ASCII 十进制秒数与 IMF-fixdate，过去日期归零，并按 max_delay 截断。",
+  "parent_task_id": null,
+  "rationale": "补齐 medium 风险 integration 分层，扩展配对质量—Token 证据。",
+  "required_deliverables": [
+    "git_commit",
+    "patch",
+    "test_results"
+  ],
+  "revision": 1,
+  "risk": {
+    "level": "medium",
+    "reasons": [
+      "只修剪 ASCII SP/HTAB；now 必须是 aware datetime，日期按 UTC 秒向上取整。"
+    ],
+    "required_review": "terra-then-sol"
+  },
+  "schema": "token-firewall/work-order@0.2",
+  "stop_conditions": [
+    "需要修改公开测试或其他源文件",
+    "需要增加第三方依赖",
+    "Diff 超过 180 行"
+  ],
+  "task_id": "T-EVAL-08"
+}

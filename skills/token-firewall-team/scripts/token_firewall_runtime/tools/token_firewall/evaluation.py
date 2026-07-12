@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import random
 import re
@@ -65,8 +66,21 @@ def _unique_stages(records: Sequence[dict[str, Any]]) -> tuple[list[dict[str, An
             if previous is None:
                 seen[session_id] = stage
                 stages.append(stage)
-            elif any(previous[key] != stage[key] for key in ("runtime", "model_requested", "usage")):
-                complete = False
+            else:
+                metered_keys = (
+                    "input_tokens", "output_tokens", "cache_read_tokens", "cache_write_tokens",
+                    "total_tokens", "native_total_tokens", "complete",
+                )
+                same_metering = all(
+                    previous["usage"].get(key, 0) == stage["usage"].get(key, 0)
+                    for key in metered_keys
+                )
+                if (
+                    previous["runtime"] != stage["runtime"]
+                    or previous["model_requested"] != stage["model_requested"]
+                    or not same_metering
+                ):
+                    complete = False
     complete = complete and all(stage["usage"]["complete"] for stage in stages)
     return stages, complete
 
@@ -234,6 +248,108 @@ def build_evaluation_lab(
     atomic_write_json(destination / "lab-manifest.json", manifest)
     summary = write_evaluation_artifacts(protocol, pairs, destination / "report", registry=registry)
     return {"manifest": manifest, "summary": summary}
+
+
+def export_inspect_dataset(
+    protocol: dict[str, Any],
+    pairs: Sequence[dict[str, Any]],
+    output_dir: Path | str,
+    *,
+    registry: SchemaRegistry | None = None,
+) -> dict[str, Any]:
+    """Export frozen pairs for Inspect AI analysis without changing the truth source.
+
+    The Token Firewall pair records remain authoritative. This export intentionally
+    contains no model transcript and can be scored or re-scored offline by Inspect.
+    """
+    registry = registry or SchemaRegistry()
+    registry.validate(protocol, EVALUATION_PROTOCOL_SCHEMA_ID)
+    if not pairs:
+        raise ValueError("Inspect export requires at least one evaluation pair")
+    destination = Path(output_dir)
+    if destination.exists() and any(destination.iterdir()):
+        raise ValueError(f"Inspect export output directory must be new or empty: {destination}")
+    destination.mkdir(parents=True, exist_ok=True)
+
+    samples: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for pair in pairs:
+        registry.validate(pair, EVALUATION_PAIR_SCHEMA_ID)
+        if pair["experiment_id"] != protocol["experiment_id"]:
+            raise ValueError("Inspect export pair belongs to a different experiment")
+        if pair["pair_id"] in seen:
+            raise ValueError(f"duplicate pair_id in Inspect export: {pair['pair_id']}")
+        seen.add(pair["pair_id"])
+        control = pair["control"]
+        experiment = pair["experiment"]
+        per_pair_savings = (
+            round((control["sol_tokens"] - experiment["sol_tokens"]) / control["sol_tokens"] * 100, 4)
+            if control["sol_tokens"]
+            else None
+        )
+        samples.append({
+            "id": pair["pair_id"],
+            "input": f"Score frozen Token Firewall pair {pair['pair_id']} from deterministic evidence.",
+            "target": "pass",
+            "metadata": {
+                "schema": "token-firewall/inspect-sample@0.1",
+                "experiment_id": pair["experiment_id"],
+                "pair_id": pair["pair_id"],
+                "task_id": pair["task_id"],
+                "cluster_id": pair["task_id"],
+                "risk": pair["risk"],
+                "task_type": pair["task_type"],
+                "pair_content_sha256": pair["content_sha256"],
+                "control_task_success": control["task_success"],
+                "experiment_task_success": experiment["task_success"],
+                "control_quality_score": control["quality_score"],
+                "experiment_quality_score": experiment["quality_score"],
+                "quality_difference": round(experiment["quality_score"] - control["quality_score"], 4),
+                "control_sol_tokens": control["sol_tokens"],
+                "experiment_sol_tokens": experiment["sol_tokens"],
+                "sol_savings_percent": per_pair_savings,
+                "control_usage_complete": control["usage_complete"],
+                "experiment_usage_complete": experiment["usage_complete"],
+                "hidden_status": experiment["hidden_status"],
+                "review_verdict": experiment["review_verdict"],
+                "high_critical_findings": experiment["high_critical_findings"],
+            },
+        })
+
+    dataset = destination / "token-firewall-pairs.jsonl"
+    dataset_bytes = b"".join(
+        json.dumps(sample, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8") + b"\n"
+        for sample in samples
+    )
+    dataset.write_bytes(dataset_bytes)
+    summary = summarize_paired_evaluation(protocol, pairs, registry=registry)
+    manifest = {
+        "schema": "token-firewall/inspect-export-manifest@0.1",
+        "content_sha256": "0" * 64,
+        "experiment_id": protocol["experiment_id"],
+        "created_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+        "truth_source": "token-firewall/evaluation-pair@0.1",
+        "compatibility_role": "analysis-only",
+        "protocol_content_sha256": protocol["content_sha256"],
+        "pair_content_sha256": [pair["content_sha256"] for pair in pairs],
+        "dataset": {
+            "path": dataset.name,
+            "sha256": hashlib.sha256(dataset_bytes).hexdigest(),
+            "samples": len(samples),
+        },
+        "authoritative_summary_content_sha256": canonical_sha256(summary),
+        "supported_analysis": [
+            "custom_scorer",
+            "grouped_metrics:risk",
+            "grouped_metrics:task_type",
+            "clustered_stderr:task_id",
+            "offline_rescoring",
+            "structured_eval_log",
+        ],
+    }
+    manifest["content_sha256"] = canonical_sha256(manifest)
+    atomic_write_json(destination / "inspect-export-manifest.json", manifest)
+    return {"manifest": manifest, "samples": samples}
 
 
 def _rate(values: Sequence[bool]) -> float:

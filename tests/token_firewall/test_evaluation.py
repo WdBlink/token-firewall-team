@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import copy
+import json
 import tempfile
 import unittest
 from pathlib import Path
 
 from tools.token_firewall.evaluation import (
     build_evaluation_lab,
+    export_inspect_dataset,
     pair_from_benchmark_records,
     summarize_paired_evaluation,
     write_evaluation_artifacts,
@@ -169,6 +171,23 @@ class PairedEvaluationTests(unittest.TestCase):
         self.assertIn("failed-verifier", pair["experiment"]["session_ids"])
         self.assertEqual(pair["experiment"]["all_model_tokens"], 1200)
 
+    def test_recovered_session_deduplicates_non_billing_reasoning_metadata(self) -> None:
+        failed = sealed_record("A")
+        failed["run_id"] = "run_a_verifier_blocked"
+        failed["status"] = "VERIFIER_FAILED"
+        failed["stages"]["reviewer"] = None
+        failed["content_sha256"] = canonical_sha256(failed)
+        final = sealed_record("A")
+        final["stages"]["worker"]["session_id"] = failed["stages"]["worker"]["session_id"]
+        final["stages"]["worker"]["usage"]["reasoning_tokens"] = 999
+        final["content_sha256"] = canonical_sha256(final)
+        pair = pair_from_benchmark_records(
+            protocol(), sealed_record("D"), [final], failed_attempts=[failed],
+            pair_id="recovered-metering", risk="high", task_type="bugfix",
+        )
+        self.assertTrue(pair["experiment"]["usage_complete"])
+        self.assertEqual(pair["experiment"]["session_ids"].count(failed["stages"]["worker"]["session_id"]), 1)
+
     def test_failed_control_attempt_is_included_and_can_fail_usage_closed(self) -> None:
         failed = sealed_record("D")
         failed["run_id"] = "run_d_timeout"
@@ -254,6 +273,21 @@ class PairedEvaluationTests(unittest.TestCase):
             duplicate = pairs()[0]
             with self.assertRaisesRegex(ValueError, "duplicate pair_id"):
                 build_evaluation_lab(protocol(), [duplicate, duplicate], Path(tmp) / "lab", lab_id="duplicate")
+
+    def test_inspect_export_is_traceable_and_analysis_only(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            destination = Path(tmp) / "inspect"
+            result = export_inspect_dataset(protocol(), pairs(), destination)
+            manifest = result["manifest"]
+            self.assertEqual(manifest["truth_source"], "token-firewall/evaluation-pair@0.1")
+            self.assertEqual(manifest["compatibility_role"], "analysis-only")
+            self.assertEqual(manifest["dataset"]["samples"], 3)
+            lines = (destination / "token-firewall-pairs.jsonl").read_text(encoding="utf-8").splitlines()
+            samples = [json.loads(line) for line in lines]
+            self.assertEqual([sample["id"] for sample in samples], ["pair-1", "pair-2", "pair-3"])
+            self.assertEqual(samples[0]["metadata"]["sol_savings_percent"], 80.0)
+            self.assertEqual(samples[0]["metadata"]["cluster_id"], "T-001")
+            self.assertIn("clustered_stderr:task_id", manifest["supported_analysis"])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,37 @@
+{
+  "authoritative_summary_content_sha256": "3237b35d2dc746a1d7b9f131d611c8acde534cdb116ea6ed60e6824bec9f2439",
+  "compatibility_role": "analysis-only",
+  "content_sha256": "1464854bcc6d99808afe9fb0d3f93d4632bade5899ae375bfbd77dbc2f217ca4",
+  "created_at": "2026-07-12T15:56:50+08:00",
+  "dataset": {
+    "path": "token-firewall-pairs.jsonl",
+    "samples": 12,
+    "sha256": "08640c3f362d855606341fe974a4c3ac4c961887aa836d877ba148b63a1b64b5"
+  },
+  "experiment_id": "token-firewall-terra-route-002",
+  "pair_content_sha256": [
+    "bcbaaf7b3dad06659d91ab69386c7acbd6d8d72a67f3222c6f738b8d7e777af4",
+    "f4205ef9b8c3c2d039873faf654fc57753cdbbe056bac9fb4a9ca5919502bac8",
+    "0b41c3b192e3230fbe45253f57b359d341a923ff3936fcc7a3e4346f595c37ec",
+    "66ad7643ac6d7f22cc5773345cac032637df4f9e06883d8c4d186b5ca2fc3d88",
+    "a6e355d723d64aa64da9d8f9c0f60d770b490dff4cdc0fd1f71d5db3103fdc77",
+    "677d87f306a4d852044222c333c7eccbd93613e1874092852f5f9bd240ec4976",
+    "e31c74228ca9331e106ddd2ea00191841d6801ed6f373f1dccd0e308035c83cc",
+    "e66ee6ec45ba752b26b6710dc229a709a79c4456da18665a876869cfd9d2d81b",
+    "30e12a4d57b10914279dfa90f89dcf39a128622be4df7277e5030007e0a49126",
+    "bd17e9476e6d3b99a11bcc44bfd387d854fb9e01e1d69afa42a13eb4f9e9d87c",
+    "9bb614a8d616a38f068d6c1346739690dc5de2cc9f1d2231d7663fed09f6a30a",
+    "c74d2994a0d792f1d987c9b7edb8cfe7dde12c2293cf68389db139ad17e21acc"
+  ],
+  "protocol_content_sha256": "f86c7d5deb19caf85927462b597dadd04dec1fd98f3f6aff24626d041cca95ac",
+  "schema": "token-firewall/inspect-export-manifest@0.1",
+  "supported_analysis": [
+    "custom_scorer",
+    "grouped_metrics:risk",
+    "grouped_metrics:task_type",
+    "clustered_stderr:task_id",
+    "offline_rescoring",
+    "structured_eval_log"
+  ],
+  "truth_source": "token-firewall/evaluation-pair@0.1"
+}

@@ -86,6 +86,10 @@ $TF evaluation-import protocol.json control.json experiment.json \
   --pair-id task-001 --risk high --task-type bugfix --out pair.json
 $TF evaluation-lab-run protocol.json pair-*.json \
   --lab-id snapshot-001 --out-dir /new/empty/lab
+$TF evaluation-export-inspect protocol.json pair-*.json \
+  --out-dir /new/empty/inspect-export
 ```
 
 An `evaluation-lab-run` exit code of 1 is expected for `FAIL` or `INSUFFICIENT_SAMPLE`; inspect the machine-readable summary rather than treating it as a harness crash.
+
+`evaluation-export-inspect` creates a hashed JSONL compatibility dataset. Its output is analysis-only; the Evaluation Lab summary remains authoritative. See `integrations/inspect_ai/` for the optional custom Scorer and offline re-scoring workflow.

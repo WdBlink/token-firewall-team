@@ -1,0 +1,54 @@
+{
+  "approval_boundaries": {
+    "destructive_actions": false,
+    "external_writes": false,
+    "scope_expansion": false
+  },
+  "content_sha256": "ae86152bc561de1ec4f37971923f1238f825aab50626ad83b8e76cd52975c0f6",
+  "created_at": "2026-07-12T15:00:00+08:00",
+  "created_by": {
+    "model": "gpt-5.6-sol",
+    "role": "mission-architect",
+    "runtime": "codex",
+    "session_id": "suite-design-frozen"
+  },
+  "goal": "提供稳定、适用于不可哈希对象的去重函数。",
+  "invariants": [
+    {
+      "id": "INV-001",
+      "severity": "critical",
+      "statement": "不得修改公开测试或任务范围外文件，且实现不得引入第三方依赖"
+    }
+  ],
+  "mission_id": "msn_eval_05_001",
+  "non_goals": [
+    "不修改其他基准函数",
+    "不修改公开测试",
+    "不引入第三方依赖"
+  ],
+  "object_id": "mc_eval_05",
+  "overall_acceptance": [
+    "OUT-001",
+    "INV-001"
+  ],
+  "revision": 1,
+  "risk_boundaries": [
+    {
+      "pattern": "重复判定使用 Python 相等性；输出不得重排且不得要求元素可哈希。",
+      "review_level": "terra-then-sol"
+    }
+  ],
+  "schema": "token-firewall/mission-contract@0.1",
+  "sol_token_budget": {
+    "escalation_requires_reason": true,
+    "planning_max": 12000,
+    "review_max": 90000
+  },
+  "success_outcomes": [
+    {
+      "evidence": "公开测试、独立验证、匿名终审与延后隐藏测试通过",
+      "id": "OUT-001",
+      "statement": "重构 stable_unique，按相等性保留第一次出现顺序并支持生成器和不可哈希值。"
+    }
+  ]
+}

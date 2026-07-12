@@ -7,8 +7,8 @@
 
   <p><strong>English</strong> | <a href="README.zh-CN.md">中文</a></p>
 
-  <p><strong>59–76% fewer Sol tokens in the current Pilot—with the same 2/2 accepted outcomes as Sol-direct.</strong></p>
-  <p><sub>No delivery-quality loss was observed in this <code>n=2</code> Pilot. Directional evidence, not yet a general non-inferiority claim.</sub></p>
+  <p><strong>70.79% fewer expensive-model tokens across 12 paired tasks—with no observed delivery-quality loss.</strong></p>
+  <p><sub>The collaboration route passed the preregistered 5-point non-inferiority gate: 91.67% vs 83.33% task success.</sub></p>
 </div>
 
 <div align="center">
@@ -24,6 +24,7 @@
 <div align="center">
   <a href="#why-token-firewall">Why</a> &middot;
   <a href="#experimental-evidence">Evidence</a> &middot;
+  <a href="#evaluation-framework">Framework</a> &middot;
   <a href="#quick-start">Quick Start</a> &middot;
   <a href="#install">Install</a> &middot;
   <a href="docs/architecture.md">Architecture</a>
@@ -33,9 +34,9 @@
 
 [Agent Skills](https://agentskills.io) compatible. The bundled Runtime uses only the Python standard library; Codex CLI, Claude Code, and MiniMax Code are optional execution transports.
 
-> **Pilot result:** M3 and Terra both matched Sol-direct's 100% task success rate (`2/2` vs `2/2`) and mean quality score (`100` vs `100`), while reducing expensive Sol tokens by **59.49%** and **76.24%**. In other words, **this Pilot observed substantial Token savings without an observed reduction in delivery quality**.
+> **Expanded-study result:** across 12 paired low/medium/high-risk tasks, the Terra-worker/Sol-reviewer route reduced cumulative expensive Sol tokens from **3,599,108** to **1,051,353** (**70.79%**) while achieving **91.67%** task success versus **83.33%** for Sol-direct. The preregistered paired non-inferiority gate passed.
 >
-> **Evidence boundary:** this is a two-task directional Pilot, not proof that quality is unaffected across all task types. The frozen protocol requires at least 12 pairs and broader coverage before a release-grade non-inferiority claim.
+> **What this means:** this study found no delivery-quality loss under its frozen protocol; it does not prove universal equivalence for every repository, model release, or task distribution.
 
 ---
 
@@ -57,24 +58,24 @@ Token Firewall turns the expensive model into a bounded chief reviewer. It decom
 
 ## Experimental Evidence
 
-> **Directional Pilot — not a general non-inferiority claim.** The current frozen dataset contains only two paired bug-fix tasks (`n=2`): one low-risk semantic-boundary task and one high-risk authentication task. Every route remains `INSUFFICIENT_SAMPLE` under the release protocol.
+The primary Terra study contains 12 paired tasks spanning feature, bug-fix, refactor, and integration work across all three risk tiers. Each arm started from the same frozen commit and acceptance contract. A task counted as successful only after the public gate, deferred hidden tests, anonymous bounded review, scope checks, and complete usage evidence all passed.
 
 <div align="center">
-  <img alt="Directional pilot showing Sol reviewer tokens by route" src=".github/assets/pilot-sol-token-savings.svg" width="860">
+  <img alt="Quality and cumulative expensive-model tokens across 12 paired tasks" src=".github/assets/terra-n12-quality-token-pareto.svg" width="860">
 </div>
 
-| Route | Success vs Sol-direct | Observed quality change | Control Sol tokens | Route Sol tokens | Sol reduction | Frozen verdict |
-|---|---:|---|---:|---:|---:|---|
-| M3 loop | 100% → 100% | None observed (`100` → `100`) | 598,925 | 242,649 | **59.49%** | `INSUFFICIENT_SAMPLE` |
-| Terra loop | 100% → 100% | None observed (`100` → `100`) | 598,925 | 142,312 | **76.24%** | `INSUFFICIENT_SAMPLE` |
-| Claude Sonnet loop | 100% → 0% | Quality regression (`100` → `7.5`) | 598,925 | 0 | Not interpretable | `INSUFFICIENT_SAMPLE` |
+| Study / route | Paired tasks | Success vs Sol-direct | Mean quality | Control Sol tokens | Route Sol tokens | Sol reduction | Verdict |
+|---|---:|---|---:|---:|---:|---:|---|
+| **Terra expanded study** | **12** | **83.33% → 91.67%** | **94.58 → 96.67** | **3,599,108** | **1,051,353** | **70.79%** | **`PASS`** |
+| M3 directional pilot | 2 | 100% → 100% | 100 → 100 | 598,925 | 242,649 | 59.49% | `INSUFFICIENT_SAMPLE` |
+| Claude Sonnet directional pilot | 2 | 100% → 0% | 100 → 7.5 | 598,925 | 0 | Not interpretable | `INSUFFICIENT_SAMPLE` |
 
-For M3 and Terra, both the success rate and frozen mean quality score matched the Sol-direct control in this Pilot; no delivery-quality loss was observed on these two tasks. Claude Sonnet consumed no Sol review tokens because neither candidate reached final review; that is a quality failure, not a 100% saving.
+For the expanded Terra study, the paired success-rate difference was **+8.33 percentage points** with a paired 95% Bootstrap interval of **[0, 25]** points. Its lower bound is above the frozen −5-point margin, there were no critical regressions, usage was complete, and the sample/coverage threshold was met. Therefore the protocol reports `PASS`: **Token use fell substantially without an observed delivery-quality loss in this study.**
 
-The experiment froze base commits, public validators, deferred hidden tests, blind Sol review, Session-level usage accounting, and all failures/retries. The protocol requires at least 12 task pairs plus broader task coverage before a release decision.
+One candidate dataset task was excluded only after both arms completed because its hidden assertion contradicted the frozen Acceptance Spec; the record and replacement decision remain disclosed in the experiment schedule. A valid semantic failure and a Harness recovery attempt remain included. M3 and Claude results are still two-task directional pilots and must not be merged into the 12-task Terra conclusion.
 
 - [Methodology, limitations, and reproduction](docs/evaluation.md)
-- [Frozen M3 Lab](evidence/labs/m3-route-model-only-001/report/evaluation-report.md) · [Terra Lab](evidence/labs/terra-route-model-only-001/report/evaluation-report.md) · [Claude Lab](evidence/labs/claude-route-model-only-001/report/evaluation-report.md)
+- [Frozen 12-pair Terra Lab](evidence/labs/terra-route-n12-001/report/evaluation-report.md) · [Reproducible task suite](experiments/terra-route-n12-001/) · [M3 Pilot](evidence/labs/m3-route-model-only-001/report/evaluation-report.md) · [Claude Pilot](evidence/labs/claude-route-model-only-001/report/evaluation-report.md)
 
 ## Quick Start
 
@@ -145,15 +146,28 @@ The authority chain is immutable contract → deterministic Broker/Git gates →
 
 → [Architecture and transport boundaries](docs/architecture.md)
 
+## Evaluation Framework
+
+The implemented framework is the layered option discussed during design:
+
+1. **Token Firewall Benchmark Runtime is the source of truth.** It freezes Git state, acceptance contracts, public and hidden tests, blind review, model/session identity, retries, rework, and native usage.
+2. **Immutable Evaluation Pairs + Evaluation Lab make the release decision.** They deduplicate cumulative expensive-model Tokens by Session ID, run paired Bootstrap non-inferiority analysis, enforce the 12-pair/risk/task-type gates, and render deterministic charts.
+3. **Inspect AI is an optional analysis compatibility layer.** `evaluation-export-inspect` emits a hashed JSONL dataset; the included adapter provides custom multi-value scoring, risk/task-type groups, Task-ID-clustered standard errors, structured `.eval` logs, and offline re-scoring without another model call.
+
+Inspect does not replace the protocol kernel because it is not the authority for external Coding CLI delivery, Git provenance, or cumulative Session-deduplicated cost. SWE-bench can add external comparability, while an LLM judge remains one semantic gate—not the sole quality measure.
+
+→ [Framework selection, decision rule, and Inspect integration](docs/evaluation-framework.md)
+
 ## When to Use It
 
 Use Token Firewall when implementation context is large, an expensive model is available for final judgment, and the task can be expressed through deterministic acceptance evidence.
 
-Do not use it to justify weak acceptance criteria, to automate irreversible production actions without approval, or to claim universal quality from the included two-task Pilot. Critical migrations, destructive operations, and irreducibly ambiguous work should remain with the strongest approved implementer and explicit human boundaries.
+Do not use it to justify weak acceptance criteria, to automate irreversible production actions without approval, or to turn one synthetic study into a universal quality guarantee. Critical migrations, destructive operations, and irreducibly ambiguous work should remain with the strongest approved implementer and explicit human boundaries.
 
 ## Current Limits
 
-- The included experiment is directional (`n=2`), below the frozen 12-pair release threshold.
+- The primary study meets the frozen 12-pair threshold, but it is still one synthetic Python task suite and one Terra/Sol model configuration; external-repository replication remains necessary.
+- The M3 and Claude route comparisons remain directional (`n=2` each).
 - Native MiniMax Code availability and permission behavior may change between app releases; the Adapter therefore fails closed.
 - Claude Code provides structured delivery and verified model identity, but fine-grained mid-turn progress is still coarser than its final Stage evidence.
 - The Claude outer OS write sandbox is currently implemented on macOS; other platforms must supply an equivalent verified boundary before production use.
@@ -167,8 +181,10 @@ skills/token-firewall-team/  Complete installable Skill bundle
   references/              Protocol, Runtime runbook, and calibrated evidence
   scripts/token_firewall.py  Zero-dependency CLI entry point
   scripts/token_firewall_runtime/  Bundled Python Runtime and JSON Schemas
-tests/token_firewall/     92 protocol, Runtime, fault, archive, and evaluation tests
+tests/token_firewall/     96 protocol, Runtime, fault, archive, and evaluation tests
 evidence/labs/            Frozen pair records, hashes, reports, and deterministic charts
+experiments/              Reproducible task fixtures, contracts, hidden suites, and schedules
+integrations/inspect_ai/  Optional Inspect AI analysis adapter
 docs/                     Human-facing architecture and evaluation notes
 ```
 

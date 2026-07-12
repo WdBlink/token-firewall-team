@@ -1,0 +1,704 @@
+[
+  {
+    "content_sha256": "9bb614a8d616a38f068d6c1346739690dc5de2cc9f1d2231d7663fed09f6a30a",
+    "control": {
+      "all_model_tokens": 327643,
+      "arm_id": "D",
+      "elapsed_seconds": 452.084,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5197-3a47-7d91-9619-6c166faa9cf3",
+        "019f5192-edd6-70f0-a231-2f69a7045753"
+      ],
+      "sol_tokens": 327643,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment": {
+      "all_model_tokens": 375286,
+      "arm_id": "C",
+      "elapsed_seconds": 598.664,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f51ae-ce01-74a1-b4e8-2efc32fa6b94",
+        "019f51ab-91fc-7c42-b7e3-7f25121d360c",
+        "019f51a8-19ff-73a2-8a27-9ddb016a9f87"
+      ],
+      "sol_tokens": 72184,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment_id": "token-firewall-terra-route-002",
+    "object_id": "pair_pilot-high-terra",
+    "pair_id": "pilot-high-terra",
+    "provenance": {
+      "campaign_mode": "single",
+      "control_record_sha256": "ec5c6e20f2965bc93f3da023033dd22cc290cba21383b80dc0ab682c70136a36",
+      "experiment_record_sha256": [
+        "3c1cda86a779f8526edc1dfd4f4e2a302b01126167f04cde3ffe22cc2b6e4458"
+      ],
+      "normalizer_revision": "benchmark-to-pair@0.1",
+      "source_run_ids": [
+        "run_pilot_high_d_004",
+        "run_pilot_high_c_004"
+      ]
+    },
+    "risk": "high",
+    "schema": "token-firewall/evaluation-pair@0.1",
+    "task_content_sha256": "ac88c5c02ad46fb2807c8b236c52c386371b89155b54f4ef78f0420188db009f",
+    "task_id": "T-PILOT-HIGH",
+    "task_type": "bugfix"
+  },
+  {
+    "content_sha256": "c74d2994a0d792f1d987c9b7edb8cfe7dde12c2293cf68389db139ad17e21acc",
+    "control": {
+      "all_model_tokens": 271282,
+      "arm_id": "D",
+      "elapsed_seconds": 162.361,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5165-ab1a-73e2-ae64-7ddd1c57a66a",
+        "019f5152-e9a0-7843-acf0-87da04723216"
+      ],
+      "sol_tokens": 271282,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment": {
+      "all_model_tokens": 346285,
+      "arm_id": "C",
+      "elapsed_seconds": 537.129,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5183-af64-7dd2-8e8f-b1d481a62507",
+        "019f5180-e234-7b41-b022-4866ff2ce17f",
+        "019f517e-2b54-76d2-b6f6-a7d362946803"
+      ],
+      "sol_tokens": 70128,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment_id": "token-firewall-terra-route-002",
+    "object_id": "pair_pilot-low-terra-model-only",
+    "pair_id": "pilot-low-terra-model-only",
+    "provenance": {
+      "campaign_mode": "single",
+      "control_record_sha256": "b5309d29a1300857ce9388cf33467d0d243c12c4b719540a40bdfc087292a426",
+      "experiment_record_sha256": [
+        "9f80bc93d21dbdd1d4ec6af805a56098cb149cd793838de9cf26a7b9d9c59366"
+      ],
+      "normalizer_revision": "benchmark-to-pair@0.1",
+      "source_run_ids": [
+        "run_pilot_low_d_009",
+        "run_pilot_low_c_004"
+      ]
+    },
+    "risk": "low",
+    "schema": "token-firewall/evaluation-pair@0.1",
+    "task_content_sha256": "4a4cc1d50ff98ad29154ac8bd4c1b2c31a9eb4acfbacd01ae9d611ec7f89f53a",
+    "task_id": "T-PILOT-LOW",
+    "task_type": "bugfix"
+  },
+  {
+    "content_sha256": "bcbaaf7b3dad06659d91ab69386c7acbd6d8d72a67f3222c6f738b8d7e777af4",
+    "control": {
+      "all_model_tokens": 338926,
+      "arm_id": "D",
+      "elapsed_seconds": 388.853,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5522-84d7-7b12-86db-79eba735f2b9",
+        "019f551f-47f7-7a43-a3bf-5e58234c7756"
+      ],
+      "sol_tokens": 338926,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment": {
+      "all_model_tokens": 401526,
+      "arm_id": "C",
+      "elapsed_seconds": 551.006,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f551b-31cf-73b1-9927-607e7a409ea5",
+        "019f5518-407f-7340-b8ce-94cae26cc4ff",
+        "019f5515-6424-7a73-baa6-32deffa6961c"
+      ],
+      "sol_tokens": 96987,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment_id": "token-firewall-terra-route-002",
+    "object_id": "pair_eval-03-duration-terra",
+    "pair_id": "eval-03-duration-terra",
+    "provenance": {
+      "campaign_mode": "single",
+      "control_record_sha256": "42b8b1eff50fdd027adccc27fca356891cc267c8c7503011cfdb91b4760fcc79",
+      "experiment_record_sha256": [
+        "da5e07212ffd63a3e740df8c070bf66b379de2a65ef094fe5644f566b438c952"
+      ],
+      "normalizer_revision": "benchmark-to-pair@0.1",
+      "source_run_ids": [
+        "run_eval_03_d_001",
+        "run_eval_03_c_002"
+      ]
+    },
+    "risk": "low",
+    "schema": "token-firewall/evaluation-pair@0.1",
+    "task_content_sha256": "7900bbcb8e52074124428ad015e03a0fe1bccdbd660f5291559d49be459959ec",
+    "task_id": "T-EVAL-03",
+    "task_type": "feature"
+  },
+  {
+    "content_sha256": "f4205ef9b8c3c2d039873faf654fc57753cdbbe056bac9fb4a9ca5919502bac8",
+    "control": {
+      "all_model_tokens": 305390,
+      "arm_id": "D",
+      "elapsed_seconds": 375.869,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f552a-956d-77b0-b2ac-ebcffe50930d",
+        "019f5527-7087-7e12-9444-65d582e059f5"
+      ],
+      "sol_tokens": 305390,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment": {
+      "all_model_tokens": 363920,
+      "arm_id": "C",
+      "elapsed_seconds": 529.767,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f552d-2e75-7190-8ced-a738ae81b401",
+        "019f552a-59d2-7040-9375-2ee4e332749e",
+        "019f5527-7555-7d32-ada8-2eb73455e55e"
+      ],
+      "sol_tokens": 70917,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment_id": "token-firewall-terra-route-002",
+    "object_id": "pair_eval-04-canonical-query-terra",
+    "pair_id": "eval-04-canonical-query-terra",
+    "provenance": {
+      "campaign_mode": "single",
+      "control_record_sha256": "8291b632512ea83fb4873a3fde533c97b3df53faedef657394e58a7b1e31fa36",
+      "experiment_record_sha256": [
+        "c2b6fa4ba7ae3bafb5365f8d9ebbc03aa9584e8cd877d92be043cd77c1d00587"
+      ],
+      "normalizer_revision": "benchmark-to-pair@0.1",
+      "source_run_ids": [
+        "run_eval_04_d_001",
+        "run_eval_04_c_001"
+      ]
+    },
+    "risk": "medium",
+    "schema": "token-firewall/evaluation-pair@0.1",
+    "task_content_sha256": "b5c15beecb3d12ebb5f017c97b7d7c094a301d5887f292513633809b3d0203c8",
+    "task_id": "T-EVAL-04",
+    "task_type": "feature"
+  },
+  {
+    "content_sha256": "0b41c3b192e3230fbe45253f57b359d341a923ff3936fcc7a3e4346f595c37ec",
+    "control": {
+      "all_model_tokens": 289067,
+      "arm_id": "D",
+      "elapsed_seconds": 379.682,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5548-aa68-7691-9d3f-3b3c73b7c21a",
+        "019f5545-18cc-7e12-9629-db3df12b2d7d"
+      ],
+      "sol_tokens": 289067,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment": {
+      "all_model_tokens": 398974,
+      "arm_id": "C",
+      "elapsed_seconds": 513.984,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f552c-b307-7ef0-983c-70572261df57",
+        "019f552a-3b85-7ff1-b5e4-f52ad268f570",
+        "019f5527-728a-7813-8e91-220609f242d0"
+      ],
+      "sol_tokens": 97649,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment_id": "token-firewall-terra-route-002",
+    "object_id": "pair_eval-05-stable-unique-terra",
+    "pair_id": "eval-05-stable-unique-terra",
+    "provenance": {
+      "campaign_mode": "single",
+      "control_record_sha256": "d8ee4e9f523fc65a97b0b79f6de9c13e19b3f9f769e07e6757ccceebb6cac91e",
+      "experiment_record_sha256": [
+        "6ee1e0751874349b363fd6c456cc1de6d8249644e8b49f499520c937c8e530ed"
+      ],
+      "normalizer_revision": "benchmark-to-pair@0.1",
+      "source_run_ids": [
+        "run_eval_05_d_001",
+        "run_eval_05_c_001"
+      ]
+    },
+    "risk": "low",
+    "schema": "token-firewall/evaluation-pair@0.1",
+    "task_content_sha256": "c53d258d61a506908aee131e5795e85324e5b2c70f25da99a7a1521c6daeff6d",
+    "task_id": "T-EVAL-05",
+    "task_type": "refactor"
+  },
+  {
+    "content_sha256": "66ad7643ac6d7f22cc5773345cac032637df4f9e06883d8c4d186b5ca2fc3d88",
+    "control": {
+      "all_model_tokens": 373854,
+      "arm_id": "D",
+      "elapsed_seconds": 442.136,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 80.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "REWORK",
+      "session_ids": [
+        "019f5523-461f-7e20-897f-16347a5bcc00",
+        "019f551f-4f0e-7400-b6f1-0f20fee9833a"
+      ],
+      "sol_tokens": 373854,
+      "task_success": false,
+      "usage_complete": true
+    },
+    "experiment": {
+      "all_model_tokens": 390983,
+      "arm_id": "C",
+      "elapsed_seconds": 514.502,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5541-104d-7e50-a6ab-0a7f6ea68fb4",
+        "019f553e-7970-72c2-89aa-07de4af93eef",
+        "019f553b-d2ba-7e72-8acd-3fe92d162331"
+      ],
+      "sol_tokens": 122528,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment_id": "token-firewall-terra-route-002",
+    "object_id": "pair_eval-06-deep-merge-terra",
+    "pair_id": "eval-06-deep-merge-terra",
+    "provenance": {
+      "campaign_mode": "single",
+      "control_record_sha256": "d891cea753845e523a350df6376c3c1f52c59abab16c40ef58672f7aea6cb739",
+      "experiment_record_sha256": [
+        "9e7ab34bd904d54a25664ef6652f1d4f33a15bad1cea823a8656cd9966181588"
+      ],
+      "normalizer_revision": "benchmark-to-pair@0.1",
+      "source_run_ids": [
+        "run_eval_06_d_001",
+        "run_eval_06_c_001"
+      ]
+    },
+    "risk": "medium",
+    "schema": "token-firewall/evaluation-pair@0.1",
+    "task_content_sha256": "7c7d9852210f3e4eafdd972a62088bddc58e791c5dcdeebb013311f2313ce18c",
+    "task_id": "T-EVAL-06",
+    "task_type": "refactor"
+  },
+  {
+    "content_sha256": "a6e355d723d64aa64da9d8f9c0f60d770b490dff4cdc0fd1f71d5db3103fdc77",
+    "control": {
+      "all_model_tokens": 274857,
+      "arm_id": "D",
+      "elapsed_seconds": 351.911,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5547-f648-7a22-8850-0f7eb388aaab",
+        "019f5545-1d2f-7863-bbc7-a1a5a3e6a4ec"
+      ],
+      "sol_tokens": 274857,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment": {
+      "all_model_tokens": 336364,
+      "arm_id": "C",
+      "elapsed_seconds": 490.284,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5536-9f01-7d93-a625-36093464296b",
+        "019f5533-f24f-75c1-952b-9d48a703c7ad",
+        "019f5531-6aba-7e10-a944-39f3837e19e5"
+      ],
+      "sol_tokens": 70583,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment_id": "token-firewall-terra-route-002",
+    "object_id": "pair_eval-07-pagination-terra",
+    "pair_id": "eval-07-pagination-terra",
+    "provenance": {
+      "campaign_mode": "single",
+      "control_record_sha256": "f33a290ec4f7fea484decaa603d3e1c65c7938d6e5fb18b4ee73e5ba39185ab4",
+      "experiment_record_sha256": [
+        "6083d871fc4cab160043a69f6441ac7ab7a6e49c77b97dc6926dd3faf92a333f"
+      ],
+      "normalizer_revision": "benchmark-to-pair@0.1",
+      "source_run_ids": [
+        "run_eval_07_d_001",
+        "run_eval_07_c_001"
+      ]
+    },
+    "risk": "medium",
+    "schema": "token-firewall/evaluation-pair@0.1",
+    "task_content_sha256": "6cd5509c90bea8ebf821659a87c276e0cc67d7287d46baf59f77fb7eb632a941",
+    "task_id": "T-EVAL-07",
+    "task_type": "integration"
+  },
+  {
+    "content_sha256": "677d87f306a4d852044222c333c7eccbd93613e1874092852f5f9bd240ec4976",
+    "control": {
+      "all_model_tokens": 257543,
+      "arm_id": "D",
+      "elapsed_seconds": 339.45,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5548-01fd-7d02-b85d-7eab4fa220a5",
+        "019f5545-1ab8-77c1-a0b9-b4eab7a32e96"
+      ],
+      "sol_tokens": 257543,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment": {
+      "all_model_tokens": 533631,
+      "arm_id": "C",
+      "elapsed_seconds": 702.374,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f553e-de48-7732-a49d-1ac0d03c9bc1",
+        "019f553b-d57e-7251-bde2-4112b0438237",
+        "019f5547-281a-79b0-bfae-c509c9845ead",
+        "019f5544-8aa4-7c22-910d-865b7fbef535"
+      ],
+      "sol_tokens": 74475,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment_id": "token-firewall-terra-route-002",
+    "object_id": "pair_eval-09-safe-join-terra",
+    "pair_id": "eval-09-safe-join-terra",
+    "provenance": {
+      "campaign_mode": "single",
+      "control_record_sha256": "693ddaf6b1529d286e141698e143f4e551cbd43c52a6af7bba8023334e9e8632",
+      "experiment_record_sha256": [
+        "8ff6d97ee5dc26184b365c787fce2456b4299117f27b0c3344b25ea6f1e09753",
+        "f460ec981120cac914ca62f11150abf821dd41a4becfa23df1963a3b34aac304"
+      ],
+      "failed_attempt_record_sha256": [
+        "8ff6d97ee5dc26184b365c787fce2456b4299117f27b0c3344b25ea6f1e09753"
+      ],
+      "normalizer_revision": "benchmark-to-pair@0.2",
+      "source_run_ids": [
+        "run_eval_09_d_001",
+        "run_eval_09_c_001",
+        "run_eval_09_c_002"
+      ]
+    },
+    "risk": "high",
+    "schema": "token-firewall/evaluation-pair@0.1",
+    "task_content_sha256": "9b96c2a9c93e27ecd1893d5b6491456dd4b15a07cf9ec2bbeaa9477d57b3d139",
+    "task_id": "T-EVAL-09",
+    "task_type": "bugfix"
+  },
+  {
+    "content_sha256": "e31c74228ca9331e106ddd2ea00191841d6801ed6f373f1dccd0e308035c83cc",
+    "control": {
+      "all_model_tokens": 286537,
+      "arm_id": "D",
+      "elapsed_seconds": 360.632,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5522-7b4a-7890-975b-73bfec8f1485",
+        "019f551f-4a17-7ed1-8594-e98b575c3907"
+      ],
+      "sol_tokens": 286537,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment": {
+      "all_model_tokens": 276964,
+      "arm_id": "C",
+      "elapsed_seconds": 451.045,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5540-71fa-7e23-8420-395be1f79783",
+        "019f553e-34a1-7900-89de-18b3bbbbf128",
+        "019f553b-d065-79e3-87f1-10f7f8ccbb6b"
+      ],
+      "sol_tokens": 70298,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment_id": "token-firewall-terra-route-002",
+    "object_id": "pair_eval-10-merge-patch-terra",
+    "pair_id": "eval-10-merge-patch-terra",
+    "provenance": {
+      "campaign_mode": "single",
+      "control_record_sha256": "412d6a10e97d2d6380b74ed04b405904393a5fc5b083799480160ca83a50bb3b",
+      "experiment_record_sha256": [
+        "de8d8c4b06cb4ad1203a4292a276fe195b99fcf8e6fc53fab144244cd95dfffd"
+      ],
+      "normalizer_revision": "benchmark-to-pair@0.1",
+      "source_run_ids": [
+        "run_eval_10_d_001",
+        "run_eval_10_c_001"
+      ]
+    },
+    "risk": "medium",
+    "schema": "token-firewall/evaluation-pair@0.1",
+    "task_content_sha256": "2c3fb2bbdc389d14493cd1557a2cc5c364f01dbeec825e38cb044aaa5f1ffe09",
+    "task_id": "T-EVAL-10",
+    "task_type": "feature"
+  },
+  {
+    "content_sha256": "e66ee6ec45ba752b26b6710dc229a709a79c4456da18665a876869cfd9d2d81b",
+    "control": {
+      "all_model_tokens": 344444,
+      "arm_id": "D",
+      "elapsed_seconds": 378.646,
+      "hidden_status": "pass",
+      "high_critical_findings": 1,
+      "quality_score": 55.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "REWORK",
+      "session_ids": [
+        "019f5534-51dd-7082-ac42-801c93ab2828",
+        "019f5531-6f9e-7b30-9111-0d0fa4cdd992"
+      ],
+      "sol_tokens": 344444,
+      "task_success": false,
+      "usage_complete": true
+    },
+    "experiment": {
+      "all_model_tokens": 378590,
+      "arm_id": "C",
+      "elapsed_seconds": 631.177,
+      "hidden_status": "fail",
+      "high_critical_findings": 0,
+      "quality_score": 60.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f552d-3070-7fb0-843f-5234d903a522",
+        "019f552a-8980-7e12-b054-e1abf59636a5",
+        "019f5527-77c7-7e91-b76e-b3ce02cfcbde"
+      ],
+      "sol_tokens": 135253,
+      "task_success": false,
+      "usage_complete": true
+    },
+    "experiment_id": "token-firewall-terra-route-002",
+    "object_id": "pair_eval-11-topological-order-terra",
+    "pair_id": "eval-11-topological-order-terra",
+    "provenance": {
+      "campaign_mode": "single",
+      "control_record_sha256": "4eeeab414caf850ce459115e047f1d62cb5cb4108364c1b371c41b37e83d0bd4",
+      "experiment_record_sha256": [
+        "269a5fbf5ea6afd1a5ac6c7a9270773a11692d8c598462f3adb1c3c2d44b6936"
+      ],
+      "normalizer_revision": "benchmark-to-pair@0.1",
+      "source_run_ids": [
+        "run_eval_11_d_001",
+        "run_eval_11_c_001"
+      ]
+    },
+    "risk": "medium",
+    "schema": "token-firewall/evaluation-pair@0.1",
+    "task_content_sha256": "e459fc75d61fc21ae7d796c3a8e9306e36046fb6796ab124ba7c1663ae330c0c",
+    "task_id": "T-EVAL-11",
+    "task_type": "refactor"
+  },
+  {
+    "content_sha256": "30e12a4d57b10914279dfa90f89dcf39a128622be4df7277e5030007e0a49126",
+    "control": {
+      "all_model_tokens": 257061,
+      "arm_id": "D",
+      "elapsed_seconds": 315.945,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f553e-86ec-7c13-8f3a-101895d82a85",
+        "019f553b-ce78-7890-a892-e5177ebbf6f4"
+      ],
+      "sol_tokens": 257061,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment": {
+      "all_model_tokens": 328138,
+      "arm_id": "C",
+      "elapsed_seconds": 494.724,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5524-9fca-7bc1-8c82-9416e18515a6",
+        "019f5522-1301-70e3-b3b3-320cf985dabc",
+        "019f551f-4c03-7b53-937c-8eb54c50ce83"
+      ],
+      "sol_tokens": 73765,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment_id": "token-firewall-terra-route-002",
+    "object_id": "pair_eval-12-read-through-cache-terra",
+    "pair_id": "eval-12-read-through-cache-terra",
+    "provenance": {
+      "campaign_mode": "single",
+      "control_record_sha256": "5bdf569e1a73bc3cd5207d07dc0bb4e78a3894c47eab09d410a4c30a97e0ca28",
+      "experiment_record_sha256": [
+        "8b8a971d477fc6445ae3bf072c6e676cf09db3a3003f9d04750a246706ebe700"
+      ],
+      "normalizer_revision": "benchmark-to-pair@0.1",
+      "source_run_ids": [
+        "run_eval_12_d_001",
+        "run_eval_12_c_001"
+      ]
+    },
+    "risk": "medium",
+    "schema": "token-firewall/evaluation-pair@0.1",
+    "task_content_sha256": "25204825ce72b31b924ac4045e252039e5ecc220c399a28695799267d5982210",
+    "task_id": "T-EVAL-12",
+    "task_type": "integration"
+  },
+  {
+    "content_sha256": "bd17e9476e6d3b99a11bcc44bfd387d854fb9e01e1d69afa42a13eb4f9e9d87c",
+    "control": {
+      "all_model_tokens": 272504,
+      "arm_id": "D",
+      "elapsed_seconds": 340.368,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f554e-ad6f-7f22-8935-a1f849f2f046",
+        "019f554c-118e-7791-9298-98a2238f3631"
+      ],
+      "sol_tokens": 272504,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment": {
+      "all_model_tokens": 338498,
+      "arm_id": "C",
+      "elapsed_seconds": 478.458,
+      "hidden_status": "pass",
+      "high_critical_findings": 0,
+      "quality_score": 100.0,
+      "quality_score_source": "mechanical-gates@0.1",
+      "review_verdict": "PASS",
+      "session_ids": [
+        "019f5551-1431-7401-84ed-ef241c4b0968",
+        "019f554e-b18a-7f13-b687-4775f987b8a4",
+        "019f554c-1384-71c1-8a7e-8a3ea8b281af"
+      ],
+      "sol_tokens": 96586,
+      "task_success": true,
+      "usage_complete": true
+    },
+    "experiment_id": "token-firewall-terra-route-002",
+    "object_id": "pair_eval-13-batch-items-terra",
+    "pair_id": "eval-13-batch-items-terra",
+    "provenance": {
+      "campaign_mode": "single",
+      "control_record_sha256": "ebd52fb73821b97590b9165ec4f95d2eba7fc1595984ff7311c52793d0d9e200",
+      "experiment_record_sha256": [
+        "c4643297a52db5f4d452e4aa1da4d2f47e532b45b7281b65cd2129b6b4af7960"
+      ],
+      "normalizer_revision": "benchmark-to-pair@0.1",
+      "source_run_ids": [
+        "run_eval_13_d_001",
+        "run_eval_13_c_001"
+      ]
+    },
+    "risk": "low",
+    "schema": "token-firewall/evaluation-pair@0.1",
+    "task_content_sha256": "07b1b2b3ecdee50308ba3ca12a40d5ba374c0eb254cffa41342df25692c1e2df",
+    "task_id": "T-EVAL-13",
+    "task_type": "feature"
+  }
+]

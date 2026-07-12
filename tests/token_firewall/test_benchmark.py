@@ -13,6 +13,7 @@ from pathlib import Path
 from tools.token_firewall.benchmark import (
     BenchmarkIdentity,
     BenchmarkRunner,
+    build_verifier_prompt,
     compare_benchmarks,
     finalize_hidden_evaluation,
     summarize_rework_campaign,
@@ -249,6 +250,12 @@ class FailingBenchmarkWorker(RuntimeAdapter):
         )
 
 class BenchmarkHarnessTests(unittest.TestCase):
+    def test_verifier_uses_broker_evidence_in_read_only_stage(self) -> None:
+        prompt = build_verifier_prompt(Path("review-packet.json"), work_order(), "a" * 40)
+        self.assertIn("Do not rerun validator commands", prompt)
+        self.assertIn("delivery-gate.json", prompt)
+        self.assertIn("writable temporary files", prompt)
+
     def test_rework_summary_counts_cumulative_sol_and_validates_chain(self) -> None:
         control = sealed_record("D")
         initial = sealed_record("A")

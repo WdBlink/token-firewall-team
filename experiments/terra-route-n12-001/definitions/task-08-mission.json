@@ -1,0 +1,54 @@
+{
+  "approval_boundaries": {
+    "destructive_actions": false,
+    "external_writes": false,
+    "scope_expansion": false
+  },
+  "content_sha256": "6d0c6c65083670684228afc7fe8d9991a45d0d8bbe3f7f4b28b7c8dd69ec6e6c",
+  "created_at": "2026-07-12T15:00:00+08:00",
+  "created_by": {
+    "model": "gpt-5.6-sol",
+    "role": "mission-architect",
+    "runtime": "codex",
+    "session_id": "suite-design-frozen"
+  },
+  "goal": "正确解释 HTTP Retry-After 的秒数和日期形式。",
+  "invariants": [
+    {
+      "id": "INV-001",
+      "severity": "critical",
+      "statement": "不得修改公开测试或任务范围外文件，且实现不得引入第三方依赖"
+    }
+  ],
+  "mission_id": "msn_eval_08_001",
+  "non_goals": [
+    "不修改其他基准函数",
+    "不修改公开测试",
+    "不引入第三方依赖"
+  ],
+  "object_id": "mc_eval_08",
+  "overall_acceptance": [
+    "OUT-001",
+    "INV-001"
+  ],
+  "revision": 1,
+  "risk_boundaries": [
+    {
+      "pattern": "只修剪 ASCII SP/HTAB；now 必须是 aware datetime，日期按 UTC 秒向上取整。",
+      "review_level": "terra-then-sol"
+    }
+  ],
+  "schema": "token-firewall/mission-contract@0.1",
+  "sol_token_budget": {
+    "escalation_requires_reason": true,
+    "planning_max": 12000,
+    "review_max": 90000
+  },
+  "success_outcomes": [
+    {
+      "evidence": "公开测试、独立验证、匿名终审与延后隐藏测试通过",
+      "id": "OUT-001",
+      "statement": "实现 parse_retry_after：支持 ASCII 十进制秒数与 IMF-fixdate，过去日期归零，并按 max_delay 截断。"
+    }
+  ]
+}

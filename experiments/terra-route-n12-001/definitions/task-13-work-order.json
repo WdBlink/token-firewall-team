@@ -1,0 +1,98 @@
+{
+  "acceptance_specs": [
+    {
+      "id": "SPEC-13-001",
+      "negative_cases": [
+        {
+          "action": "batch_items",
+          "case_id": "NEG-13-001",
+          "expected_rejection": "抛出 TypeError/ValueError 且不返回部分结果",
+          "setup": "size 为 0、负数、布尔或非整数"
+        }
+      ],
+      "positive_cases": [
+        {
+          "action": "batch_items",
+          "case_id": "POS-13-001",
+          "expected": "[[1,2],[3,4],[5]]",
+          "setup": "[1,2,3,4,5] 且 size=2"
+        },
+        {
+          "action": "batch_items",
+          "case_id": "POS-13-002",
+          "expected": "只消费一次并保序分批",
+          "setup": "一次性生成器且 size=3"
+        }
+      ],
+      "semantic_boundaries": [
+        {
+          "boundary_id": "BOUND-13-001",
+          "dimension": "批次大小与迭代边界",
+          "inside": "size 是非布尔正整数，values 可迭代",
+          "outside": "size 非法或 values 不可迭代",
+          "rule": "每个非尾批长度等于 size，尾批只在有元素时存在，输入仅迭代一次"
+        }
+      ],
+      "statement": "按非布尔正整数 size 将 iterable 保序切分为 list[list]，空输入无批次且无空尾批。",
+      "validator": {
+        "command": "python3 -m unittest tests.test_batching.BatchItemsTests -v",
+        "kind": "command",
+        "timeout_seconds": 30
+      }
+    }
+  ],
+  "allowed_paths": [
+    "src/batching.py"
+  ],
+  "assignment": {
+    "network": "deny-by-default",
+    "preferred_model": "benchmark-assigned",
+    "workspace_mode": "isolated-worktree"
+  },
+  "content_sha256": "07b1b2b3ecdee50308ba3ca12a40d5ba374c0eb254cffa41342df25692c1e2df",
+  "context_refs": [],
+  "created_at": "2026-07-12T15:30:00+08:00",
+  "created_by": {
+    "model": "gpt-5.6-sol",
+    "role": "decomposition-lead",
+    "runtime": "codex",
+    "session_id": "replacement-design-frozen"
+  },
+  "dependencies": [],
+  "forbidden_paths": [
+    "tests/**"
+  ],
+  "invariants": [
+    "INV-001"
+  ],
+  "limits": {
+    "max_changed_files": 1,
+    "max_diff_lines": 100,
+    "max_rework_rounds": 1,
+    "wall_clock_minutes": 20
+  },
+  "mission_id": "msn_eval_13_001",
+  "object_id": "wo_T_EVAL_13_r1",
+  "objective": "实现 batch_items：保序分批、支持一次性 iterable、保留短尾批，并严格验证 size。",
+  "parent_task_id": null,
+  "rationale": "替换一个在隐藏边界审计中被判定为合同不足的无效样本，不覆盖原始失败记录。",
+  "required_deliverables": [
+    "git_commit",
+    "patch",
+    "test_results"
+  ],
+  "revision": 1,
+  "risk": {
+    "level": "low",
+    "reasons": [
+      "局部无副作用迭代逻辑"
+    ],
+    "required_review": "terra-then-sol"
+  },
+  "schema": "token-firewall/work-order@0.2",
+  "stop_conditions": [
+    "需要修改测试",
+    "需要第三方依赖"
+  ],
+  "task_id": "T-EVAL-13"
+}

@@ -1,0 +1,94 @@
+{
+  "acceptance_specs": [
+    {
+      "id": "SPEC-09-001",
+      "negative_cases": [
+        {
+          "action": "调用目标函数",
+          "case_id": "NEG-09-001",
+          "expected_rejection": "失败关闭且不产生部分副作用",
+          "setup": "../、绝对路径、空路径和指向外部的 symlink 抛出 ValueError"
+        }
+      ],
+      "positive_cases": [
+        {
+          "action": "调用目标函数",
+          "case_id": "POS-09-001",
+          "expected": "得到合同指定结果",
+          "setup": "base 内的 a/file.txt 返回规范绝对 Path"
+        }
+      ],
+      "semantic_boundaries": [
+        {
+          "boundary_id": "BOUND-09-001",
+          "dimension": "任务语义边界",
+          "inside": "base 内的 a/file.txt 返回规范绝对 Path",
+          "outside": "../、绝对路径、空路径和指向外部的 symlink 抛出 ValueError",
+          "rule": "使用路径组件的包含关系而非字符串前缀；base 必须是已存在目录。"
+        }
+      ],
+      "statement": "加固 safe_join：仅接受非空相对路径，解析后必须仍在真实 base 目录内，并拒绝绝对路径、.. 与 symlink escape。",
+      "validator": {
+        "command": "python3 -m unittest tests.test_tasks.SafeJoinTests -v",
+        "kind": "command",
+        "timeout_seconds": 30
+      }
+    }
+  ],
+  "allowed_paths": [
+    "src/tasks.py"
+  ],
+  "assignment": {
+    "network": "deny-by-default",
+    "preferred_model": "benchmark-assigned",
+    "workspace_mode": "isolated-worktree"
+  },
+  "content_sha256": "9b96c2a9c93e27ecd1893d5b6491456dd4b15a07cf9ec2bbeaa9477d57b3d139",
+  "context_refs": [],
+  "created_at": "2026-07-12T15:00:00+08:00",
+  "created_by": {
+    "model": "gpt-5.6-sol",
+    "role": "decomposition-lead",
+    "runtime": "codex",
+    "session_id": "suite-design-frozen"
+  },
+  "dependencies": [],
+  "forbidden_paths": [
+    "tests/**",
+    "src/__init__.py"
+  ],
+  "invariants": [
+    "INV-001"
+  ],
+  "limits": {
+    "max_changed_files": 1,
+    "max_diff_lines": 180,
+    "max_rework_rounds": 1,
+    "wall_clock_minutes": 25
+  },
+  "mission_id": "msn_eval_09_001",
+  "object_id": "wo_T_EVAL_09_r1",
+  "objective": "加固 safe_join：仅接受非空相对路径，解析后必须仍在真实 base 目录内，并拒绝绝对路径、.. 与 symlink escape。",
+  "parent_task_id": null,
+  "rationale": "补齐 high 风险 bugfix 分层，扩展配对质量—Token 证据。",
+  "required_deliverables": [
+    "git_commit",
+    "patch",
+    "test_results"
+  ],
+  "revision": 1,
+  "risk": {
+    "level": "high",
+    "reasons": [
+      "使用路径组件的包含关系而非字符串前缀；base 必须是已存在目录。"
+    ],
+    "required_review": "sol-deep-review"
+  },
+  "schema": "token-firewall/work-order@0.2",
+  "stop_conditions": [
+    "需要修改公开测试或其他源文件",
+    "需要增加第三方依赖",
+    "Diff 超过 180 行"
+  ],
+  "task_id": "T-EVAL-09"
+}

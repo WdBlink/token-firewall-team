@@ -1,0 +1,54 @@
+{
+  "approval_boundaries": {
+    "destructive_actions": false,
+    "external_writes": false,
+    "scope_expansion": false
+  },
+  "content_sha256": "95998ab1e7c42649b22a55799f29b41096ced8319790d2bca37f57d9a4d552ab",
+  "created_at": "2026-07-12T15:00:00+08:00",
+  "created_by": {
+    "model": "gpt-5.6-sol",
+    "role": "mission-architect",
+    "runtime": "codex",
+    "session_id": "suite-design-frozen"
+  },
+  "goal": "实现严格、无歧义并带上限的紧凑时长解析。",
+  "invariants": [
+    {
+      "id": "INV-001",
+      "severity": "critical",
+      "statement": "不得修改公开测试或任务范围外文件，且实现不得引入第三方依赖"
+    }
+  ],
+  "mission_id": "msn_eval_03_001",
+  "non_goals": [
+    "不修改其他基准函数",
+    "不修改公开测试",
+    "不引入第三方依赖"
+  ],
+  "object_id": "mc_eval_03",
+  "overall_acceptance": [
+    "OUT-001",
+    "INV-001"
+  ],
+  "revision": 1,
+  "risk_boundaries": [
+    {
+      "pattern": "原始值必须匹配 [1-9][0-9]*(ms|s|m|h)，换算值不得超过显式上限。",
+      "review_level": "terra-then-sol"
+    }
+  ],
+  "schema": "token-firewall/mission-contract@0.1",
+  "sol_token_budget": {
+    "escalation_requires_reason": true,
+    "planning_max": 12000,
+    "review_max": 90000
+  },
+  "success_outcomes": [
+    {
+      "evidence": "公开测试、独立验证、匿名终审与延后隐藏测试通过",
+      "id": "OUT-001",
+      "statement": "实现 parse_duration，解析 ms/s/m/h ASCII 语法并对非法、零值、前导零和越界输入失败关闭。"
+    }
+  ]
+}

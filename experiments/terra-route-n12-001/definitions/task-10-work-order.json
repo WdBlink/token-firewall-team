@@ -1,0 +1,100 @@
+{
+  "acceptance_specs": [
+    {
+      "id": "SPEC-10-001",
+      "negative_cases": [
+        {
+          "action": "调用目标函数",
+          "case_id": "NEG-10-001",
+          "expected_rejection": "失败关闭且不产生部分副作用",
+          "setup": "不得修改或别名引用 target/patch 中的可变对象"
+        }
+      ],
+      "positive_cases": [
+        {
+          "action": "调用目标函数",
+          "case_id": "POS-10-001",
+          "expected": "得到合同指定结果",
+          "setup": "嵌套对象更新且 null 删除成员"
+        },
+        {
+          "action": "调用目标函数",
+          "case_id": "POS-10-002",
+          "expected": "得到合同指定结果",
+          "setup": "数组 patch 整体替换目标"
+        }
+      ],
+      "semantic_boundaries": [
+        {
+          "boundary_id": "BOUND-10-001",
+          "dimension": "任务语义边界",
+          "inside": "嵌套对象更新且 null 删除成员",
+          "outside": "不得修改或别名引用 target/patch 中的可变对象",
+          "rule": "只有 patch 为 dict 时进入对象语义；target 非 dict 时视为空对象。"
+        }
+      ],
+      "statement": "实现 merge_patch：对象递归合并、null 删除成员、非对象 patch 整体替换，并深拷贝结果。",
+      "validator": {
+        "command": "python3 -m unittest tests.test_tasks.MergePatchTests -v",
+        "kind": "command",
+        "timeout_seconds": 30
+      }
+    }
+  ],
+  "allowed_paths": [
+    "src/tasks.py"
+  ],
+  "assignment": {
+    "network": "deny-by-default",
+    "preferred_model": "benchmark-assigned",
+    "workspace_mode": "isolated-worktree"
+  },
+  "content_sha256": "2c3fb2bbdc389d14493cd1557a2cc5c364f01dbeec825e38cb044aaa5f1ffe09",
+  "context_refs": [],
+  "created_at": "2026-07-12T15:00:00+08:00",
+  "created_by": {
+    "model": "gpt-5.6-sol",
+    "role": "decomposition-lead",
+    "runtime": "codex",
+    "session_id": "suite-design-frozen"
+  },
+  "dependencies": [],
+  "forbidden_paths": [
+    "tests/**",
+    "src/__init__.py"
+  ],
+  "invariants": [
+    "INV-001"
+  ],
+  "limits": {
+    "max_changed_files": 1,
+    "max_diff_lines": 180,
+    "max_rework_rounds": 1,
+    "wall_clock_minutes": 25
+  },
+  "mission_id": "msn_eval_10_001",
+  "object_id": "wo_T_EVAL_10_r1",
+  "objective": "实现 merge_patch：对象递归合并、null 删除成员、非对象 patch 整体替换，并深拷贝结果。",
+  "parent_task_id": null,
+  "rationale": "补齐 medium 风险 feature 分层，扩展配对质量—Token 证据。",
+  "required_deliverables": [
+    "git_commit",
+    "patch",
+    "test_results"
+  ],
+  "revision": 1,
+  "risk": {
+    "level": "medium",
+    "reasons": [
+      "只有 patch 为 dict 时进入对象语义；target 非 dict 时视为空对象。"
+    ],
+    "required_review": "terra-then-sol"
+  },
+  "schema": "token-firewall/work-order@0.2",
+  "stop_conditions": [
+    "需要修改公开测试或其他源文件",
+    "需要增加第三方依赖",
+    "Diff 超过 180 行"
+  ],
+  "task_id": "T-EVAL-10"
+}

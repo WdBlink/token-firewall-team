@@ -1,0 +1,53 @@
+{
+  "approval_boundaries": {
+    "destructive_actions": false,
+    "external_writes": false,
+    "scope_expansion": false
+  },
+  "content_sha256": "a3aa7d149c96b38df50ed42c6ab4185ac6b7cf60b274feb5938db57d889e9f73",
+  "created_at": "2026-07-12T15:30:00+08:00",
+  "created_by": {
+    "model": "gpt-5.6-sol",
+    "role": "mission-architect",
+    "runtime": "codex",
+    "session_id": "replacement-design-frozen"
+  },
+  "goal": "实现适用于一次性迭代器的稳定批处理函数。",
+  "invariants": [
+    {
+      "id": "INV-001",
+      "severity": "critical",
+      "statement": "不得修改测试或引入第三方依赖"
+    }
+  ],
+  "mission_id": "msn_eval_13_001",
+  "non_goals": [
+    "不实现异步迭代",
+    "不修改测试"
+  ],
+  "object_id": "mc_eval_13",
+  "overall_acceptance": [
+    "OUT-001",
+    "INV-001"
+  ],
+  "revision": 1,
+  "risk_boundaries": [
+    {
+      "pattern": "size 必须是非布尔正整数；输入只能消费一次；空输入返回空列表",
+      "review_level": "terra-then-sol"
+    }
+  ],
+  "schema": "token-firewall/mission-contract@0.1",
+  "sol_token_budget": {
+    "escalation_requires_reason": true,
+    "planning_max": 8000,
+    "review_max": 90000
+  },
+  "success_outcomes": [
+    {
+      "evidence": "公开测试、匿名终审与延后隐藏测试通过",
+      "id": "OUT-001",
+      "statement": "按固定正整数 size 保序分批且不产生空尾批"
+    }
+  ]
+}

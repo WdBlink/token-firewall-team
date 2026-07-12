@@ -1,0 +1,73 @@
+{
+  "artifacts": {
+    "charts": [
+      "quality-token-pareto.svg",
+      "paired-quality.svg",
+      "risk-strata.svg",
+      "token-waterfall.svg"
+    ],
+    "markdown_report": "evaluation-report.md"
+  },
+  "content_sha256": "eaeeadb995492747c188fa36f1b0981a454916e9734e03bd3d79944d1c3c4d1f",
+  "cost": {
+    "control_sol_tokens": 3599108,
+    "experiment_sol_tokens": 1051353,
+    "sol_savings_percent": 70.79,
+    "target_met": true,
+    "target_percent": 70
+  },
+  "experiment_id": "token-firewall-terra-route-002",
+  "pair_content_sha256": [
+    "0b41c3b192e3230fbe45253f57b359d341a923ff3936fcc7a3e4346f595c37ec",
+    "30e12a4d57b10914279dfa90f89dcf39a128622be4df7277e5030007e0a49126",
+    "66ad7643ac6d7f22cc5773345cac032637df4f9e06883d8c4d186b5ca2fc3d88",
+    "677d87f306a4d852044222c333c7eccbd93613e1874092852f5f9bd240ec4976",
+    "9bb614a8d616a38f068d6c1346739690dc5de2cc9f1d2231d7663fed09f6a30a",
+    "a6e355d723d64aa64da9d8f9c0f60d770b490dff4cdc0fd1f71d5db3103fdc77",
+    "bcbaaf7b3dad06659d91ab69386c7acbd6d8d72a67f3222c6f738b8d7e777af4",
+    "bd17e9476e6d3b99a11bcc44bfd387d854fb9e01e1d69afa42a13eb4f9e9d87c",
+    "c74d2994a0d792f1d987c9b7edb8cfe7dde12c2293cf68389db139ad17e21acc",
+    "e31c74228ca9331e106ddd2ea00191841d6801ed6f373f1dccd0e308035c83cc",
+    "e66ee6ec45ba752b26b6710dc229a709a79c4456da18665a876869cfd9d2d81b",
+    "f4205ef9b8c3c2d039873faf654fc57753cdbbe056bac9fb4a9ca5919502bac8"
+  ],
+  "pilot_gate": "PASS",
+  "protocol_content_sha256": "f86c7d5deb19caf85927462b597dadd04dec1fd98f3f6aff24626d041cca95ac",
+  "quality": {
+    "ci95_lower_percentage_points": 0.0,
+    "ci95_upper_percentage_points": 25.0,
+    "control_mean_score": 94.58,
+    "control_success_rate": 0.8333,
+    "critical_regressions": 0,
+    "difference_percentage_points": 8.33,
+    "experiment_mean_score": 96.67,
+    "experiment_success_rate": 0.9167,
+    "noninferior": true,
+    "noninferiority_margin_percentage_points": 5
+  },
+  "sample_size": 12,
+  "schema": "token-firewall/evaluation-summary@0.1",
+  "strata": [
+    {
+      "control_success_rate": 1.0,
+      "experiment_success_rate": 1.0,
+      "pairs": 4,
+      "risk": "low"
+    },
+    {
+      "control_success_rate": 0.6667,
+      "experiment_success_rate": 0.8333,
+      "pairs": 6,
+      "risk": "medium"
+    },
+    {
+      "control_success_rate": 1.0,
+      "experiment_success_rate": 1.0,
+      "pairs": 2,
+      "risk": "high"
+    }
+  ],
+  "sufficient_sample": true,
+  "usage_complete": true,
+  "verdict": "PASS"
+}

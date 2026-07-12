@@ -1,0 +1,100 @@
+{
+  "acceptance_specs": [
+    {
+      "id": "SPEC-06-001",
+      "negative_cases": [
+        {
+          "action": "调用目标函数",
+          "case_id": "NEG-06-001",
+          "expected_rejection": "失败关闭且不产生部分副作用",
+          "setup": "根对象不是 dict 时抛出 TypeError"
+        }
+      ],
+      "positive_cases": [
+        {
+          "action": "调用目标函数",
+          "case_id": "POS-06-001",
+          "expected": "得到合同指定结果",
+          "setup": "嵌套映射保留未覆盖 key 并覆盖指定 key"
+        },
+        {
+          "action": "调用目标函数",
+          "case_id": "POS-06-002",
+          "expected": "得到合同指定结果",
+          "setup": "列表整体替换而非连接"
+        }
+      ],
+      "semantic_boundaries": [
+        {
+          "boundary_id": "BOUND-06-001",
+          "dimension": "任务语义边界",
+          "inside": "嵌套映射保留未覆盖 key 并覆盖指定 key",
+          "outside": "根对象不是 dict 时抛出 TypeError",
+          "rule": "只有两侧值均为 dict 才递归；所有输出分支必须深拷贝，输入保持不变。"
+        }
+      ],
+      "statement": "实现 deep_merge：仅映射递归合并，其他值由 override 深拷贝替换，结果与输入不共享可变对象。",
+      "validator": {
+        "command": "python3 -m unittest tests.test_tasks.DeepMergeTests -v",
+        "kind": "command",
+        "timeout_seconds": 30
+      }
+    }
+  ],
+  "allowed_paths": [
+    "src/tasks.py"
+  ],
+  "assignment": {
+    "network": "deny-by-default",
+    "preferred_model": "benchmark-assigned",
+    "workspace_mode": "isolated-worktree"
+  },
+  "content_sha256": "7c7d9852210f3e4eafdd972a62088bddc58e791c5dcdeebb013311f2313ce18c",
+  "context_refs": [],
+  "created_at": "2026-07-12T15:00:00+08:00",
+  "created_by": {
+    "model": "gpt-5.6-sol",
+    "role": "decomposition-lead",
+    "runtime": "codex",
+    "session_id": "suite-design-frozen"
+  },
+  "dependencies": [],
+  "forbidden_paths": [
+    "tests/**",
+    "src/__init__.py"
+  ],
+  "invariants": [
+    "INV-001"
+  ],
+  "limits": {
+    "max_changed_files": 1,
+    "max_diff_lines": 180,
+    "max_rework_rounds": 1,
+    "wall_clock_minutes": 25
+  },
+  "mission_id": "msn_eval_06_001",
+  "object_id": "wo_T_EVAL_06_r1",
+  "objective": "实现 deep_merge：仅映射递归合并，其他值由 override 深拷贝替换，结果与输入不共享可变对象。",
+  "parent_task_id": null,
+  "rationale": "补齐 medium 风险 refactor 分层，扩展配对质量—Token 证据。",
+  "required_deliverables": [
+    "git_commit",
+    "patch",
+    "test_results"
+  ],
+  "revision": 1,
+  "risk": {
+    "level": "medium",
+    "reasons": [
+      "只有两侧值均为 dict 才递归；所有输出分支必须深拷贝，输入保持不变。"
+    ],
+    "required_review": "terra-then-sol"
+  },
+  "schema": "token-firewall/work-order@0.2",
+  "stop_conditions": [
+    "需要修改公开测试或其他源文件",
+    "需要增加第三方依赖",
+    "Diff 超过 180 行"
+  ],
+  "task_id": "T-EVAL-06"
+}

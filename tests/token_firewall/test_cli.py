@@ -122,6 +122,31 @@ class TokenFirewallCliTests(unittest.TestCase):
             pair = json.loads(output.read_text())
             self.assertEqual(pair["provenance"]["normalizer_revision"], "benchmark-to-pair@0.1")
 
+    def test_evaluation_export_inspect_writes_structured_dataset(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            protocol_path = root / "protocol.json"
+            pair_paths = []
+            protocol_path.write_text(json.dumps(protocol()), encoding="utf-8")
+            for index, pair in enumerate(pairs(), 1):
+                path = root / f"pair-{index}.json"
+                path.write_text(json.dumps(pair), encoding="utf-8")
+                pair_paths.append(path)
+            output = root / "inspect"
+            process = subprocess.run(
+                [
+                    "python3", "-m", "tools.token_firewall", "evaluation-export-inspect",
+                    str(protocol_path), *(str(path) for path in pair_paths),
+                    "--out-dir", str(output),
+                ],
+                cwd=ROOT, capture_output=True, text=True, check=False,
+            )
+            self.assertEqual(process.returncode, 0, process.stderr)
+            response = json.loads(process.stdout)
+            self.assertTrue(response["ok"])
+            self.assertEqual(response["manifest"]["compatibility_role"], "analysis-only")
+            self.assertEqual(len((output / "token-firewall-pairs.jsonl").read_text().splitlines()), 3)
+
     def test_gate_budget_returns_machine_readable_evidence(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

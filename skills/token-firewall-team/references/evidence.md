@@ -16,10 +16,12 @@ def calibrate_route(route, benchmark_records):
     return directional_route_evidence(route, benchmark_records)
 ```
 
-The 2026-07-11 Runtime Pilot contains two paired bugfix tasks (low and high risk), below the frozen 12-pair release threshold.
+The 2026-07-12 Terra study contains 12 paired tasks across low, medium, and high risk and feature, bugfix, refactor, and integration work. It meets the frozen sample/coverage threshold.
 
-- Terra: 2/2 task success, 76.24% cumulative Sol savings. The model-stage sensitivity gate passes; the primary operational gate fails because one low Control Reviewer timed out before authoritative usage was emitted.
+- Terra expanded study: 11/12 experiment task success versus 10/12 Sol-direct, mean mechanical quality 96.67 versus 94.58, and 70.79% cumulative Sol savings (1,051,353 versus 3,599,108). The paired 95% Bootstrap interval is [0, 25] percentage points against a −5-point margin. Usage is complete, critical regressions are zero, and the frozen verdict is `PASS`.
+- Evidence boundary: this supports no observed delivery-quality loss for this synthetic Python suite and Terra/Sol configuration, not universal model equivalence. One invalid dataset item was transparently excluded after both arms completed and replaced; valid semantic and review failures remain included.
+
 - M3: 2/2 final task success, 59.49% cumulative Sol savings. A low-risk semantic miss required a second Sol review; high-risk work passed once because its Acceptance Spec was substantially more explicit.
 - Claude Sonnet: 0/2 accepted task outcomes. The adapter and actual model identity were verified, but semantic and structured-output/Runtime failures prevent default routing.
 
-Do not convert these values into a universal quality claim. Use Terra as the provisional default, keep Sol as final reviewer, and continue accumulating frozen pairs across medium risk and feature/refactor/integration tasks.
+Use Terra as the currently evidence-backed default Worker route, keep Sol as final reviewer, and continue route-specific replication on real repositories. Do not transfer the Terra conclusion to M3 or Claude without their own adequately powered paired studies.

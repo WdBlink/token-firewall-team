@@ -17,7 +17,12 @@ from .benchmark import (
 )
 from .budget import gate_sol_budget
 from .orchestrator import RuntimePocRunner
-from .evaluation import build_evaluation_lab, pair_from_benchmark_records, write_evaluation_artifacts
+from .evaluation import (
+    build_evaluation_lab,
+    export_inspect_dataset,
+    pair_from_benchmark_records,
+    write_evaluation_artifacts,
+)
 from .observability import ExternalRunStateError, discover_ledgers, format_status_card, project_status
 from .runtime import (
     CodexCliAdapter,
@@ -232,6 +237,14 @@ def build_parser() -> argparse.ArgumentParser:
     evaluation_lab.add_argument("pairs", type=Path, nargs="+")
     evaluation_lab.add_argument("--lab-id", required=True)
     evaluation_lab.add_argument("--out-dir", type=Path, required=True)
+
+    inspect_export = subparsers.add_parser(
+        "evaluation-export-inspect",
+        help="export frozen evaluation pairs for optional Inspect AI analysis",
+    )
+    inspect_export.add_argument("protocol", type=Path)
+    inspect_export.add_argument("pairs", type=Path, nargs="+")
+    inspect_export.add_argument("--out-dir", type=Path, required=True)
     return parser
 
 
@@ -523,6 +536,15 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             _print(result)
             return 0 if result["summary"]["verdict"] == "PASS" else 1
+        if args.command == "evaluation-export-inspect":
+            result = export_inspect_dataset(
+                _read_json(args.protocol),
+                [_read_json(path) for path in args.pairs],
+                args.out_dir,
+                registry=registry,
+            )
+            _print({"ok": True, "manifest": result["manifest"], "out_dir": str(args.out_dir)})
+            return 0
     except (OSError, ValueError, json.JSONDecodeError, SchemaValidationError, StateTransitionError, ExternalRunStateError) as exc:
         _print({"ok": False, "error": str(exc)})
         return 2

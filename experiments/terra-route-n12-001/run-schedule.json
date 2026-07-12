@@ -1,0 +1,22 @@
+{
+  "schema": "token-firewall/run-schedule@0.1",
+  "created_at": "2026-07-12T14:58:00+08:00",
+  "random_seed": 20260712,
+  "concurrency": 4,
+  "smoke_before_freeze": ["03-C"],
+  "waves": [
+    ["12-C", "06-D", "10-D", "03-D"],
+    ["05-C", "11-C", "04-D", "04-C"],
+    ["08-C", "11-D", "07-C", "08-D"],
+    ["09-C", "10-C", "12-D", "06-C"],
+    ["09-D", "07-D", "05-D"],
+    ["13-C", "13-D"]
+  ],
+  "excluded_after_blinded_completion": [
+    {
+      "task": "08",
+      "reason": "Both arms failed a hidden max_delay=0 assertion that was not stated by the frozen Acceptance Spec; retained as a dataset-defect record but excluded from quality inference."
+    }
+  ],
+  "notes": "Task 03 Terra was run first as a Runtime smoke. The original remaining arm order was frozen with Python random.Random(20260712).shuffle and executed in waves of at most four independent clones. Task 13 was frozen as a replacement only after Task 08 completed both arms and was classified as an invalid sample; Task 08 artifacts remain preserved."
+}

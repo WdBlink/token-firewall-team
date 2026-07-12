@@ -1,0 +1,100 @@
+{
+  "acceptance_specs": [
+    {
+      "id": "SPEC-11-001",
+      "negative_cases": [
+        {
+          "action": "调用目标函数",
+          "case_id": "NEG-11-001",
+          "expected_rejection": "失败关闭且不产生部分副作用",
+          "setup": "循环、self-cycle、缺失依赖、非列表依赖或重复依赖抛出错误"
+        }
+      ],
+      "positive_cases": [
+        {
+          "action": "调用目标函数",
+          "case_id": "POS-11-001",
+          "expected": "得到合同指定结果",
+          "setup": "lint/compile 先于 test/build"
+        },
+        {
+          "action": "调用目标函数",
+          "case_id": "POS-11-002",
+          "expected": "得到合同指定结果",
+          "setup": "独立节点保持映射插入顺序"
+        }
+      ],
+      "semantic_boundaries": [
+        {
+          "boundary_id": "BOUND-11-001",
+          "dimension": "任务语义边界",
+          "inside": "lint/compile 先于 test/build",
+          "outside": "循环、self-cycle、缺失依赖、非列表依赖或重复依赖抛出错误",
+          "rule": "图必须是 str 到唯一 str 列表的映射；稳定性以输入节点与依赖顺序为准。"
+        }
+      ],
+      "statement": "实现 topological_order：依赖先于使用者、无依赖平局遵循输入顺序，并检测 cycle、缺失节点和畸形依赖列表。",
+      "validator": {
+        "command": "python3 -m unittest tests.test_tasks.TopologicalOrderTests -v",
+        "kind": "command",
+        "timeout_seconds": 30
+      }
+    }
+  ],
+  "allowed_paths": [
+    "src/tasks.py"
+  ],
+  "assignment": {
+    "network": "deny-by-default",
+    "preferred_model": "benchmark-assigned",
+    "workspace_mode": "isolated-worktree"
+  },
+  "content_sha256": "e459fc75d61fc21ae7d796c3a8e9306e36046fb6796ab124ba7c1663ae330c0c",
+  "context_refs": [],
+  "created_at": "2026-07-12T15:00:00+08:00",
+  "created_by": {
+    "model": "gpt-5.6-sol",
+    "role": "decomposition-lead",
+    "runtime": "codex",
+    "session_id": "suite-design-frozen"
+  },
+  "dependencies": [],
+  "forbidden_paths": [
+    "tests/**",
+    "src/__init__.py"
+  ],
+  "invariants": [
+    "INV-001"
+  ],
+  "limits": {
+    "max_changed_files": 1,
+    "max_diff_lines": 180,
+    "max_rework_rounds": 1,
+    "wall_clock_minutes": 25
+  },
+  "mission_id": "msn_eval_11_001",
+  "object_id": "wo_T_EVAL_11_r1",
+  "objective": "实现 topological_order：依赖先于使用者、无依赖平局遵循输入顺序，并检测 cycle、缺失节点和畸形依赖列表。",
+  "parent_task_id": null,
+  "rationale": "补齐 medium 风险 refactor 分层，扩展配对质量—Token 证据。",
+  "required_deliverables": [
+    "git_commit",
+    "patch",
+    "test_results"
+  ],
+  "revision": 1,
+  "risk": {
+    "level": "medium",
+    "reasons": [
+      "图必须是 str 到唯一 str 列表的映射；稳定性以输入节点与依赖顺序为准。"
+    ],
+    "required_review": "terra-then-sol"
+  },
+  "schema": "token-firewall/work-order@0.2",
+  "stop_conditions": [
+    "需要修改公开测试或其他源文件",
+    "需要增加第三方依赖",
+    "Diff 超过 180 行"
+  ],
+  "task_id": "T-EVAL-11"
+}
