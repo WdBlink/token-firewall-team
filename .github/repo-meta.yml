@@ -1,5 +1,5 @@
 description: >
-  Spend frontier-model tokens on judgment, not implementation. A fail-closed Agent Team skill that delegates coding to cheaper workers and reserves expensive models for bounded review.
+  Lower LLM costs for coding agents: delegate implementation to cheaper models and reserve frontier-model tokens for evidence-backed final review.
 topics:
   - ai
   - llm
@@ -10,6 +10,9 @@ topics:
   - agentic-workflow
   - multi-agent-systems
   - token-optimization
+  - llm-cost
+  - coding-agent
+  - model-routing
   - python
   - agent-skills
   - codex
