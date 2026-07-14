@@ -2,24 +2,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1018 120">
   <defs>
     <linearGradient id="g" x1="12" y1="0" x2="1006" y2="0" gradientUnits="userSpaceOnUse" color-interpolation="linearRGB">
-      <stop offset="0%" stop-color="#b89dfb"/>
-      <stop offset="6%" stop-color="#aaadff"/>
-      <stop offset="20%" stop-color="#9dbcff"/>
-      <stop offset="39%" stop-color="#91cbff"/>
-      <stop offset="61%" stop-color="#8ad9ff"/>
-      <stop offset="80%" stop-color="#89e5ff"/>
-      <stop offset="94%" stop-color="#91efff"/>
-      <stop offset="100%" stop-color="#a0f8f7"/>
+      <stop offset="0%" stop-color="#ff6b6b"/>
+      <stop offset="6%" stop-color="#ff7060"/>
+      <stop offset="20%" stop-color="#ff7654"/>
+      <stop offset="39%" stop-color="#ff7d47"/>
+      <stop offset="61%" stop-color="#ff863a"/>
+      <stop offset="80%" stop-color="#ff922e"/>
+      <stop offset="94%" stop-color="#ffa322"/>
+      <stop offset="100%" stop-color="#ffb020"/>
     </linearGradient>
     <linearGradient id="gs" x1="12" y1="0" x2="1006" y2="0" gradientUnits="userSpaceOnUse" color-interpolation="linearRGB">
-      <stop offset="0%" stop-color="#605283"/>
-      <stop offset="6%" stop-color="#595a89"/>
-      <stop offset="20%" stop-color="#51628c"/>
-      <stop offset="39%" stop-color="#4b6a8d"/>
-      <stop offset="61%" stop-color="#47718c"/>
-      <stop offset="80%" stop-color="#477788"/>
-      <stop offset="94%" stop-color="#4b7c84"/>
-      <stop offset="100%" stop-color="#538180"/>
+      <stop offset="0%" stop-color="#7f1d1d"/>
+      <stop offset="6%" stop-color="#8f2a20"/>
+      <stop offset="20%" stop-color="#9f3822"/>
+      <stop offset="39%" stop-color="#a84422"/>
+      <stop offset="61%" stop-color="#b4531f"/>
+      <stop offset="80%" stop-color="#b85f1a"/>
+      <stop offset="94%" stop-color="#b96817"/>
+      <stop offset="100%" stop-color="#9a5a16"/>
     </linearGradient>
   </defs>
   <g fill="url(#g)">
