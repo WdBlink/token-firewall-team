@@ -152,6 +152,8 @@ class RuntimePocRunner:
         worker_model: str | None = None,
         reviewer_model: str | None = None,
         timeout_seconds: int = 1800,
+        startup_timeout_seconds: float = 30.0,
+        stall_timeout_seconds: float = 180.0,
         poll_interval_seconds: float = 2.0,
         run_id: str | None = None,
         defer_external_verification: bool = False,
@@ -261,6 +263,8 @@ class RuntimePocRunner:
             title=f"Token Firewall {mission_contract['mission_id']} {work_order['task_id']}",
             model=worker_model,
             timeout_seconds=timeout_seconds,
+            startup_timeout_seconds=startup_timeout_seconds,
+            stall_timeout_seconds=stall_timeout_seconds,
             poll_interval_seconds=poll_interval_seconds,
             network_allowed=work_order["assignment"]["network"] == "allowed",
         )
@@ -499,6 +503,8 @@ class RuntimePocRunner:
             title=f"Token Firewall review {mission_contract['mission_id']}",
             model=reviewer_model,
             timeout_seconds=timeout_seconds,
+            startup_timeout_seconds=startup_timeout_seconds,
+            stall_timeout_seconds=stall_timeout_seconds,
             poll_interval_seconds=poll_interval_seconds,
             network_allowed=False,
         )

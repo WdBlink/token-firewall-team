@@ -1,4 +1,4 @@
 interface:
   display_name: "Token Firewall Team"
-  short_description: "Delegate coding cheaply; reserve Sol for final review"
-  default_prompt: "Use Token Firewall Team to decompose this coding task, route implementation to an approved cheap Runtime, enforce acceptance gates, and ask Sol only for final review."
+  short_description: "Reuse native Codex agents with Git-backed gates"
+  default_prompt: "Use $token-firewall-team to run this task with Codex-native subagents, preserve Git and verification gates, and use an external CLI Adapter only if I explicitly request a third-party platform."

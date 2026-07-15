@@ -507,6 +507,8 @@ class BenchmarkRunner:
         hidden_suite_sha256: str | None = None,
         verifier_model: str | None = None,
         timeout_seconds: int = 1800,
+        startup_timeout_seconds: float = 30.0,
+        stall_timeout_seconds: float = 180.0,
         poll_interval_seconds: float = 2.0,
     ) -> dict[str, Any]:
         identity.validate()
@@ -590,6 +592,8 @@ class BenchmarkRunner:
             base_commit=identity.base_sha,
             worker_model=worker_model,
             timeout_seconds=timeout_seconds,
+            startup_timeout_seconds=startup_timeout_seconds,
+            stall_timeout_seconds=stall_timeout_seconds,
             poll_interval_seconds=poll_interval_seconds,
             run_id=identity.run_id,
             defer_external_verification=True,
@@ -665,6 +669,8 @@ class BenchmarkRunner:
                     ),
                     model=verifier_model,
                     timeout_seconds=timeout_seconds,
+                    startup_timeout_seconds=startup_timeout_seconds,
+                    stall_timeout_seconds=stall_timeout_seconds,
                     poll_interval_seconds=poll_interval_seconds,
                     network_allowed=False,
                 )
@@ -768,6 +774,8 @@ class BenchmarkRunner:
                     title="Token Firewall blind review",
                     model=reviewer_model,
                     timeout_seconds=timeout_seconds,
+                    startup_timeout_seconds=startup_timeout_seconds,
+                    stall_timeout_seconds=stall_timeout_seconds,
                     poll_interval_seconds=poll_interval_seconds,
                     network_allowed=False,
                 )

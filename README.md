@@ -6,7 +6,7 @@
   </picture>
 
   <p><strong>70.79% fewer expensive coding-model tokens in a 12-task study—without giving up quality control.</strong></p>
-  <p>Cheaper models implement. Your strongest model reviews a compact, Git-and-test-backed delivery.</p>
+  <p>Codex routes native Agents by task. Stronger reasoning reviews a compact, Git-and-test-backed delivery.</p>
   <p><strong>English</strong> | <a href="README.zh-CN.md">中文</a></p>
 </div>
 
@@ -48,9 +48,9 @@ npx skills add WdBlink/token-firewall-team -g
 Ask Codex for the outcome you need:
 
 ```text
-"Use token-firewall-team to implement this issue" — bounded delegation, Git/test gates, and strong final review
-"Benchmark this route against Sol-direct"       — paired quality, usage, and Token-savings evidence
-"Show the external Worker status"               — state changes, heartbeat, Session, usage, and delivery summary
+"Use token-firewall-team to implement this issue" — native Codex delegation, Git/test gates, and strong final review
+"Benchmark this route against Sol-direct"         — paired quality, usage, and Token-savings evidence
+"Use Claude for this Worker"                      — explicit opt-in to a third-party CLI Adapter
 ```
 
 ## Usage
@@ -58,25 +58,25 @@ Ask Codex for the outcome you need:
 Example invocation for a coding change:
 
 ```text
-Use token-firewall-team for this change. Route implementation to an approved cheaper Worker, keep the strongest approved model for final review, and show only state changes and low-frequency heartbeats.
+Use token-firewall-team for this change. Use Codex-native Agents, prefer Terra for read-heavy or bounded routine work, use GPT-5.6 for ambiguous semantic or high-risk work, and keep Git/test gates plus an independent final review. Do not use an external CLI unless I explicitly request a third-party platform.
 ```
 
 ## Why Token Firewall
 
-If your expensive coding model spends most of a task reading files, running tests, and drafting routine changes, its context budget is doing execution work rather than high-value judgment. Token Firewall is for teams that can state what “done” means and want a cheaper implementation path with a strong final review.
+If the strongest coding model spends most of a task reading files, running tests, and drafting routine changes, its context budget is doing execution work rather than high-value judgment. Token Firewall is for teams that can state what “done” means and want Codex to route native Agents by task while preserving a strong final review.
 
 ## What You Get
 
-- **Lower frontier-model spend.** Move routine implementation to approved cheaper coding agents and keep expensive-model context for judgment.
+- **Lower frontier-model spend.** Prefer native Terra for read-heavy and bounded routine work; reserve GPT-5.6 for semantic ambiguity and high-risk judgment.
 - **Safer delegation.** Freeze positive cases, negative cases, and a semantic boundary before implementation begins.
 - **Evidence before acceptance.** Require a Git-truth patch, approved tests, and a fresh verifier before delivery reaches final review.
-- **Low-noise external progress.** See state changes and periodic heartbeats without streaming full Worker terminals into the main task.
+- **Low-noise native progress.** Use Codex's Agent status and wait lifecycle without streaming full Worker terminals into the main task.
 - **Quality and savings in one lab.** Preserve failed attempts, rework, hidden checks, model identity, and native usage for paired evaluation.
-- **Fail closed.** Stop when repository state, model identity, isolation, usage evidence, or delivery records cannot be verified.
+- **Explicit external boundary.** Claude, MiniMax, OpenCode, and other CLI Adapters run only when the user explicitly requests that third-party platform.
 
 ## Experimental Evidence
 
-The primary study compares Sol-direct against the Terra-worker/Sol-reviewer route on the same frozen 12-task paired suite. Tasks span feature, bug-fix, refactor, and integration work across low, medium, and high risk; success required public and hidden checks, bounded review, scope checks, and complete usage evidence.
+The primary study compares Sol-direct against a historical external Terra-worker/Sol-reviewer route on the same frozen 12-task paired suite. Tasks span feature, bug-fix, refactor, and integration work across low, medium, and high risk; success required public and hidden checks, bounded review, scope checks, and complete usage evidence. This evidence motivates role-aware routing, but it does not make the external Runtime the operational default: Codex-native Agents are now the default control plane.
 
 <div align="center">
   <img alt="Per-task delivery quality and expensive Sol Token comparison across 12 paired tasks" src=".github/assets/terra-n12-task-comparison.svg" width="960">
@@ -104,17 +104,19 @@ Do not use it to compensate for vague requirements, automate irreversible produc
 | Capability | What you need | Required? |
 |---|---|---:|
 | Install and invoke the Skill | Codex with [Agent Skills](https://agentskills.io) support | Yes |
-| Terra/Sol route | Codex CLI with the selected models available | Optional route |
-| MiniMax M3 route | MiniMax Code, or Claude Code with verified effective M3 identity | Optional route |
+| Native Agent routing | Codex native subagents and available model profiles/host auto-routing | Default |
+| Third-party route | Explicit request plus the corresponding Claude, MiniMax, or OpenCode CLI | Optional |
 | Protocol validation and Evaluation Lab | Python 3.10+ | Yes |
 
 For route preflights, Runtime commands, and operational boundaries, see the [Runtime runbook](skills/token-firewall-team/references/runbook.md) and [architecture overview](docs/architecture.md).
+
+**Native-first migration:** standalone `runtime-run` callers must now pass `--worker-runtime` explicitly. Claude event output is exposed as JSON Lines in `claude-events.jsonl`; integrations should follow `artifact_refs.result` instead of hard-coding the former `claude-result.json` filename.
 
 ## How It Works
 
 ```text
 Explicit acceptance contract
-        → approved cheaper Worker
+        → Codex-native role/model routing
         → Git scope checks + deterministic tests + fresh verifier
         → compact blind packet for the strongest final reviewer
 ```
@@ -124,8 +126,8 @@ The Worker always proposes; Git, approved validators, the fresh verifier, and th
 ## Current Limits
 
 - The primary result comes from one frozen synthetic Python suite and one Terra/Sol configuration; real-repository and cross-language replication is still needed.
-- M3 and Claude routes currently have only two-task directional evidence and do not inherit the 12-task Terra conclusion.
-- Claude Code and MiniMax Code are optional transports with route-specific identity and isolation requirements; unsupported or unverifiable environments fail closed.
+- The current native-first operational policy needs its own real-repository and per-model replication; it must not inherit the 12-task external Terra result as proof.
+- Claude Code, MiniMax Code, and OpenCode are explicit opt-in transports with route-specific identity and isolation requirements; they are never automatic fallback routes.
 
 ## Help Shape the Roadmap
 

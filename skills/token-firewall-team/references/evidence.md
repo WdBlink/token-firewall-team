@@ -24,4 +24,4 @@ The 2026-07-12 Terra study contains 12 paired tasks across low, medium, and high
 - M3: 2/2 final task success, 59.49% cumulative Sol savings. A low-risk semantic miss required a second Sol review; high-risk work passed once because its Acceptance Spec was substantially more explicit.
 - Claude Sonnet: 0/2 accepted task outcomes. The adapter and actual model identity were verified, but semantic and structured-output/Runtime failures prevent default routing.
 
-Use Terra as the currently evidence-backed default Worker route, keep Sol as final reviewer, and continue route-specific replication on real repositories. Do not transfer the Terra conclusion to M3 or Claude without their own adequately powered paired studies.
+Treat Terra as the evidence-backed model tier for read-heavy and bounded routine work, not as evidence that an external CLI should be the operational default. Use Codex-native Agents by default, keep bounded final review, and replicate the native route on real repositories. Do not transfer the external Terra conclusion to native host-auto, M3, Claude, or any other route without an adequately powered paired study.

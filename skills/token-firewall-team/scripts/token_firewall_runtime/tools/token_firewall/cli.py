@@ -99,7 +99,7 @@ def build_parser() -> argparse.ArgumentParser:
     runtime_run.add_argument("--base", required=True)
     runtime_run.add_argument("--run-dir", type=Path, required=True)
     runtime_run.add_argument("--worktree-root", type=Path, required=True)
-    runtime_run.add_argument("--worker-runtime", choices=["codex", "claude", "minimax"], default="minimax")
+    runtime_run.add_argument("--worker-runtime", choices=["codex", "claude", "minimax"], required=True)
     runtime_run.add_argument("--worker-executable")
     runtime_run.add_argument("--worker-agent", default="coder")
     runtime_run.add_argument("--worker-model")
@@ -110,6 +110,8 @@ def build_parser() -> argparse.ArgumentParser:
     runtime_run.add_argument("--reviewer-agent", default="verifier")
     runtime_run.add_argument("--reviewer-model")
     runtime_run.add_argument("--timeout", type=int, default=1800)
+    runtime_run.add_argument("--startup-timeout", type=float, default=30.0)
+    runtime_run.add_argument("--stall-timeout", type=float, default=180.0)
     runtime_run.add_argument("--poll-interval", type=float, default=2.0)
 
     benchmark_run = subparsers.add_parser("benchmark-run", help="run one frozen D/A benchmark group")
@@ -163,6 +165,8 @@ def build_parser() -> argparse.ArgumentParser:
     benchmark_run.add_argument("--hidden-suite-sha256", required=True)
     benchmark_run.add_argument("--defer-hidden", action="store_true")
     benchmark_run.add_argument("--timeout", type=int, default=1800)
+    benchmark_run.add_argument("--startup-timeout", type=float, default=30.0)
+    benchmark_run.add_argument("--stall-timeout", type=float, default=180.0)
     benchmark_run.add_argument("--poll-interval", type=float, default=2.0)
 
     benchmark_compare = subparsers.add_parser("benchmark-compare", help="compare frozen D and A records")
@@ -321,6 +325,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             _print(result.to_dict())
             return 0 if result.ok else 1
         if args.command == "runtime-run":
+            if args.startup_timeout < 0 or args.stall_timeout < 0:
+                raise ValueError("--startup-timeout and --stall-timeout must be >= 0")
             worker = _adapter(args.worker_runtime, args.worker_executable, args.worker_agent, registry)
             generic_recovery = (args.recover_worker_runtime_snapshot, args.recover_worker_patch)
             if any(generic_recovery) and not all(generic_recovery):
@@ -353,11 +359,15 @@ def main(argv: Sequence[str] | None = None) -> int:
                 worker_model=worker_model,
                 reviewer_model=args.reviewer_model,
                 timeout_seconds=args.timeout,
+                startup_timeout_seconds=args.startup_timeout,
+                stall_timeout_seconds=args.stall_timeout,
                 poll_interval_seconds=args.poll_interval,
             )
             _print(result.to_dict())
             return 0 if result.status in {"REVIEW_READY", "PASSED"} else 1
         if args.command == "benchmark-run":
+            if args.startup_timeout < 0 or args.stall_timeout < 0:
+                raise ValueError("--startup-timeout and --stall-timeout must be >= 0")
             identity_value = _read_json(args.identity)
             identity = BenchmarkIdentity(
                 run_id=identity_value["run_id"],
@@ -447,6 +457,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 hidden_test_id=args.hidden_test_id,
                 hidden_suite_sha256=args.hidden_suite_sha256,
                 timeout_seconds=args.timeout,
+                startup_timeout_seconds=args.startup_timeout,
+                stall_timeout_seconds=args.stall_timeout,
                 poll_interval_seconds=args.poll_interval,
             )
             _print(record)

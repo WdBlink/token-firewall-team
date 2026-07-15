@@ -5,7 +5,9 @@ import hashlib
 import os
 import platform
 import re
+import selectors
 import shutil
+import signal
 import subprocess
 import time
 from abc import ABC, abstractmethod
@@ -41,6 +43,9 @@ class RuntimeRequest:
     title: str
     model: str | None = None
     timeout_seconds: int = 1800
+    startup_timeout_seconds: float = 30.0
+    stall_timeout_seconds: float = 180.0
+    termination_grace_seconds: float = 5.0
     poll_interval_seconds: float = 2.0
     network_allowed: bool = False
 
@@ -381,6 +386,198 @@ def _write_text(path: Path, value: str) -> None:
     path.write_text(value, encoding="utf-8")
 
 
+@dataclass(frozen=True)
+class _MonitoredProcessResult:
+    returncode: int | None
+    stdout: str
+    stderr: str
+    elapsed_seconds: float
+    terminal_reason: str | None = None
+
+
+def _process_group_exists(process: subprocess.Popen[bytes]) -> bool:
+    if os.name != "posix":
+        return process.poll() is None
+    direct_alive = process.poll() is None
+    try:
+        os.killpg(process.pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return direct_alive
+    return True
+
+
+def _signal_process_group(process: subprocess.Popen[bytes], sig: signal.Signals) -> None:
+    try:
+        if os.name == "posix":
+            os.killpg(process.pid, sig)
+        elif sig == signal.SIGTERM:
+            process.terminate()
+        else:
+            process.kill()
+    except ProcessLookupError:
+        pass
+    except PermissionError:
+        if process.poll() is None:
+            try:
+                process.terminate() if sig == signal.SIGTERM else process.kill()
+            except ProcessLookupError:
+                pass
+
+
+def _terminate_process_group(
+    process: subprocess.Popen[bytes],
+    *,
+    grace_seconds: float,
+) -> None:
+    """Terminate the Runtime and every descendant in its dedicated group."""
+
+    _signal_process_group(process, signal.SIGTERM)
+    deadline = time.monotonic() + max(0.0, grace_seconds)
+    while _process_group_exists(process) and time.monotonic() < deadline:
+        process.poll()
+        time.sleep(min(0.05, max(0.0, deadline - time.monotonic())))
+    if _process_group_exists(process):
+        _signal_process_group(process, signal.SIGKILL)
+    try:
+        process.wait(timeout=max(0.1, grace_seconds))
+    except subprocess.TimeoutExpired:
+        _signal_process_group(process, signal.SIGKILL)
+        try:
+            process.wait(timeout=1.0)
+        except subprocess.TimeoutExpired:
+            pass
+
+
+def _run_monitored_process(
+    command: list[str],
+    *,
+    cwd: Path,
+    env: dict[str, str],
+    timeout_seconds: float,
+    startup_timeout_seconds: float,
+    stall_timeout_seconds: float,
+    poll_interval_seconds: float,
+    termination_grace_seconds: float,
+    max_output_bytes: int = 64 * 1024 * 1024,
+    on_activity: Callable[[str, int], None] | None = None,
+) -> _MonitoredProcessResult:
+    """Run a subprocess with real stream activity and process-group cleanup."""
+
+    started = time.monotonic()
+    last_activity = started
+    saw_activity = False
+    process = subprocess.Popen(
+        command,
+        cwd=cwd,
+        env=env,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        start_new_session=os.name == "posix",
+    )
+    streams = {"stdout": process.stdout, "stderr": process.stderr}
+    buffers = {"stdout": bytearray(), "stderr": bytearray()}
+    selector = selectors.DefaultSelector()
+    for name, stream in streams.items():
+        if stream is None:
+            continue
+        os.set_blocking(stream.fileno(), False)
+        selector.register(stream, selectors.EVENT_READ, name)
+
+    terminal_reason: str | None = None
+    try:
+        while True:
+            now = time.monotonic()
+            if timeout_seconds > 0 and now - started >= timeout_seconds:
+                terminal_reason = "timeout"
+                break
+            if not saw_activity and startup_timeout_seconds > 0 and now - started >= startup_timeout_seconds:
+                terminal_reason = "startup_stall"
+                break
+            if saw_activity and stall_timeout_seconds > 0 and now - last_activity >= stall_timeout_seconds:
+                terminal_reason = "stall"
+                break
+
+            wait_for = max(0.01, poll_interval_seconds)
+            if timeout_seconds > 0:
+                wait_for = min(wait_for, max(0.01, timeout_seconds - (now - started)))
+            if not saw_activity and startup_timeout_seconds > 0:
+                wait_for = min(wait_for, max(0.01, startup_timeout_seconds - (now - started)))
+            if saw_activity and stall_timeout_seconds > 0:
+                wait_for = min(wait_for, max(0.01, stall_timeout_seconds - (now - last_activity)))
+            events = selector.select(wait_for)
+            for key, _ in events:
+                name = str(key.data)
+                try:
+                    chunk = os.read(key.fileobj.fileno(), 65536)
+                except BlockingIOError:
+                    continue
+                if not chunk:
+                    selector.unregister(key.fileobj)
+                    continue
+                last_activity = time.monotonic()
+                saw_activity = True
+                buffers[name].extend(chunk)
+                if len(buffers[name]) > max_output_bytes:
+                    terminal_reason = "output_limit"
+                    break
+                if on_activity is not None:
+                    on_activity(name, len(chunk))
+            if terminal_reason is not None:
+                break
+            if process.poll() is not None:
+                for key in list(selector.get_map().values()):
+                    try:
+                        remainder = key.fileobj.read()
+                    except (BlockingIOError, OSError):
+                        remainder = b""
+                    if remainder:
+                        buffers[str(key.data)].extend(remainder)
+                    selector.unregister(key.fileobj)
+                break
+    except BaseException:
+        _terminate_process_group(process, grace_seconds=termination_grace_seconds)
+        for stream in streams.values():
+            if stream is not None:
+                stream.close()
+        raise
+    finally:
+        selector.close()
+
+    if terminal_reason is not None:
+        _terminate_process_group(process, grace_seconds=termination_grace_seconds)
+    else:
+        try:
+            process.wait(timeout=max(0.1, termination_grace_seconds))
+        except subprocess.TimeoutExpired:
+            terminal_reason = "cleanup_timeout"
+            _terminate_process_group(process, grace_seconds=termination_grace_seconds)
+        else:
+            # A Runtime may leave tool descendants behind after returning.
+            if _process_group_exists(process):
+                _terminate_process_group(process, grace_seconds=termination_grace_seconds)
+
+    for name, stream in streams.items():
+        if stream is None:
+            continue
+        try:
+            remainder = stream.read()
+        except (OSError, ValueError):
+            remainder = b""
+        if remainder:
+            buffers[name].extend(remainder)
+        stream.close()
+    return _MonitoredProcessResult(
+        returncode=process.returncode,
+        stdout=bytes(buffers["stdout"][:max_output_bytes]).decode("utf-8", errors="replace"),
+        stderr=bytes(buffers["stderr"][:max_output_bytes]).decode("utf-8", errors="replace"),
+        elapsed_seconds=time.monotonic() - started,
+        terminal_reason=terminal_reason,
+    )
+
+
 def _validate_final_output(
     registry: SchemaRegistry,
     value: dict[str, Any],
@@ -650,7 +847,7 @@ class ClaudeCodeAdapter(RuntimeAdapter):
 
     def execute(self, request: RuntimeRequest, *, on_trace: TraceCallback | None = None) -> RuntimeResult:
         request.artifact_dir.mkdir(parents=True, exist_ok=True)
-        stdout_path = request.artifact_dir / "claude-result.json"
+        stdout_path = request.artifact_dir / "claude-events.jsonl"
         stderr_path = request.artifact_dir / "claude-stderr.log"
         usage_path = request.artifact_dir / "usage.json"
         compatible_schema = self._compatible_output_schema(request.output_schema_path)
@@ -662,7 +859,9 @@ class ClaudeCodeAdapter(RuntimeAdapter):
         command = [
             self.executable,
             "--print",
-            "--output-format", "json",
+            "--output-format", "stream-json",
+            "--verbose",
+            "--include-partial-messages",
             "--safe-mode",
             "--no-session-persistence",
             # The outer OS sandbox is the authority. Internal prompts cannot be
@@ -699,11 +898,18 @@ class ClaudeCodeAdapter(RuntimeAdapter):
                 "(version 1)",
                 "(deny default)",
                 "(allow process*)",
+                "(allow signal (target same-sandbox))",
                 "(allow file-read*)",
                 "(allow network*)",
                 "(allow sysctl-read)",
                 "(allow mach-lookup)",
                 "(allow ipc-posix-shm)",
+                '(allow file-read* (literal "/dev/null"))',
+                '(allow file-write* (literal "/dev/null"))',
+                # Claude's Bash wrapper records its logical cwd outside TMPDIR.
+                # Match both the /tmp symlink and its resolved macOS path.
+                '(allow file-write* (regex #"^/tmp/claude-[^/]+-cwd$") '
+                '(regex #"^/private/tmp/claude-[^/]+-cwd$"))',
             ]
             for path in writable:
                 escaped = str(path).replace('\\', '\\\\').replace('"', '\\"')
@@ -721,35 +927,68 @@ class ClaudeCodeAdapter(RuntimeAdapter):
         _write_text(isolation_path, json.dumps(isolation, ensure_ascii=False, sort_keys=True, indent=2))
         if on_trace:
             on_trace("runtime.started", {"runtime": self.name, "title": request.title})
+        environment = os.environ.copy()
+        environment["TMPDIR"] = str((request.artifact_dir / "runtime-tmp").resolve())
+
+        def activity(stream: str, byte_count: int) -> None:
+            if on_trace:
+                on_trace(
+                    "runtime.polled",
+                    {
+                        "runtime": self.name,
+                        "status": "streaming",
+                        "stream": stream,
+                        "bytes": byte_count,
+                    },
+                )
+
         try:
-            environment = os.environ.copy()
-            environment["TMPDIR"] = str((request.artifact_dir / "runtime-tmp").resolve())
-            process = subprocess.run(
+            process = _run_monitored_process(
                 command,
                 cwd=request.workspace,
                 env=environment,
-                capture_output=True,
-                text=True,
-                check=False,
-                timeout=request.timeout_seconds,
+                timeout_seconds=request.timeout_seconds,
+                startup_timeout_seconds=request.startup_timeout_seconds,
+                stall_timeout_seconds=request.stall_timeout_seconds,
+                poll_interval_seconds=request.poll_interval_seconds,
+                termination_grace_seconds=request.termination_grace_seconds,
+                on_activity=activity,
             )
-        except subprocess.TimeoutExpired as exc:
-            stdout = exc.stdout.decode("utf-8", errors="replace") if isinstance(exc.stdout, bytes) else (exc.stdout or "")
-            stderr = exc.stderr.decode("utf-8", errors="replace") if isinstance(exc.stderr, bytes) else (exc.stderr or "")
-            _write_text(stdout_path, stdout)
-            _write_text(stderr_path, stderr)
+        except OSError as exc:
             usage = normalize_usage({}, source="claude-code-result")
             usage["complete"] = False
             _write_text(usage_path, json.dumps(usage, ensure_ascii=False, sort_keys=True, indent=2))
+            return RuntimeResult(
+                self.name,
+                RuntimeStatus.FAILED,
+                None,
+                None,
+                None,
+                {"usage": str(usage_path), "isolation": str(isolation_path)},
+                usage,
+                f"Claude Code could not start: {exc}",
+            )
+        except BaseException:
             if on_trace:
-                on_trace("runtime.timed_out", {"runtime": self.name})
-            return RuntimeResult(self.name, RuntimeStatus.TIMED_OUT, None, None, None, {"result": str(stdout_path), "stderr": str(stderr_path), "usage": str(usage_path), "isolation": str(isolation_path)}, usage, f"Claude Code exceeded {request.timeout_seconds}s timeout")
+                on_trace("runtime.cancelled", {"runtime": self.name})
+            raise
         _write_text(stdout_path, process.stdout)
         _write_text(stderr_path, process.stderr)
-        try:
-            envelope = json.loads(process.stdout)
-        except json.JSONDecodeError:
-            envelope = {}
+
+        parsed_events: list[dict[str, Any]] = []
+        malformed_lines = 0
+        for line in process.stdout.splitlines():
+            if not line.strip():
+                continue
+            try:
+                event = json.loads(line)
+            except json.JSONDecodeError:
+                malformed_lines += 1
+                continue
+            if isinstance(event, dict):
+                parsed_events.append(event)
+        result_events = [event for event in parsed_events if event.get("type") == "result"]
+        envelope = result_events[-1] if result_events else (parsed_events[-1] if len(parsed_events) == 1 else {})
         raw_usage = envelope.get("usage", {}) if isinstance(envelope, dict) else {}
         model_usage = envelope.get("modelUsage", {}) if isinstance(envelope, dict) else {}
         effective_models = list(model_usage) if isinstance(model_usage, dict) else []
@@ -765,12 +1004,63 @@ class ClaudeCodeAdapter(RuntimeAdapter):
             source="claude-code-result",
             cache_read_is_additional=True,
         )
+        if malformed_lines or process.terminal_reason is not None:
+            usage["complete"] = False
         _write_text(usage_path, json.dumps(usage, ensure_ascii=False, sort_keys=True, indent=2))
         artifacts = {
             "result": str(stdout_path), "stderr": str(stderr_path), "usage": str(usage_path),
             "isolation": str(isolation_path), "output_schema": str(schema_path),
         }
-        session_id = envelope.get("session_id") if isinstance(envelope, dict) else None
+        session_id = _find_recursive(parsed_events, {"session_id", "sessionId"})
+        if process.terminal_reason == "timeout":
+            if on_trace:
+                on_trace("runtime.timed_out", {"runtime": self.name, "session_id": session_id})
+            return RuntimeResult(
+                self.name,
+                RuntimeStatus.TIMED_OUT,
+                str(session_id) if session_id else None,
+                None,
+                process.returncode,
+                artifacts,
+                usage,
+                f"Claude Code exceeded {request.timeout_seconds}s overall timeout",
+                model_effective,
+                bool(model_effective),
+            )
+        if process.terminal_reason in {"startup_stall", "stall"}:
+            if on_trace:
+                on_trace("runtime.stalled", {"runtime": self.name, "session_id": session_id})
+            timeout_value = (
+                request.startup_timeout_seconds
+                if process.terminal_reason == "startup_stall"
+                else request.stall_timeout_seconds
+            )
+            phase = "startup" if process.terminal_reason == "startup_stall" else "stream"
+            return RuntimeResult(
+                self.name,
+                RuntimeStatus.FAILED,
+                str(session_id) if session_id else None,
+                None,
+                process.returncode,
+                artifacts,
+                usage,
+                f"Claude Code {phase} produced no stdout/stderr activity for {timeout_value:g}s",
+                model_effective,
+                bool(model_effective),
+            )
+        if process.terminal_reason is not None:
+            return RuntimeResult(
+                self.name,
+                RuntimeStatus.FAILED,
+                str(session_id) if session_id else None,
+                None,
+                process.returncode,
+                artifacts,
+                usage,
+                f"Claude Code terminated by watchdog: {process.terminal_reason}",
+                model_effective,
+                bool(model_effective),
+            )
         if process.returncode != 0 or (isinstance(envelope, dict) and envelope.get("is_error")):
             error = process.stderr[-4000:] or str(envelope.get("result", "Claude Code failed"))[-4000:]
             return RuntimeResult(
