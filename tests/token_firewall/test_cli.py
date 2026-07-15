@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import contextlib
+import io
 import json
 import subprocess
 import tempfile
@@ -9,6 +11,7 @@ from pathlib import Path
 from tests.token_firewall.fixtures import mission_contract, work_order_v02
 from tests.token_firewall.test_evaluation import pairs, protocol
 from tests.token_firewall.test_benchmark import sealed_record
+from tools.token_firewall.cli import build_parser
 from tools.token_firewall.observability import ExternalRunObserver
 
 
@@ -16,6 +19,21 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class TokenFirewallCliTests(unittest.TestCase):
+    def test_runtime_run_requires_explicit_worker_runtime(self) -> None:
+        argv = [
+            "runtime-run",
+            "mission.json",
+            "work-order.json",
+            "--repo", ".",
+            "--base", "main",
+            "--run-dir", "/tmp/token-firewall-run",
+            "--worktree-root", "/tmp/token-firewall-worktrees",
+        ]
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit) as raised:
+                build_parser().parse_args(argv)
+        self.assertEqual(raised.exception.code, 2)
+
     def test_validate_command_returns_machine_readable_result(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             contract = Path(tmp) / "mission.json"

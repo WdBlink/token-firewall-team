@@ -8,6 +8,16 @@ ROOT = Path(__file__).resolve().parents[2]
 SKILL = ROOT / "skills" / "token-firewall-team" / "SKILL.md"
 RUNBOOK = ROOT / "skills" / "token-firewall-team" / "references" / "runbook.md"
 ARCHITECTURE = ROOT / "docs" / "architecture.md"
+CLI = (
+    ROOT
+    / "skills"
+    / "token-firewall-team"
+    / "scripts"
+    / "token_firewall_runtime"
+    / "tools"
+    / "token_firewall"
+    / "cli.py"
+)
 
 
 class NativePolicyTests(unittest.TestCase):
@@ -21,6 +31,12 @@ class NativePolicyTests(unittest.TestCase):
         skill = SKILL.read_text(encoding="utf-8")
         self.assertIn("only when the user explicitly requests a third-party platform", skill)
         self.assertIn("never silently falls back", skill)
+        cli = CLI.read_text(encoding="utf-8")
+        self.assertNotIn('default="minimax"', cli)
+        self.assertIn(
+            'runtime_run.add_argument("--worker-runtime", choices=["codex", "claude", "minimax"], required=True)',
+            cli,
+        )
 
     def test_no_file_mailbox_native_scheduler_is_documented(self) -> None:
         active = "\n".join(

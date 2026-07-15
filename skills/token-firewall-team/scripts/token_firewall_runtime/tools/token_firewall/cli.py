@@ -99,7 +99,7 @@ def build_parser() -> argparse.ArgumentParser:
     runtime_run.add_argument("--base", required=True)
     runtime_run.add_argument("--run-dir", type=Path, required=True)
     runtime_run.add_argument("--worktree-root", type=Path, required=True)
-    runtime_run.add_argument("--worker-runtime", choices=["codex", "claude", "minimax"], default="minimax")
+    runtime_run.add_argument("--worker-runtime", choices=["codex", "claude", "minimax"], required=True)
     runtime_run.add_argument("--worker-executable")
     runtime_run.add_argument("--worker-agent", default="coder")
     runtime_run.add_argument("--worker-model")
