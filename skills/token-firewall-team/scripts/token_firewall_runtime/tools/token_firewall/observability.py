@@ -414,6 +414,7 @@ class ExternalRunObserver:
                     session_id=session_id,
                 )
             )
+            return
 
     def complete(
         self,

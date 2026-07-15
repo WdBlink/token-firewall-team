@@ -110,6 +110,8 @@ Do not use it to compensate for vague requirements, automate irreversible produc
 
 For route preflights, Runtime commands, and operational boundaries, see the [Runtime runbook](skills/token-firewall-team/references/runbook.md) and [architecture overview](docs/architecture.md).
 
+**Native-first migration:** standalone `runtime-run` callers must now pass `--worker-runtime` explicitly. Claude event output is exposed as JSON Lines in `claude-events.jsonl`; integrations should follow `artifact_refs.result` instead of hard-coding the former `claude-result.json` filename.
+
 ## How It Works
 
 ```text

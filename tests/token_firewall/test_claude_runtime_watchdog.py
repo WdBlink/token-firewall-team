@@ -3,15 +3,11 @@ from __future__ import annotations
 import json
 import os
 import stat
-import sys
 import tempfile
 import time
 import unittest
 from pathlib import Path
 from unittest import mock
-
-TOOLS = Path(__file__).resolve().parents[1] / "tools"
-sys.path.insert(0, str(TOOLS))
 
 from tools.token_firewall.observability import ExternalRunObserver  # noqa: E402
 from tools.token_firewall.runtime import (  # noqa: E402
@@ -221,7 +217,6 @@ class ClaudeRuntimeWatchdogTests(unittest.TestCase):
         self.assertIn('"type":"system"', events)
         self.assertIn('"type":"result"', events)
 
-    @unittest.skipUnless(sys.platform == "darwin", "sandbox-exec is macOS-only")
     def test_macos_sandbox_allows_devnull_for_nested_tools(self) -> None:
         event = {
             "type": "result",
@@ -239,7 +234,11 @@ class ClaudeRuntimeWatchdogTests(unittest.TestCase):
             stderr="",
             elapsed_seconds=0.01,
         )
-        with mock.patch("tools.token_firewall.runtime._run_monitored_process", return_value=monitored):
+        with (
+            mock.patch("tools.token_firewall.runtime.platform.system", return_value="Darwin"),
+            mock.patch("tools.token_firewall.runtime.shutil.which", return_value="/usr/bin/sandbox-exec"),
+            mock.patch("tools.token_firewall.runtime._run_monitored_process", return_value=monitored),
+        ):
             result = self.adapter().execute(self.request("devnull", startup=2.0, stall=2.0))
 
         self.assertTrue(result.ok, result.error)
@@ -292,6 +291,20 @@ class ClaudeRuntimeWatchdogTests(unittest.TestCase):
                     on_activity=interrupt,
                 )
         self.assert_pid_gone(self, pid_file)
+
+    def test_adapter_traces_any_propagated_base_exception_as_cancelled(self) -> None:
+        traces = []
+        with mock.patch(
+            "tools.token_firewall.runtime._run_monitored_process",
+            side_effect=GeneratorExit("cancelled by caller"),
+        ):
+            with self.assertRaises(GeneratorExit):
+                self.adapter().execute(
+                    self.request("success"),
+                    on_trace=lambda kind, details: traces.append((kind, details)),
+                )
+
+        self.assertEqual(traces[-1][0], "runtime.cancelled")
 
     def test_observer_records_stall_then_terminal_failure(self) -> None:
         observer = ExternalRunObserver.create(

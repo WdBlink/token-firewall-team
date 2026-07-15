@@ -38,6 +38,12 @@ The implementation Agent must never evaluate its own delivery.
 
 ## Standalone Runtime compatibility
 
+### Native-first migration note
+
+`runtime-run` no longer has an implicit MiniMax worker. Callers must pass `--worker-runtime codex`, `claude`, or `minimax`; omitting it is a command-line error. This is intentional: a third-party Runtime must reflect an explicit user choice and can never be inferred from Economy mode or token pressure.
+
+Claude Runtime output is now a stream artifact named `claude-events.jsonl` instead of the former `claude-result.json`. Consumers should resolve it through `RuntimeResult.artifact_refs["result"]` and parse JSON Lines, selecting the terminal `type=result` event rather than assuming one JSON envelope. Archived runs that contain the old file remain historical artifacts and are not rewritten.
+
 ```bash
 TF="python3 /absolute/path/to/token-firewall-team/scripts/token_firewall.py"
 $TF runtime-run mission.json work-order.json \

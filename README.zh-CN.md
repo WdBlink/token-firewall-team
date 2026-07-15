@@ -120,6 +120,8 @@ npx skills add WdBlink/token-firewall-team -g
 
 路线预检、Runtime 命令和运行边界见 [Runtime Runbook](skills/token-firewall-team/references/runbook.md) 与[架构概览](docs/architecture.md)。
 
+**Native-first 迁移提示：** 独立调用 `runtime-run` 时现在必须显式传入 `--worker-runtime`。Claude 事件输出改为 JSON Lines 格式的 `claude-events.jsonl`；集成方应读取 `artifact_refs.result`，不要再硬编码旧文件名 `claude-result.json`。
+
 <a id="how-it-works"></a>
 
 ## 工作原理

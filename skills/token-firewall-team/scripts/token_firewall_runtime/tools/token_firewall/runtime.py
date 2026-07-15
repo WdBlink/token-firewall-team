@@ -954,10 +954,6 @@ class ClaudeCodeAdapter(RuntimeAdapter):
                 termination_grace_seconds=request.termination_grace_seconds,
                 on_activity=activity,
             )
-        except KeyboardInterrupt:
-            if on_trace:
-                on_trace("runtime.cancelled", {"runtime": self.name})
-            raise
         except OSError as exc:
             usage = normalize_usage({}, source="claude-code-result")
             usage["complete"] = False
@@ -972,6 +968,10 @@ class ClaudeCodeAdapter(RuntimeAdapter):
                 usage,
                 f"Claude Code could not start: {exc}",
             )
+        except BaseException:
+            if on_trace:
+                on_trace("runtime.cancelled", {"runtime": self.name})
+            raise
         _write_text(stdout_path, process.stdout)
         _write_text(stderr_path, process.stderr)
 
