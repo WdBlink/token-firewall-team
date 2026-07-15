@@ -394,6 +394,26 @@ class ExternalRunObserver:
                     session_id=session_id,
                 )
             )
+            return
+        if kind == "runtime.stalled" and self.ledger.state["status"] not in TERMINAL_STATES:
+            self.ledger.append(
+                self.ledger.next_event(
+                    "run.stalled",
+                    source="watchdog",
+                    summary="外部 Runtime 因持续无活动被终止",
+                    session_id=session_id,
+                )
+            )
+            return
+        if kind == "runtime.cancelled" and self.ledger.state["status"] not in TERMINAL_STATES:
+            self.ledger.append(
+                self.ledger.next_event(
+                    "run.cancelled",
+                    source="watchdog",
+                    summary="外部 Runtime 已取消并清理子进程",
+                    session_id=session_id,
+                )
+            )
 
     def complete(
         self,
