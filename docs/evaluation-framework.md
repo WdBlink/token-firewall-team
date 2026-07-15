@@ -14,7 +14,7 @@ Token Firewall uses a layered evaluation architecture. The protocol kernel remai
 
 The first layer freezes the Base Commit, Work Order, Git Patch, public validators, deferred hidden tests, model identity, Session ID, native usage, failures, retries, and rework. The second layer normalizes control and experiment Runs into paired observations, deduplicates Token usage by Session ID, computes cumulative Sol savings, runs paired Bootstrap non-inferiority analysis, checks risk/task-type coverage, and renders deterministic reports.
 
-These two layers are the source of truth because they understand the external Codex, Claude Code, and MiniMax Code delivery protocol. Moving orchestration wholesale into another framework would require re-implementing those safety and provenance boundaries.
+These two layers are the source of truth for frozen benchmark Runs because they understand the Codex, Claude Code, and MiniMax Code delivery records. They do not need to own native Agent lifecycle: Codex orchestrates native Agents directly, while the benchmark layers retain safety and provenance authority over recorded evidence.
 
 ## Inspect AI compatibility layer
 

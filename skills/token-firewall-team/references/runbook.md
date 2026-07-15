@@ -8,17 +8,35 @@ description: Execute, observe, recover, archive, and evaluate Token Firewall Run
 ## Execution Procedure
 
 ```python
-def execute_runtime(route, mission, work_orders):
-    preflight(route)
-    run_in_external_clone(mission, work_orders)
+def execute_route(route, mission, work_orders):
+    dispatch_native_agent_directly(route, mission, work_orders)
     observe_state_changes_without_streaming_transcripts()
     gate_delivery_and_packet()
     archive_and_verify_terminal_run()
 ```
 
-Invoke commands through `python3 <skill>/scripts/token_firewall.py`.
+Invoke commands through `python3 <skill>/scripts/token_firewall.py` only for contract validation, recovery, benchmarks, archives, or an explicitly requested third-party Adapter.
 
-## Single Work Order
+## Native Codex route
+
+Use Codex's built-in Agent lifecycle directly. Do not run the Python Runtime as a native mailbox or launch a nested `codex exec` process.
+
+For read-only work, record the repository state, send a bounded artifact contract to a native Agent, use a fresh native evaluator, and prove the repository is unchanged afterward.
+
+For mutating work:
+
+1. record the base commit and clean source state;
+2. create an isolated worktree when scopes overlap or the risk warrants it;
+3. resolve a Codex-native role/model preference in the calling orchestrator;
+4. dispatch the bounded Work Order with the absolute worktree path;
+5. manage follow-ups, waits, and interruption through native controls;
+6. reconstruct delivery from Git truth and rerun approved validators;
+7. dispatch a fresh read-only native Verifier;
+8. build the blind Review Packet.
+
+The implementation Agent must never evaluate its own delivery.
+
+## Standalone Runtime compatibility
 
 ```bash
 TF="python3 /absolute/path/to/token-firewall-team/scripts/token_firewall.py"
@@ -28,18 +46,18 @@ $TF runtime-run mission.json work-order.json \
   --worker-runtime codex --worker-model gpt-5.6-terra
 ```
 
-Add `--review-runtime codex --reviewer-model gpt-5.6-sol` only when the final Sol decision is required.
+This external Codex CLI recipe exists for standalone compatibility and frozen experiments. It is not the Codex-host Economy path. Add `--review-runtime codex --reviewer-model gpt-5.6-sol` only when the experiment requires it.
 
 ## Optional Runtime matrix
 
-The Skill core has no vendor-Harness installation dependency. Preflight only the route selected for the next dispatch:
+The Skill core has no vendor-Harness installation dependency. Preflight an external route only after the user explicitly requests that third-party platform:
 
 - MiniMax Code present and safe: use `--worker-runtime minimax` for the native M3 transport.
 - Claude Code present and mapped to M3: use `--worker-runtime claude`, then require an effective verified MiniMax-M3 identity in `stage-result.json`.
-- MiniMax Code absent: keep the Skill, Codex routes, and Claude route operational.
-- Claude Code absent: keep the Skill, Codex routes, and MiniMax route operational.
+- MiniMax Code absent: native Codex work remains operational; report that the requested MiniMax route is unavailable.
+- Claude Code absent: native Codex work remains operational; report that the requested Claude route is unavailable.
 
-Choose the transport before dispatch. Do not fall back inside an active Run; preserve the failed attempt and start a new explicit dispatch so Harness identity, usage, and failure accounting remain auditable.
+Choose the explicitly requested transport before dispatch. Do not fall back inside an active Run; preserve the failed attempt and require a new explicit third-party choice so Harness identity, usage, and failure accounting remain auditable.
 
 ## Frozen Benchmark
 

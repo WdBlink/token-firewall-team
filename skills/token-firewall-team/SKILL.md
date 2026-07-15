@@ -1,11 +1,11 @@
 ---
 name: token-firewall-team
-description: Reduce expensive Sol/GPT-5.6 token use in coding tasks by delegating implementation to MiniMax M3, GPT-5.6 Terra, or Claude Code while keeping Sol as a bounded final reviewer. Use for task decomposition, positive/negative/boundary acceptance contracts, isolated external-worker dispatch, low-noise progress observation, Git-truth delivery gates, blind review, failed-attempt accounting, and quality-versus-token evaluation.
+description: Run Codex Agent Teams through the native subagent lifecycle while preserving bounded contracts, Git truth, deterministic validation, independent verification, and blind final review. Use an external CLI Adapter only when the user explicitly requests a third-party platform such as Claude, MiniMax, or OpenCode.
 ---
 
 # Token Firewall Team
 
-Use the bundled Runtime to run a fail-closed Agent Team loop. Keep Sol on decomposition decisions, escalation, and final acceptance; do not use Sol as the default implementer.
+Use Codex-native subagents as the default Agent Team control plane. Keep the bundled Runtime for explicit third-party routes, recovery, and benchmark tooling. Do not make the Runtime a second native scheduler.
 
 ## Execution Procedure
 
@@ -14,8 +14,8 @@ def run_token_firewall(request, repository):
     inspect_real_repository(repository)
     mission, work_orders = decompose_with_acceptance_boundaries(request)
     protocol.enforce_protocol(mission, work_orders, stages=[])
-    route = select_preflighted_route(mission, work_orders)
-    result = runbook.execute_runtime(route, mission, work_orders)
+    route = select_codex_native_role_and_model_preference(mission, work_orders)
+    result = runbook.execute_native_agents(route, mission, work_orders)
     require_git_gate_and_fresh_verifier(result)
     review_packet = build_bounded_blind_review_packet(result)
     if review_packet.requires_sol_decision:
@@ -23,6 +23,36 @@ def run_token_firewall(request, repository):
     evidence.calibrate_route(route, result.benchmark_records)
     return result
 ```
+
+## Select the Control Plane
+
+Use Codex's native Agent lifecycle for creation, messaging, status/wait, follow-up, interruption, and result collection. Let the host own Agent lifecycle; let Token Firewall own contracts, isolation, Git truth, validators, evidence, and acceptance authority.
+
+Use the native route by default for ordinary research, implementation, and review inside a capable Codex host. Do not start a nested `codex exec` process for this route.
+
+Route native roles according to the official [Codex subagents guidance](https://learn.chatgpt.com/docs/agent-configuration/subagents): use Terra for read-heavy reconnaissance and bounded routine work; use GPT-5.6 for ambiguous semantic implementation, architecture, security, and high-stakes review. When the current Agent API exposes no selector, leave the model unpinned and let Codex balance intelligence, speed, and price. Record whether a model was pinned or host-routed; never invent per-child usage that the host did not expose.
+
+Select an external Runtime only when the user explicitly requests a third-party platform such as Claude, MiniMax, or OpenCode. Token or cost pressure alone never authorizes an external Adapter, and a native failure never silently falls back to one.
+
+### Read-only native tasks
+
+For research, reconnaissance, and analysis with no repository mutation:
+
+1. Record the repository HEAD and clean status before dispatch when a Git repository is in scope.
+2. Send a bounded artifact contract directly through the native Agent lifecycle; do not create a worktree only for role ceremony.
+3. Use a fresh native Agent for independent evaluation.
+4. Recheck HEAD, index, tracked changes, and untracked files. Fail closed if the task changed repository state.
+
+### Mutating native tasks
+
+For code or document changes, preserve the isolated Git delivery gates without introducing another scheduler:
+
+1. The root/Broker records the base commit and creates the isolated worktree before native dispatch when isolation is warranted.
+2. Send the bounded Work Order and absolute worktree path directly through Codex's native Agent lifecycle.
+3. Use native messaging, follow-up, status/wait, and interruption controls to manage the child.
+4. After delivery, reconstruct truth from `base..HEAD`, allowed paths, approved validators, and hashed artifacts; never trust the child report alone.
+5. Dispatch a fresh native Verifier with read-only authority. Never reuse the Worker as Verifier or Reviewer.
+6. Build the bounded blind Review Packet for final acceptance.
 
 ## Locate the Runtime
 
@@ -33,7 +63,7 @@ SKILL_ROOT = directory containing this SKILL.md
 TF = python3 SKILL_ROOT/scripts/token_firewall.py
 ```
 
-Run `python3 "$SKILL_ROOT/scripts/token_firewall.py" --help` to confirm the installation. The Runtime has no third-party Python dependency. Treat Codex CLI, Claude Code, and MiniMax Code as optional capabilities; never fail Skill installation merely because one external Harness is absent.
+Run `python3 "$SKILL_ROOT/scripts/token_firewall.py" --help` only when using Runtime validation, recovery, benchmark tooling, or an explicitly requested third-party Adapter. The Runtime has no third-party Python dependency. A missing external Harness never blocks native Codex work.
 
 ## Execute the Loop
 
@@ -52,36 +82,43 @@ Run `python3 "$SKILL_ROOT/scripts/token_firewall.py" --help` to confirm the inst
    python3 "$SKILL_ROOT/scripts/token_firewall.py" gate-dag work-orders.json
    ```
 
-5. Preflight only the Runtime selected for this dispatch. A missing optional Runtime disables that route, not the Skill or other routes. Never silently weaken a failed isolation gate:
+5. For the native default, resolve the role/model preference in the calling orchestrator (for example OPC's `agent-route`) and dispatch directly. Only when the user explicitly requested a third-party platform, preflight that one Runtime and never silently switch Harnesses:
 
    ```bash
-   python3 "$SKILL_ROOT/scripts/token_firewall.py" runtime-preflight --runtime codex
    python3 "$SKILL_ROOT/scripts/token_firewall.py" runtime-preflight --runtime claude
    python3 "$SKILL_ROOT/scripts/token_firewall.py" runtime-preflight --runtime minimax --agent coder
    ```
 
-6. Put `run-dir`, `worktree-root`, private hidden tests, and archives outside the source repository. Require a clean source commit. The Runtime creates an independent clone and treats `git diff base..head` as authority.
+6. For native mutating work, require a clean source commit and let the root/Broker create any required isolated worktree outside the source repository before Agent dispatch. Treat `git diff base..head` as authority. For an explicit external Runtime run, also keep `run-dir`, private hidden tests, and archives outside the repository and let that Runtime create its independent clone. Apply the read-only native procedure when no mutation is authorized.
 7. Dispatch only the narrow Work Order. Do not send raw conversation history, the full repository, hidden tests, or unrelated files to a Worker.
-8. Poll `observe-status` at low frequency and report only state changes, elapsed heartbeat, Session ID, usage, and delivery summary. Do not stream full terminals into the main task.
+8. Use native Agent status/wait tools for the default route. Poll `observe-status` at low frequency only for explicit external Runtime runs. Report state changes, elapsed heartbeat, Agent/Session ID, usage availability, and delivery summary; do not stream full terminals into the main task.
 9. Require the deterministic Delivery Gate and a fresh independent verifier before Sol review. If `.git` is protected, accept `CHANGES_READY`; let the Broker validate and commit.
 10. Build the blind Review Packet. Sol must see bounded context slices, the patch, acceptance evidence, unresolved risks, and no Worker/model/cost identity.
 11. On `REWORK`, compile findings into the next Work Order revision. Do not ask the Worker to reinterpret prose. Preserve every failed attempt and deduplicate cost only by identical Session ID.
 12. Run hidden evaluation only after all compared model stages end. Archive final and important failed Runs, verify each archive, then import immutable Benchmark Records into an Evaluation Lab.
 
+### Explicit Claude Adapter watchdog
+
+This applies only when the user explicitly requested Claude Code. Claude runs through `stream-json`, so Runtime activity is based on actual stdout/stderr bytes rather than observer polling. `runtime-run` and `benchmark-run` default to `--startup-timeout 30 --stall-timeout 180`; set larger values for slow startup or validators that legitimately produce no output for several minutes, or `0` to disable one watchdog while retaining the overall `--timeout`.
+
+An inactivity stall, overall timeout, or caller interruption terminates Claude's complete process group. A projected `STALLED` status is diagnostic only; recovery requires a new explicit bounded Runtime attempt, never synthetic heartbeat events or an automatic platform fallback.
+
 ## Route Work
 
 Use this evidence-calibrated default:
 
-- Choose Terra Worker + fresh Terra Verifier + Sol Reviewer for ordinary coding tasks with semantic boundaries. This is the current default route.
-- Choose M3 for small mechanical changes only when the Work Order is exceptionally explicit. Keep two optional M3 transports: MiniMax Code/Mavis and Claude Code. Select one before dispatch and freeze the requested Runtime plus effective model identity in the Stage; never switch Harness silently during a Run. If MiniMax Code is unavailable or unsafe, a later dispatch may explicitly use the Claude Adapter's OS sandbox only when the Stage verifies `model_effective` as MiniMax-M3; never infer this from an alias. Use a fresh M3 Verifier. If Sol finds a semantic defect, compile a revision and use Terra as deputy before a new Sol review.
-- Treat Claude Sonnet as experimental until its structured-output and Runtime reliability improve. Use a full model ID and verify `modelUsage`; do not trust a local `sonnet` alias.
-- Choose Sol as implementer only for critical work, irreducible cross-cutting ambiguity, or when all approved cheaper routes fail their quality/isolation gates.
+- Choose a native Codex `explorer`/Terra-preferred Agent for repository scans, large-file reading, documentation work, structured test inventory, and UX observation.
+- Choose a native Codex `worker`/Terra-preferred Agent for bounded routine implementation with an explicit oracle.
+- Choose a native GPT-5.6-preferred Agent for ambiguous semantic implementation, integration, architecture, security, concurrency, destructive migration, or high-stakes verification. Use the host's recommended effort level and let it auto-route when profiles are unavailable.
+- Use a fresh native Verifier and a bounded root Reviewer. Keep all mutating-task Git and validator gates.
+- If the user explicitly asks for Claude, MiniMax, or OpenCode, freeze that external Harness and model for the attempt. Never turn these into Economy defaults or fallback routes.
 
 Do not route based only on file count. Authentication, data loss, external side effects, migrations, concurrency, and ambiguous semantic boundaries raise risk.
 
 ## Protect the Token Firewall
 
 - Never make Sol read a full external transcript. Persist it in artifacts and pass only schema-validated delivery data.
+- Distinguish a pinned native profile from host auto-routing. Record the preference and selection mode without claiming unavailable per-child Token usage.
 - Never count a cheap model's claim as verified evidence. Rerun approved validators and inspect Git truth.
 - Keep failed calls, retries, timeout Sessions, and rework in evaluation accounting.
 - Distinguish gross accounted tokens from vendor-native tokens. Optimize the expensive Sol total; retain both measures for audit.
