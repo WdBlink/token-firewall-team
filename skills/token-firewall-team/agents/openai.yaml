@@ -1,4 +1,4 @@
 interface:
   display_name: "Token Firewall Team"
-  short_description: "Reuse native Codex agents with Git-backed gates"
-  default_prompt: "Use $token-firewall-team to run this task with Codex-native subagents, preserve Git and verification gates, and use an external CLI Adapter only if I explicitly request a third-party platform."
+  short_description: "Route native Codex and M3 workers through Git-backed gates"
+  default_prompt: "Use $token-firewall-team with Codex-native subagents. Prefer the native minimax_m3 economy Worker only for bounded, testable work, require a fresh non-M3 verifier, preserve Git and validation gates, and use an external CLI Adapter only if I explicitly request that external harness."

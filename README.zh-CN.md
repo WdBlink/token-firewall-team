@@ -6,7 +6,7 @@
   </picture>
 
   <p><strong>12 任务实验中，昂贵编程模型 Token 减少 70.79%，同时不把质量控制交给便宜模型。</strong></p>
-  <p>Codex 按任务为原生 Agent 路由模型，强推理模型只评审由 Git 和测试支撑的紧凑交付。</p>
+  <p>Codex 按任务为原生 Agent 路由模型，包括可选的 MiniMax-M3 经济型 Worker；强推理模型只评审由 Git 和测试支撑的紧凑交付。</p>
   <p><a href="README.md">English</a> | <strong>中文</strong></p>
 </div>
 
@@ -52,6 +52,7 @@ npx skills add WdBlink/token-firewall-team -g
 ```text
 “使用 token-firewall-team 实现这个 Issue”  —— Codex 原生委派、Git/测试门禁和强模型终审
 “将这条路线与 Sol 直接实现进行基准对比” —— 配对质量、用量与 Token 节省证据
+“使用 minimax_m3 经济型 Worker”          —— 原生 M3 有界执行 + 独立非 M3 验证
 “这次 Worker 使用 Claude”               —— 明确选择第三方 CLI Adapter
 ```
 
@@ -60,7 +61,7 @@ npx skills add WdBlink/token-firewall-team -g
 一次代码改动可以这样调用：
 
 ```text
-使用 token-firewall-team 完成这个改动。默认使用 Codex 原生 Agent：读密集和边界清晰的常规任务优先 Terra，语义歧义或高风险任务使用 GPT-5.6，并保留 Git/测试门禁与独立终审。除非我明确指定第三方平台，否则不要调用外部 CLI。
+使用 token-firewall-team 完成这个改动。默认使用 Codex 原生 Agent，把符合条件且边界清晰的工作交给已配置的 minimax_m3 经济型 Worker，必须由全新的非 M3 Agent 验证，并保留 Git/测试门禁与独立终审。除非我明确指定某个外部 Harness，否则不要调用外部 CLI。
 ```
 
 <a id="why-token-firewall"></a>
@@ -72,11 +73,12 @@ npx skills add WdBlink/token-firewall-team -g
 ## 你将获得什么
 
 - **降低前沿模型开销。** 读密集与边界清晰的常规任务优先原生 Terra，语义歧义和高风险判断保留给 GPT-5.6。
+- **原生 MiniMax 经济路线。** 主 Agent 继续使用 OpenAI 模型，由 Codex 为边界清晰、可验证的工作创建 MiniMax-M3 自定义子 Agent。
 - **更安全的委派。** 在实现前冻结正例、反例和明确的语义边界。
 - **先验证据，再接受交付。** 只有 Git 真值 Patch、批准的测试和全新 Verifier 都通过，交付才进入终审。
 - **低噪声观察原生进度。** 复用 Codex 的 Agent 状态与等待机制，不持续转发 Worker 完整终端。
 - **用同一套实验同时衡量质量与节省。** 失败尝试、返工、隐藏检查、模型身份和原生用量都保留在配对评估中。
-- **外部平台必须显式授权。** Claude、MiniMax、OpenCode 等 CLI Adapter 只有在用户明确指定相应第三方平台时才运行。
+- **外部 Harness 必须显式指定。** Claude Code、MiniMax Code、OpenCode 等 CLI Adapter 只有在用户明确指定相应外部 Harness 时才运行。只选择 MiniMax-M3 模型仍使用 Codex 原生 Agent 生命周期。
 
 <a id="experimental-evidence"></a>
 
@@ -114,13 +116,24 @@ npx skills add WdBlink/token-firewall-team -g
 | 能力 | 所需环境 | 是否必需 |
 |---|---|---:|
 | 安装并调用 Skill | 支持 [Agent Skills](https://agentskills.io) 的 Codex | 是 |
-| 原生 Agent 路由 | Codex 原生子 Agent 与可用模型配置/宿主自动路由 | 默认 |
-| 第三方路线 | 用户明确指定并安装相应 Claude、MiniMax 或 OpenCode CLI | 可选 |
+| 原生 Agent 路由 | 当前 Codex 原生子 Agent 与可用模型配置/宿主自动路由 | 默认 |
+| 原生 MiniMax-M3 经济路线 | MiniMax Responses API Key 与 `minimax_m3` Codex 自定义 Agent | 可选 |
+| 外部 CLI 路线 | 用户明确指定并安装相应 Claude Code、MiniMax Code 或 OpenCode CLI | 可选 |
 | 协议验证与 Evaluation Lab | Python 3.10+ | 是 |
 
 路线预检、Runtime 命令和运行边界见 [Runtime Runbook](skills/token-firewall-team/references/runbook.md) 与[架构概览](docs/architecture.md)。
 
 **Native-first 迁移提示：** 独立调用 `runtime-run` 时现在必须显式传入 `--worker-runtime`。Claude 事件输出改为 JSON Lines 格式的 `claude-events.jsonl`；集成方应读取 `artifact_refs.result`，不要再硬编码旧文件名 `claude-result.json`。
+
+## 原生 MiniMax-M3 经济型 Agent
+
+Codex 现在会从 `~/.codex/agents/` 发现独立的自定义 Agent。主会话因此可以继续使用 OpenAI 模型，同时让 `minimax_m3` 子 Agent 调用 MiniMax 的 OpenAI Responses 兼容 API，不再需要通过 Claude Code 或 MiniMax Code 中转。
+
+本仓库提供不含凭据的 Provider、自定义 Agent 与 `model_catalog_json` 示例。模型目录负责描述 M3 的 thinking 开关、工具行为、1M 上下文、图片输入与有界 Worker 指令；它既不存储 API Key，也不能代替监督验证。
+
+部分 Codex Desktop Multi-Agent V2 版本目前会丢失初始子任务，或把它错误标记为 `assistant/commentary`。配置指南新增了精确 nonce 回归和权限为 `0600` 的短时一次性交付桥；它仍在 Codex 内执行并且失败关闭，不是外部 Harness 回退，也不是第二套调度器。
+
+→ [配置原生 MiniMax-M3 经济型 Agent](docs/native-minimax-m3.md)
 
 <a id="how-it-works"></a>
 
@@ -129,7 +142,8 @@ npx skills add WdBlink/token-firewall-team -g
 ```text
 明确的验收合同
     → Codex 原生角色/模型路由
-    → Git 范围检查 + 确定性测试 + 全新 Verifier
+    → 可选 MiniMax-M3 经济型 Worker 执行有界任务
+    → Git 范围检查 + 确定性测试 + 全新非 M3 Verifier
     → 交给最强终审模型的紧凑匿名证据包
 ```
 
@@ -141,6 +155,7 @@ Worker 始终只负责提出候选方案；Git、批准的验证命令、全新 
 
 - 主要结果仍来自一个冻结的合成 Python 任务集和一组 Terra/Sol 配置；仍需真实仓库和跨语言复现。
 - 当前 native-first 运行策略仍需要自己的真实仓库和分模型复现，不能把 12 任务外部 Terra 结果直接当作证明。
+- M3 目前只有两个任务的方向性 Pilot。它是受监督的经济型 Worker，不是终审者；重试、返工与非 M3 验证成本都必须计入实际节省。
 - Claude Code、MiniMax Code 与 OpenCode 是显式选择的可选通道，具有各自的模型身份和隔离要求，永远不会成为自动 fallback。
 
 ## 一起塑造路线图

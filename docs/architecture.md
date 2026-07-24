@@ -8,8 +8,12 @@ flowchart LR
   A --> W[Bounded work orders]
   W --> R{Control plane before dispatch}
   R -->|Codex native host| N[Native subagent lifecycle]
+  N --> M{Native model route}
+  M -->|Economy and bounded| MM[MiniMax-M3 custom agent]
+  M -->|Default or high risk| OA[OpenAI model agent]
   R -->|Explicit third-party request| E[External CLI Adapter]
-  N --> G[Broker: Git and tests]
+  MM --> G[Broker: Git and tests]
+  OA --> G
   E --> G
   G --> V[Fresh verifier]
   V --> P[Blind review packet]
@@ -26,12 +30,12 @@ The immutable Mission and Work Order define scope. A Worker report is only a pro
 
 | Transport | Worker models | Requirement | Isolation status |
 |---|---|---|---|
-| Codex native host | Terra, GPT-5.6, or host auto-route | Native Agent lifecycle tools | Read-only state proof or Broker-created isolated worktree |
+| Codex native host | MiniMax-M3 custom agent, Terra, GPT-5.6, or host auto-route | Native Agent lifecycle tools; user-level provider config for MiniMax-M3 | Read-only state proof or Broker-created isolated worktree |
 | Codex CLI | Codex models | Standalone/benchmark compatibility only | Native workspace/read-only sandbox |
 | Claude Code | Claude or explicitly mapped third-party models | Explicit user request plus verified `modelUsage` | macOS outer `sandbox-exec`; other platforms fail closed when equivalent isolation is unavailable |
 | MiniMax Code | MiniMax models | Explicit user request | Enabled only when production preflight proves the current permission boundary safe |
 
-Codex native is the default control plane. External transports are optional and require an explicit user request for the corresponding third-party platform. The selected transport is frozen before dispatch; Token Firewall never silently swaps Harnesses inside an active Run.
+Codex native is the default control plane. A native custom agent can use the MiniMax Responses API while Codex still owns its lifecycle; model provider does not define the control plane. External transports are optional and require an explicit request for the corresponding CLI harness. The selected transport is frozen before dispatch; Token Firewall never silently swaps Harnesses inside an active Run.
 
 The Broker is a governance boundary, not a second native scheduler. Codex creates and manages its own Agents directly; the Broker freezes contracts, prepares isolation, checks Git truth, reruns validators, and packetizes evidence. Python never simulates the native route with a mailbox or nested `codex exec` process.
 

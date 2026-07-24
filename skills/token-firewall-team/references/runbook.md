@@ -21,26 +21,28 @@ Invoke commands through `python3 <skill>/scripts/token_firewall.py` only for con
 
 Use Codex's built-in Agent lifecycle directly. Do not run the Python Runtime as a native mailbox or launch a nested `codex exec` process.
 
+Codex discovers personal custom agents from `~/.codex/agents/*.toml` and project agents from `.codex/agents/*.toml`. A MiniMax-M3 economy Worker should be a personal `minimax_m3` custom agent whose file pins `model = "MiniMax-M3"` and a user-level custom Responses API provider. The custom-agent file must include `name`, `description`, and `developer_instructions`. Provider credentials stay outside the repository. See [`references/native-minimax-m3.md`](native-minimax-m3.md) for the installed-skill setup and policy.
+
 For read-only work, record the repository state, send a bounded artifact contract to a native Agent, use a fresh native evaluator, and prove the repository is unchanged afterward.
 
 For mutating work:
 
 1. record the base commit and clean source state;
 2. create an isolated worktree when scopes overlap or the risk warrants it;
-3. resolve a Codex-native role/model preference in the calling orchestrator;
+3. resolve a Codex-native role/model preference in the calling orchestrator; select `agent_type = "minimax_m3"` for an eligible economy Work Order and avoid a full-history fork;
 4. dispatch the bounded Work Order with the absolute worktree path;
 5. manage follow-ups, waits, and interruption through native controls;
 6. reconstruct delivery from Git truth and rerun approved validators;
 7. dispatch a fresh read-only native Verifier;
 8. build the blind Review Packet.
 
-The implementation Agent must never evaluate its own delivery.
+The implementation Agent must never evaluate its own delivery. A `minimax_m3` Worker requires a fresh non-M3 Verifier and bounded root review.
 
 ## Standalone Runtime compatibility
 
 ### Native-first migration note
 
-`runtime-run` no longer has an implicit MiniMax worker. Callers must pass `--worker-runtime codex`, `claude`, or `minimax`; omitting it is a command-line error. This is intentional: a third-party Runtime must reflect an explicit user choice and can never be inferred from Economy mode or token pressure.
+`runtime-run` no longer has an implicit MiniMax worker. Callers must pass `--worker-runtime codex`, `claude`, or `minimax`; omitting it is a command-line error. This standalone compatibility path is distinct from the native Codex `minimax_m3` custom agent. A third-party Runtime must reflect an explicit external-harness choice and can never be inferred from Economy mode, the MiniMax model name, or token pressure.
 
 Claude Runtime output is now a stream artifact named `claude-events.jsonl` instead of the former `claude-result.json`. Consumers should resolve it through `RuntimeResult.artifact_refs["result"]` and parse JSON Lines, selecting the terminal `type=result` event rather than assuming one JSON envelope. Archived runs that contain the old file remain historical artifacts and are not rewritten.
 
@@ -56,11 +58,11 @@ This external Codex CLI recipe exists for standalone compatibility and frozen ex
 
 ## Optional Runtime matrix
 
-The Skill core has no vendor-Harness installation dependency. Preflight an external route only after the user explicitly requests that third-party platform:
+The Skill core has no vendor-Harness installation dependency. A Codex custom agent backed by the MiniMax Responses API is part of the native route and does not use these adapters. Preflight an external route only after the user explicitly requests that external harness:
 
-- MiniMax Code present and safe: use `--worker-runtime minimax` for the native M3 transport.
-- Claude Code present and mapped to M3: use `--worker-runtime claude`, then require an effective verified MiniMax-M3 identity in `stage-result.json`.
-- MiniMax Code absent: native Codex work remains operational; report that the requested MiniMax route is unavailable.
+- MiniMax Code/Mavis present and safe: use `--worker-runtime minimax` for an explicitly requested external MiniMax transport.
+- Claude Code present and mapped to M3: use `--worker-runtime claude` only when Claude Code itself was explicitly requested, then require an effective verified MiniMax-M3 identity in `stage-result.json`.
+- MiniMax Code absent: the native `minimax_m3` custom agent remains operational when its API provider is configured; report only the explicitly requested MiniMax Code harness as unavailable.
 - Claude Code absent: native Codex work remains operational; report that the requested Claude route is unavailable.
 
 Choose the explicitly requested transport before dispatch. Do not fall back inside an active Run; preserve the failed attempt and require a new explicit third-party choice so Harness identity, usage, and failure accounting remain auditable.
@@ -79,7 +81,7 @@ $TF benchmark-run identity.json mission.json work-order.json \
 
 Use the full Claude model ID for group E. Mavis production preflight intentionally rejects `bypassPermissions`; the unsafe override is allowed only for disposable experiments and must remain visible in isolation evidence.
 
-If this machine maps a Claude Code alias to M3, an isolated M3 Worker can use `--worker-runtime claude --worker-model <alias>`. Accept the route only when the Stage artifact has `model_effective_verified=true` and an effective MiniMax-M3 model. A frozen Worker can be replayed without another model turn:
+For a frozen benchmark that explicitly targets Claude Code transport, a machine-local Claude Code alias may still map to M3 through `--worker-runtime claude --worker-model <alias>`. This is not the operational economy route. Accept the benchmark route only when the Stage artifact has `model_effective_verified=true` and an effective MiniMax-M3 model. A frozen Worker can be replayed without another model turn:
 
 ```bash
 $TF runtime-run mission.json work-order.json --repo /clean/repo --base <commit> \
