@@ -80,6 +80,10 @@ class NativePolicyTests(unittest.TestCase):
         self.assertEqual(agent["model_provider"], "minimax")
         for required in ("name", "description", "developer_instructions"):
             self.assertTrue(agent[required])
+        instructions = agent["developer_instructions"]
+        self.assertIn("minimax_m3-assignment.json", instructions)
+        self.assertIn("PAYLOAD_MISSING", instructions)
+        self.assertIn("contract_sha256", instructions)
 
         provider = tomllib.loads(MINIMAX_PROVIDER.read_text(encoding="utf-8"))
         minimax = provider["model_providers"]["minimax"]
@@ -101,6 +105,8 @@ class NativePolicyTests(unittest.TestCase):
         self.assertIn("minimax_m3", active)
         self.assertIn("fresh non-M3 Verifier", active)
         self.assertIn("No Claude Code or MiniMax Code process is required", active)
+        self.assertIn("exact-nonce", active)
+        self.assertIn("one-shot", active)
 
 
 if __name__ == "__main__":

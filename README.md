@@ -121,6 +121,8 @@ Codex now discovers standalone custom agents from `~/.codex/agents/`. That lets 
 
 This repository includes credential-free provider, custom-agent, and `model_catalog_json` examples. The catalog describes M3's reasoning toggle, tool behavior, 1M context, image input, and bounded-Worker instructions; it does not contain credentials or replace verification policy.
 
+Some Codex Desktop Multi-Agent V2 builds currently lose or mis-role the initial child task. The setup guide includes an exact-nonce regression and a short-lived, mode-`0600` one-shot delivery bridge. It keeps execution inside Codex and fails closed; it is not an external-harness fallback or a second scheduler.
+
 → [Configure the native MiniMax-M3 economy agent](docs/native-minimax-m3.md)
 
 ## How It Works

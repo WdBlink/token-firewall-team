@@ -131,6 +131,8 @@ Codex 现在会从 `~/.codex/agents/` 发现独立的自定义 Agent。主会话
 
 本仓库提供不含凭据的 Provider、自定义 Agent 与 `model_catalog_json` 示例。模型目录负责描述 M3 的 thinking 开关、工具行为、1M 上下文、图片输入与有界 Worker 指令；它既不存储 API Key，也不能代替监督验证。
 
+部分 Codex Desktop Multi-Agent V2 版本目前会丢失初始子任务，或把它错误标记为 `assistant/commentary`。配置指南新增了精确 nonce 回归和权限为 `0600` 的短时一次性交付桥；它仍在 Codex 内执行并且失败关闭，不是外部 Harness 回退，也不是第二套调度器。
+
 → [配置原生 MiniMax-M3 经济型 Agent](docs/native-minimax-m3.md)
 
 <a id="how-it-works"></a>

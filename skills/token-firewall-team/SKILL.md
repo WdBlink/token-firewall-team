@@ -34,6 +34,8 @@ Route native roles according to the official [Codex subagents guidance](https://
 
 Model vendor and execution platform are different routing dimensions. A request for MiniMax or M3 uses the native `minimax_m3` role when available. Select an external Runtime only when the user explicitly requests execution through an external harness such as Claude Code CLI, MiniMax Code/Mavis, or OpenCode. Token or cost pressure alone never authorizes an external Adapter, and a native failure never silently falls back to one.
 
+Before the first M3 delivery in a fresh Codex build/session, run an exact-nonce no-tool probe with `fork_turns = "none"`. If the child returns `PAYLOAD_MISSING`, a generic acknowledgement, or anything other than the nonce while direct MiniMax Responses execution is healthy, treat native task delivery—not the provider—as failed. Follow the bounded one-shot bridge in `references/native-minimax-m3.md`; never fall back to an external harness. Clear the bridge after the result and retain the normal Git, validator, non-M3 Verifier, and root-review gates.
+
 ### Read-only native tasks
 
 For research, reconnaissance, and analysis with no repository mutation:
@@ -82,7 +84,7 @@ Run `python3 "$SKILL_ROOT/scripts/token_firewall.py" --help` only when using Run
    python3 "$SKILL_ROOT/scripts/token_firewall.py" gate-dag work-orders.json
    ```
 
-5. For the native default, resolve the role/model preference in the calling orchestrator (for example OPC's `agent-route`) and dispatch directly. A MiniMax model request resolves to `agent_type = "minimax_m3"` with no full-history fork; it does not preflight an external Runtime. Only when the user explicitly requested an external CLI harness, preflight that one Runtime and never silently switch Harnesses:
+5. For the native default, resolve the role/model preference in the calling orchestrator (for example OPC's `agent-route`) and dispatch directly. A MiniMax model request resolves to `agent_type = "minimax_m3"` with `fork_turns = "none"`; it does not preflight an external Runtime. If the exact-nonce delivery regression fails, issue the short-lived local bridge defined in `references/native-minimax-m3.md` before spawning. Only when the user explicitly requested an external CLI harness, preflight that one Runtime and never silently switch Harnesses:
 
    ```bash
    python3 "$SKILL_ROOT/scripts/token_firewall.py" runtime-preflight --runtime claude

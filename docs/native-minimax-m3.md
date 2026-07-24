@@ -69,6 +69,26 @@ MiniMax-M3 treats `none` as thinking off. Any non-`none` reasoning effort enable
 
 Restart Codex after changing provider, agent, or catalog files. Ask the parent to use `agent_type = "minimax_m3"` for a bounded Work Order. Prefer no history fork or a small bounded context slice; pass the contract, relevant paths, and validators explicitly.
 
+Run a fresh exact-nonce probe before real work. Current Codex Desktop Multi-Agent V2 builds can create the child but omit `spawn_agent.message` or expose it as an `assistant/commentary` envelope instead of the current task. This matches the upstream [task-role bug](https://github.com/openai/codex/issues/25458) and the still-open [non-OpenAI provider orchestration gap](https://github.com/openai/codex/issues/17598). If direct MiniMax Responses execution works but the child does not return the nonce, use this fail-closed delivery bridge:
+
+```json
+{
+  "schema_version": 1,
+  "recipient": "minimax_m3",
+  "dispatch_id": "unique-per-attempt",
+  "issued_at": "RFC-3339 UTC timestamp",
+  "expires_at": "no more than 15 minutes later",
+  "cwd": "/absolute/existing/worktree",
+  "task": "bounded assignment",
+  "contract_path": "/absolute/immutable/work-order.json",
+  "contract_sha256": "64 lowercase hex characters"
+}
+```
+
+Write it atomically to `~/.codex/runtime/minimax_m3-assignment.json`, set mode `0600`, and then spawn `minimax_m3` with `fork_turns = "none"`. The custom-agent instructions validate recipient, time window, working directory, and optional contract hash before accepting the task. Require the expected nonce or dispatch ID in the result and delete the file immediately after collection. Never place credentials, hidden tests, or an unbounded conversation transcript in it.
+
+This is a one-shot compatibility bridge for the upstream delivery defect, not a second scheduler or an external harness. Codex still owns child lifecycle and tools. Token Firewall still owns contracts, Git truth, deterministic validation, independent non-M3 verification, and acceptance. Stop using the bridge once the direct nonce regression passes.
+
 Use the M3 route for low-risk and selected medium-risk work that has:
 
 - tight allowed paths;
