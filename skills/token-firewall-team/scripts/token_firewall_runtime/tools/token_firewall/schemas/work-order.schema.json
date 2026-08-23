@@ -80,7 +80,7 @@
       "properties": {
         "level": {"enum": ["low", "medium", "high", "critical"]},
         "reasons": {"type": "array", "items": {"type": "string"}},
-        "required_review": {"enum": ["m3-then-sol", "terra-then-sol", "sol-deep-review"]}
+        "required_review": {"enum": ["m3-then-sol", "m3-luna-sol", "luna-then-sol", "terra-then-sol", "sol-deep-review"]}
       },
       "additionalProperties": false
     },

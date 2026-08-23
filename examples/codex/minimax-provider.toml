@@ -1,0 +1,8 @@
+# Merge this provider table into the user-level ~/.codex/config.toml.
+# Keep the API key in the environment; never commit it to this repository.
+
+[model_providers.minimax]
+name = "MiniMax"
+base_url = "https://api.minimaxi.com/v1"
+env_key = "MINIMAX_API_KEY"
+wire_api = "responses"

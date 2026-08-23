@@ -27,23 +27,27 @@ Roles:
 - Verifier/Deputy: fresh read-only Session that checks every Spec. It cannot PASS with a failed Spec, high/critical finding, coverage gap, or context request.
 - Sol Chief Reviewer: anonymous final decision (`PASS`, `REWORK`, or `ESCALATE`).
 
-Control-plane ownership is separate from acceptance authority:
+Control-plane ownership is separate from model-provider selection and acceptance authority:
 
-- Codex host: creates native subagents, routes messages and follow-ups, exposes status, waits for results, and interrupts or closes children.
+- Codex host: discovers custom agents, creates native subagents, routes messages and follow-ups, exposes status, waits for results, and interrupts or closes children. A custom agent may use a non-OpenAI Responses API provider without becoming an external CLI process.
 - Token Firewall Broker: freezes the task, creates mutating-task worktrees, checks scope and Git truth, reruns validators, packetizes evidence, and records failed attempts.
-- External Runtime Adapter: owns lifecycle only when the user explicitly requests the corresponding third-party platform.
+- External Runtime Adapter: owns lifecycle only when the user explicitly requests the corresponding external harness.
 
-A native profile may express a model preference; an unpinned call may use Codex host auto-routing. Record which selection mode was used and exclude unavailable per-child usage from model-specific Token-savings claims.
+A native custom agent may pin MiniMax-M3 through a user-level custom provider; another native profile may express a model preference; and an unpinned call may use Codex host auto-routing. Record which selection mode was used and exclude unavailable per-child usage from model-specific Token-savings claims.
 
 For read-only native tasks, replace worktree isolation with a bounded artifact contract plus pre/post repository-state checks. Any change to HEAD, index, tracked files, or untracked-file set is a hard failure. For mutating tasks, worktree and Git Delivery gates remain mandatory regardless of lifecycle owner.
 
-Risk routing:
+Default risk routing:
 
 | Risk | Initial implementation | Independent verification | Final decision |
 |---|---|---|---|
-| low | native Terra-preferred for read-heavy/routine work | fresh native verifier | bounded root review |
-| medium | native Terra or GPT-5.6 according to semantic ambiguity | fresh native verifier | bounded root review |
-| high | native GPT-5.6 with explicit security boundaries | fresh native deep verifier | high-effort root review |
-| critical | native GPT-5.6 or explicitly approved specialist | independent deep verification | root review/user boundary |
+| low | native `minimax_m3` for bounded/evaluable mutation; GPT-5.6 Luna for read-only reconnaissance; otherwise Sol | fresh read-only Luna verifier for M3 | bounded Sol/root review |
+| medium | native `minimax_m3` only with tight scope and deterministic oracle; otherwise Sol | fresh read-only Luna verifier for mechanical M3 specs; Sol for semantic uncertainty | bounded Sol/root review |
+| high | GPT-5.6 Sol with explicit security boundaries | fresh Sol-led deep verifier | high-effort Sol/root review |
+| critical | GPT-5.6 Sol or explicitly approved specialist | independent Sol-led deep verification | Sol/root review and user boundary |
 
-Fail closed on dirty source state, path overlap, missing Session ID, malformed delivery, mismatched commit, hidden-test disclosure, unsafe Mavis isolation, or archive/hash mismatch. Unknown model identity or incomplete usage also fails any model-specific route, cost claim, or benchmark; it remains explicitly recorded but does not invalidate a native delivery whose Git and acceptance evidence pass.
+M3 is never the sole authority for authentication, authorization, data loss, destructive migration, security, concurrency, external side effects, or ambiguous semantic boundaries. Its output is a proposal until Git truth, deterministic validators, and a fresh non-M3 Verifier agree. GPT-5.6 Luna is the preferred independent verifier for bounded low/medium M3 deliveries, provided it runs in a new read-only Session and every Spec has a deterministic oracle. Luna must escalate semantic ambiguity, security concerns, and high-risk findings to Sol, and its PASS never replaces a required Sol final decision.
+
+Terra is not part of the default production route. Preserve Terra only for explicit user selection, frozen benchmark reproduction, and separately approved evidence-calibrated policies. M3 unavailability does not authorize an automatic Terra fallback.
+
+Fail closed on dirty source state, path overlap, missing Session ID, malformed delivery, mismatched commit, hidden-test disclosure, unsafe Mavis isolation, or archive/hash mismatch. An M3 route also fails closed on a missing custom agent, unexpected effective model identity, absent deterministic oracle, or missing independent non-M3 verification. Unknown model identity or incomplete usage fails any model-specific cost claim or benchmark; it remains explicitly recorded but does not invalidate a native delivery whose Git and acceptance evidence pass.

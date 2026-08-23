@@ -1,0 +1,38 @@
+{
+  "models": [
+    {
+      "slug": "MiniMax-M3",
+      "display_name": "MiniMax-M3 Economy Worker",
+      "description": "Cost-efficient coding and agentic worker with up to 1M context and native image input; use for bounded, testable work under independent verification.",
+      "default_reasoning_level": "high",
+      "supported_reasoning_levels": [
+        {
+          "effort": "none",
+          "description": "Think-Off: faster execution for simple deterministic tasks"
+        },
+        {
+          "effort": "high",
+          "description": "Adaptive Thinking: coding and multi-step agent work"
+        }
+      ],
+      "shell_type": "shell_command",
+      "visibility": "list",
+      "supported_in_api": true,
+      "priority": 0,
+      "base_instructions": "You are Codex, an economy coding agent based on MiniMax-M3. You are a bounded Worker, not final acceptance authority. Work only from the assigned contract and allowed paths. Restate the positive case, negative case, semantic boundary, and validator before editing. Prefer the smallest sufficient change. Inspect real files before making claims. Run every approved deterministic validator and report exact evidence. If requirements are ambiguous, risk is high, validation is unavailable, or the task exceeds scope, stop and return BLOCKED or NEEDS_REPLAN. Surface uncertainty and unresolved risks. Expect an independent non-MiniMax verifier to audit the result.",
+      "supports_reasoning_summaries": true,
+      "default_reasoning_summary": "none",
+      "support_verbosity": false,
+      "truncation_policy": {
+        "mode": "bytes",
+        "limit": 10000
+      },
+      "supports_parallel_tool_calls": true,
+      "experimental_supported_tools": [],
+      "input_modalities": [
+        "text",
+        "image"
+      ]
+    }
+  ]
+}

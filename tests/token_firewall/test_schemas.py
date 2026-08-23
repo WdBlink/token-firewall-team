@@ -80,6 +80,64 @@ class ProtocolSchemaTests(unittest.TestCase):
         error = self.assert_invalid(fake_boundary)
         self.assertTrue(any(issue.keyword == "semanticBoundary" for issue in error.issues))
 
+    def test_luna_review_routes_are_valid_contract_values(self) -> None:
+        mission = mission_contract()
+        mission["risk_boundaries"][0]["review_level"] = "m3-luna-sol"
+        seal(mission)
+        self.registry.validate(mission)
+
+        m3_order = work_order()
+        m3_order["risk"]["required_review"] = "m3-luna-sol"
+        seal(m3_order)
+        self.registry.validate(m3_order)
+
+        luna_order = work_order_v02(risk="medium")
+        luna_order["risk"]["required_review"] = "luna-then-sol"
+        seal(luna_order)
+        self.registry.validate(luna_order)
+
+        budget = seal({
+            "schema": "token-firewall/risk-token-budget-policy@0.1",
+            "object_id": "budget_luna_routes",
+            "revision": 1,
+            "created_at": "2026-08-23T00:00:00+08:00",
+            "tiers": {
+                "low": {
+                    "required_review": "m3-luna-sol",
+                    "planning_sol_max": 0,
+                    "review_sol_max": 100,
+                    "total_sol_max": 100,
+                    "minimum_sol_savings_percent": 0,
+                    "max_rework_rounds": 1,
+                },
+                "medium": {
+                    "required_review": "luna-then-sol",
+                    "planning_sol_max": 0,
+                    "review_sol_max": 100,
+                    "total_sol_max": 100,
+                    "minimum_sol_savings_percent": 0,
+                    "max_rework_rounds": 1,
+                },
+                "high": {
+                    "required_review": "sol-deep-review",
+                    "planning_sol_max": 100,
+                    "review_sol_max": 100,
+                    "total_sol_max": 200,
+                    "minimum_sol_savings_percent": 0,
+                    "max_rework_rounds": 1,
+                },
+                "critical": {
+                    "required_review": "sol-deep-review",
+                    "planning_sol_max": 100,
+                    "review_sol_max": 100,
+                    "total_sol_max": 200,
+                    "minimum_sol_savings_percent": 0,
+                    "max_rework_rounds": 1,
+                },
+            },
+        })
+        self.registry.validate(budget)
+
     def test_delivery_manifest_positive_and_negative_examples(self) -> None:
         value = delivery_manifest()
         self.registry.validate(value)

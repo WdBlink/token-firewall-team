@@ -50,7 +50,7 @@
         "type": "object", "required": ["pattern", "review_level"],
         "properties": {
           "pattern": {"type": "string", "minLength": 1},
-          "review_level": {"enum": ["m3", "terra", "terra-then-sol", "sol-deep-review"]}
+          "review_level": {"enum": ["m3", "m3-luna-sol", "luna-then-sol", "terra", "terra-then-sol", "sol-deep-review"]}
         },
         "additionalProperties": false
       }
