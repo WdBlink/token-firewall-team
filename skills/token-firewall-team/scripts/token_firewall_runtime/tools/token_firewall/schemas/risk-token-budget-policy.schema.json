@@ -26,7 +26,7 @@
       "type": "object",
       "required": ["required_review", "planning_sol_max", "review_sol_max", "total_sol_max", "minimum_sol_savings_percent", "max_rework_rounds"],
       "properties": {
-        "required_review": {"enum": ["m3-then-sol", "terra-then-sol", "sol-deep-review"]},
+        "required_review": {"enum": ["m3-then-sol", "m3-luna-sol", "luna-then-sol", "terra-then-sol", "sol-deep-review"]},
         "planning_sol_max": {"type": "integer", "minimum": 0},
         "review_sol_max": {"type": "integer", "minimum": 1},
         "total_sol_max": {"type": "integer", "minimum": 1},

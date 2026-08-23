@@ -29,14 +29,14 @@ For mutating work:
 
 1. record the base commit and clean source state;
 2. create an isolated worktree when scopes overlap or the risk warrants it;
-3. resolve a Codex-native role/model preference in the calling orchestrator; select `agent_type = "minimax_m3"` for an eligible economy Work Order and avoid a full-history fork;
+3. resolve a Codex-native role/model preference in the calling orchestrator; select `agent_type = "minimax_m3"` for an eligible economy Work Order, `gpt-5.6-luna` for read-only reconnaissance or eligible independent verification, and `gpt-5.6-sol` for ambiguous or high-risk work; avoid a full-history fork for M3;
 4. dispatch the bounded Work Order with the absolute worktree path;
 5. manage follow-ups, waits, and interruption through native controls;
 6. reconstruct delivery from Git truth and rerun approved validators;
-7. dispatch a fresh read-only native Verifier;
+7. dispatch a fresh read-only GPT-5.6 Luna Verifier for bounded low/medium M3 delivery, escalating semantic or high-risk uncertainty to Sol;
 8. build the blind Review Packet.
 
-The implementation Agent must never evaluate its own delivery. A `minimax_m3` Worker requires a fresh non-M3 Verifier and bounded root review.
+The implementation Agent must never evaluate its own delivery. A `minimax_m3` Worker requires a fresh non-M3 Verifier and bounded root review. Prefer a new GPT-5.6 Luna Session for deterministic low/medium verification; use Sol for security, ambiguity, high-risk findings, and final acceptance. Terra is not an automatic fallback.
 
 ## Standalone Runtime compatibility
 
@@ -55,6 +55,8 @@ $TF runtime-run mission.json work-order.json \
 ```
 
 This external Codex CLI recipe exists for standalone compatibility and frozen experiments. It is not the Codex-host Economy path. Add `--review-runtime codex --reviewer-model gpt-5.6-sol` only when the experiment requires it.
+
+The Terra model in this compatibility example preserves a historical external Runtime route; it does not define the native production default. For a new non-benchmark native route, use M3 for eligible bounded execution, Luna for fresh read-only verification, and Sol for semantic or final authority.
 
 ## Optional Runtime matrix
 
@@ -80,6 +82,8 @@ $TF benchmark-run identity.json mission.json work-order.json \
 ```
 
 Use the full Claude model ID for group E. Mavis production preflight intentionally rejects `bypassPermissions`; the unsafe override is allowed only for disposable experiments and must remain visible in isolation evidence.
+
+The Terra worker/verifier values above are part of the frozen benchmark matrix and must remain reproducible. Do not infer them as the default production route.
 
 For a frozen benchmark that explicitly targets Claude Code transport, a machine-local Claude Code alias may still map to M3 through `--worker-runtime claude --worker-model <alias>`. This is not the operational economy route. Accept the benchmark route only when the Stage artifact has `model_effective_verified=true` and an effective MiniMax-M3 model. A frozen Worker can be replayed without another model turn:
 
