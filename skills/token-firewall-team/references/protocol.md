@@ -37,15 +37,17 @@ A native custom agent may pin MiniMax-M3 through a user-level custom provider; a
 
 For read-only native tasks, replace worktree isolation with a bounded artifact contract plus pre/post repository-state checks. Any change to HEAD, index, tracked files, or untracked-file set is a hard failure. For mutating tasks, worktree and Git Delivery gates remain mandatory regardless of lifecycle owner.
 
-Risk routing:
+Default risk routing:
 
 | Risk | Initial implementation | Independent verification | Final decision |
 |---|---|---|---|
-| low | native `minimax_m3` for bounded/evaluable work; otherwise Terra-preferred | fresh non-M3 native verifier | bounded root review |
-| medium | native `minimax_m3` only with tight scope and deterministic oracle; otherwise Terra or GPT-5.6 | fresh non-M3 native verifier for M3; otherwise fresh native verifier | bounded root review |
-| high | native GPT-5.6 with explicit security boundaries | fresh native deep verifier | high-effort root review |
-| critical | native GPT-5.6 or explicitly approved specialist | independent deep verification | root review/user boundary |
+| low | native `minimax_m3` for bounded/evaluable mutation; GPT-5.6 Luna for read-only reconnaissance; otherwise Sol | fresh read-only Luna verifier for M3 | bounded Sol/root review |
+| medium | native `minimax_m3` only with tight scope and deterministic oracle; otherwise Sol | fresh read-only Luna verifier for mechanical M3 specs; Sol for semantic uncertainty | bounded Sol/root review |
+| high | GPT-5.6 Sol with explicit security boundaries | fresh Sol-led deep verifier | high-effort Sol/root review |
+| critical | GPT-5.6 Sol or explicitly approved specialist | independent Sol-led deep verification | Sol/root review and user boundary |
 
-M3 is never the sole authority for authentication, authorization, data loss, destructive migration, security, concurrency, external side effects, or ambiguous semantic boundaries. Its output is a proposal until Git truth, deterministic validators, and a fresh non-M3 Verifier agree.
+M3 is never the sole authority for authentication, authorization, data loss, destructive migration, security, concurrency, external side effects, or ambiguous semantic boundaries. Its output is a proposal until Git truth, deterministic validators, and a fresh non-M3 Verifier agree. GPT-5.6 Luna is the preferred independent verifier for bounded low/medium M3 deliveries, provided it runs in a new read-only Session and every Spec has a deterministic oracle. Luna must escalate semantic ambiguity, security concerns, and high-risk findings to Sol, and its PASS never replaces a required Sol final decision.
+
+Terra is not part of the default production route. Preserve Terra only for explicit user selection, frozen benchmark reproduction, and separately approved evidence-calibrated policies. M3 unavailability does not authorize an automatic Terra fallback.
 
 Fail closed on dirty source state, path overlap, missing Session ID, malformed delivery, mismatched commit, hidden-test disclosure, unsafe Mavis isolation, or archive/hash mismatch. An M3 route also fails closed on a missing custom agent, unexpected effective model identity, absent deterministic oracle, or missing independent non-M3 verification. Unknown model identity or incomplete usage fails any model-specific cost claim or benchmark; it remains explicitly recorded but does not invalidate a native delivery whose Git and acceptance evidence pass.
