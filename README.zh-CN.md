@@ -60,6 +60,8 @@ npx skills add WdBlink/token-firewall-team -g
 
 ### Jev 语义评估
 
+前往 [TypeSafe 控制台](https://console.typesafe.ai/home) 申请 API Key，然后在运行环境中将其配置为 `TYPESAFE_API_KEY`。
+
 Skill 在最终审核前调用 TypeSafe Jev，为经过脱敏的交付包评估需求覆盖、语义边界和证据充分性，并记录反馈分类、完整请求和响应、用量与耗时。首次使用提示提供 TypeSafe API Key：在运行环境配置 `TYPESAFE_API_KEY`，或在 CLI 终端隐藏输入。本工具不保存 Key；评估包会发送至 TypeSafe 服务。
 
 详见 [Jev 配置与命令](skills/token-firewall-team/references/jev-eval.md)。评分进入独立审核，不能跳过测试或自行批准交付。本版本没有新增节省比例或质量等价的实验结论。
