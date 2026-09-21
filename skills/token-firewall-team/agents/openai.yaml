@@ -1,4 +1,4 @@
 interface:
   display_name: "Token Firewall Team"
   short_description: "Route native Codex and M3 workers through Git-backed gates"
-  default_prompt: "Use $token-firewall-team with Codex-native subagents. Prefer the native minimax_m3 economy Worker only for bounded, testable work, require a fresh non-M3 verifier, preserve Git and validation gates, and use an external CLI Adapter only if I explicitly request that external harness."
+  default_prompt: "Use $token-firewall-team with Codex-native subagents. Route bounded deterministic implementation to the native minimax_m3 economy Worker, fresh read-only reconnaissance and eligible M3 verification to GPT-5.6 Luna, and ambiguous, high-risk, or final authority to GPT-5.6 Sol. Preserve Git and validation gates, keep Terra non-default, and use an external CLI Adapter only if I explicitly request that external harness."

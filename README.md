@@ -50,7 +50,7 @@ Ask Codex for the outcome you need:
 ```text
 "Use token-firewall-team to implement this issue" — native Codex delegation, Git/test gates, and strong final review
 "Benchmark this route against Sol-direct"         — paired quality, usage, and Token-savings evidence
-"Use the minimax_m3 economy Worker"               — bounded native M3 work plus independent non-M3 verification
+"Use the minimax_m3 economy Worker"               — bounded native M3 work plus fresh Luna verification
 "Use Claude for this Worker"                      — explicit opt-in to a third-party CLI Adapter
 ```
 
@@ -65,7 +65,7 @@ See [Jev setup and CLI usage](skills/token-firewall-team/references/jev-eval.md)
 Example invocation for a coding change:
 
 ```text
-Use token-firewall-team for this change. Use Codex-native Agents, route eligible bounded work to the configured minimax_m3 economy Worker, require a fresh non-M3 verifier, and keep Git/test gates plus an independent final review. Do not use an external CLI unless I explicitly request that harness.
+Use token-firewall-team for this change. Use Codex-native Agents, route eligible bounded work to the configured minimax_m3 economy Worker, use a fresh read-only GPT-5.6 Luna verifier, and keep Git/test gates plus GPT-5.6 Sol final review. Do not use an external CLI unless I explicitly request that harness.
 ```
 
 ## Why Token Firewall
@@ -74,7 +74,7 @@ If the strongest coding model spends most of a task reading files, running tests
 
 ## What You Get
 
-- **Lower frontier-model spend.** Prefer native Terra for read-heavy and bounded routine work; reserve GPT-5.6 for semantic ambiguity and high-risk judgment.
+- **Clear three-tier routing.** Use MiniMax-M3 for bounded deterministic execution, GPT-5.6 Luna for read-only reconnaissance and independent verification, and GPT-5.6 Sol for semantic, high-risk, and final authority.
 - **Native MiniMax economy route.** Keep the primary agent on an OpenAI model while Codex spawns a configured MiniMax-M3 custom agent for bounded, testable work.
 - **Safer delegation.** Freeze positive cases, negative cases, and a semantic boundary before implementation begins.
 - **Evidence before acceptance.** Require a Git-truth patch, approved tests, and a fresh verifier before delivery reaches final review.
@@ -137,16 +137,16 @@ Some Codex Desktop Multi-Agent V2 builds currently lose or mis-role the initial 
 Explicit acceptance contract
         → Codex-native role/model routing
         → optional MiniMax-M3 economy Worker for bounded work
-        → Git scope checks + deterministic tests + fresh non-M3 verifier
-        → compact blind packet for the strongest final reviewer
+        → Git scope checks + deterministic tests + fresh read-only Luna verifier
+        → compact blind packet for the Sol final reviewer
 ```
 
-The Worker always proposes; Git, approved validators, the fresh verifier, and the final reviewer decide what is accepted.
+The Worker always proposes; Git, approved validators, the fresh verifier, and the final reviewer decide what is accepted. Terra remains available only for explicit selection, frozen benchmark reproduction, or a separately calibrated route; it is not an automatic fallback.
 
 ## Current Limits
 
 - The primary result comes from one frozen synthetic Python suite and one Terra/Sol configuration; real-repository and cross-language replication is still needed.
-- The current native-first operational policy needs its own real-repository and per-model replication; it must not inherit the 12-task external Terra result as proof.
+- The current M3/Luna/Sol native-first policy needs its own real-repository and per-model replication; it must not inherit the 12-task external Terra result as proof.
 - The M3 result is only a two-task directional pilot. M3 is a supervised economy Worker, not final authority; retries, rework, and non-M3 verification count against realized savings.
 - Claude Code, MiniMax Code, and OpenCode are explicit opt-in transports with route-specific identity and isolation requirements; they are never automatic fallback routes.
 

@@ -52,7 +52,7 @@ npx skills add WdBlink/token-firewall-team -g
 ```text
 “使用 token-firewall-team 实现这个 Issue”  —— Codex 原生委派、Git/测试门禁和强模型终审
 “将这条路线与 Sol 直接实现进行基准对比” —— 配对质量、用量与 Token 节省证据
-“使用 minimax_m3 经济型 Worker”          —— 原生 M3 有界执行 + 独立非 M3 验证
+“使用 minimax_m3 经济型 Worker”          —— 原生 M3 有界执行 + 全新 Luna 验证
 “这次 Worker 使用 Claude”               —— 明确选择第三方 CLI Adapter
 ```
 
@@ -67,7 +67,7 @@ Skill 在最终审核前调用 TypeSafe Jev，为经过脱敏的交付包评估�
 一次代码改动可以这样调用：
 
 ```text
-使用 token-firewall-team 完成这个改动。默认使用 Codex 原生 Agent，把符合条件且边界清晰的工作交给已配置的 minimax_m3 经济型 Worker，必须由全新的非 M3 Agent 验证，并保留 Git/测试门禁与独立终审。除非我明确指定某个外部 Harness，否则不要调用外部 CLI。
+使用 token-firewall-team 完成这个改动。默认使用 Codex 原生 Agent，把符合条件且边界清晰的工作交给已配置的 minimax_m3 经济型 Worker，由全新的只读 GPT-5.6 Luna Agent 验证，并保留 Git/测试门禁与 GPT-5.6 Sol 终审。除非我明确指定某个外部 Harness，否则不要调用外部 CLI。
 ```
 
 <a id="why-token-firewall"></a>
@@ -78,7 +78,7 @@ Skill 在最终审核前调用 TypeSafe Jev，为经过脱敏的交付包评估�
 
 ## 你将获得什么
 
-- **降低前沿模型开销。** 读密集与边界清晰的常规任务优先原生 Terra，语义歧义和高风险判断保留给 GPT-5.6。
+- **清晰的三层路由。** MiniMax-M3 负责有界、可确定验收的执行，GPT-5.6 Luna 负责只读侦察和独立验证，GPT-5.6 Sol 负责语义、高风险与最终裁决。
 - **原生 MiniMax 经济路线。** 主 Agent 继续使用 OpenAI 模型，由 Codex 为边界清晰、可验证的工作创建 MiniMax-M3 自定义子 Agent。
 - **更安全的委派。** 在实现前冻结正例、反例和明确的语义边界。
 - **先验证据，再接受交付。** 只有 Git 真值 Patch、批准的测试和全新 Verifier 都通过，交付才进入终审。
@@ -149,18 +149,18 @@ Codex 现在会从 `~/.codex/agents/` 发现独立的自定义 Agent。主会话
 明确的验收合同
     → Codex 原生角色/模型路由
     → 可选 MiniMax-M3 经济型 Worker 执行有界任务
-    → Git 范围检查 + 确定性测试 + 全新非 M3 Verifier
-    → 交给最强终审模型的紧凑匿名证据包
+    → Git 范围检查 + 确定性测试 + 全新只读 Luna Verifier
+    → 交给 Sol 终审模型的紧凑匿名证据包
 ```
 
-Worker 始终只负责提出候选方案；Git、批准的验证命令、全新 Verifier 和最终评审者共同决定是否接受交付。
+Worker 始终只负责提出候选方案；Git、批准的验证命令、全新 Verifier 和最终评审者共同决定是否接受交付。Terra 仅保留给用户明确选择、冻结 Benchmark 复现或单独校准的路线，不会成为自动 fallback。
 
 <a id="current-limits"></a>
 
 ## 当前限制
 
 - 主要结果仍来自一个冻结的合成 Python 任务集和一组 Terra/Sol 配置；仍需真实仓库和跨语言复现。
-- 当前 native-first 运行策略仍需要自己的真实仓库和分模型复现，不能把 12 任务外部 Terra 结果直接当作证明。
+- 当前 M3/Luna/Sol native-first 运行策略仍需要自己的真实仓库和分模型复现，不能把 12 任务外部 Terra 结果直接当作证明。
 - M3 目前只有两个任务的方向性 Pilot。它是受监督的经济型 Worker，不是终审者；重试、返工与非 M3 验证成本都必须计入实际节省。
 - Claude Code、MiniMax Code 与 OpenCode 是显式选择的可选通道，具有各自的模型身份和隔离要求，永远不会成为自动 fallback。
 

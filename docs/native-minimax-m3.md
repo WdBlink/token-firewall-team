@@ -96,7 +96,7 @@ Use the M3 route for low-risk and selected medium-risk work that has:
 - a deterministic validator;
 - no destructive or irreversible side effects.
 
-Always send an M3 delivery to a fresh non-M3 Verifier before bounded root review. Ambiguous semantics, security boundaries, concurrency, migrations, and destructive operations stay with a stronger approved implementer. Count retries, rework, and verifier tokens when measuring realized savings.
+Always send an M3 delivery to a fresh read-only GPT-5.6 Luna Verifier before bounded root review when the acceptance oracle is deterministic. Escalate ambiguous semantics, security boundaries, concurrency, migrations, destructive operations, and any high-risk finding to GPT-5.6 Sol. A Luna PASS never replaces the required Sol final decision. Count retries, rework, and verifier tokens when measuring realized savings.
 
 ## Capability and evidence boundary
 

@@ -105,6 +105,8 @@ class NativePolicyTests(unittest.TestCase):
         )
         self.assertIn("minimax_m3", active)
         self.assertIn("fresh non-M3 Verifier", active)
+        self.assertIn("fresh read-only GPT-5.6 Luna", active)
+        self.assertIn("A Luna PASS never replaces the required Sol final decision", active)
         self.assertIn("No Claude Code or MiniMax Code process is required", active)
         self.assertIn("exact-nonce", active)
         self.assertIn("one-shot", active)
