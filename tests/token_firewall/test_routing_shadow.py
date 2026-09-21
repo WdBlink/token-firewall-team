@@ -4,9 +4,11 @@ import unittest
 
 from tools.token_firewall.routing_shadow import (
     build_typesafe_request,
+    attach_typesafe_requests,
     current_policy_route,
     route_from_typesafe,
     summarize_shadow,
+    write_standard_experiment_report,
 )
 
 
@@ -56,6 +58,24 @@ class RoutingShadowTests(unittest.TestCase):
         self.assertEqual(summary["current_vs_expert"]["matches"], 1)
         self.assertEqual(summary["jev_vs_expert"]["matches"], 0)
         self.assertEqual(summary["usage"]["input_tokens"], 10)
+
+    def test_archived_records_can_reconstruct_exact_requests(self):
+        rows = [{
+            "task_id": "T-1", "category": "bugfix", "current_route": "m3", "jev_route": "m3",
+            "expert_reference_route": "m3", "expert_reason": "bounded", "model": "jev-1.13.0",
+            "answers": response()["answers"], "usage": {"input_tokens": 10, "output_tokens": 2}, "latency_ms": 5,
+        }]
+        attach_typesafe_requests([task()], rows)
+        self.assertEqual(rows[0]["typesafe_request"]["state"]["request"], task()["request"])
+
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as tmp:
+            report = Path(tmp) / "report.md"
+            write_standard_experiment_report(rows, report)
+            text = report.read_text(encoding="utf-8")
+            self.assertIn("逐任务完整 Jev 输入与输出", text)
+            self.assertIn('"questions"', text)
 
 
 if __name__ == "__main__":

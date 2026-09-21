@@ -12,3 +12,9 @@ python3 skills/token-firewall-team/scripts/token_firewall.py \
 ```
 
 The expert reference is a policy-derived pre-label, not an independent human blind review. Human adjudication remains required for every current/Jev disagreement before changing production routing.
+
+Rebuild the records and standard report from the archived responses without another API call:
+
+```bash
+python3 experiments/typesafe-route-shadow-001/rebuild_report.py
+```
