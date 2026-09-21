@@ -56,6 +56,12 @@ Ask Codex for the outcome you need:
 
 ## Usage
 
+### Jev semantic eval
+
+The Skill runs TypeSafe Jev scoring on a bounded, redacted delivery packet before final review. It evaluates requirements, semantic boundaries and evidence grounding, and records feedback, exact requests/responses, usage and latency. First use asks for your TypeSafe API key: set `TYPESAFE_API_KEY` in the runtime environment, or use the CLI's hidden terminal prompt. Keys are never saved by this integration. Packet content is sent to TypeSafe.
+
+See [Jev setup and CLI usage](skills/token-firewall-team/references/jev-eval.md). Scores support independent review; they do not bypass tests or approve delivery. This release does not establish new Token savings or quality results.
+
 Example invocation for a coding change:
 
 ```text

@@ -36,6 +36,7 @@ from .runtime import (
 from .schema import SchemaRegistry, SchemaValidationError
 from .state import Conductor, StateTransitionError, atomic_write_json
 from .routing_shadow import api_key_from_env, run_shadow, write_shadow_artifacts
+from .jev_eval import eval_key, run_eval
 
 
 def _read_json(path: Path | str) -> Any:
@@ -261,6 +262,11 @@ def build_parser() -> argparse.ArgumentParser:
     route_shadow.add_argument("--api-key-env", default="TYPESAFE_API_KEY")
     route_shadow.add_argument("--endpoint", default="https://api.typesafe.ai/v1/systemone")
     route_shadow.add_argument("--timeout", type=float, default=30.0)
+    jev_eval = subparsers.add_parser("eval-typesafe", help="score a bounded blind delivery packet with Jev; never grants acceptance")
+    jev_eval.add_argument("packet", type=Path)
+    jev_eval.add_argument("--out", type=Path, required=True)
+    jev_eval.add_argument("--model", default="jev-1.13.0")
+    jev_eval.add_argument("--timeout", type=float, default=30.0)
     return parser
 
 
@@ -569,6 +575,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
             _print({"ok": True, "manifest": result["manifest"], "out_dir": str(args.out_dir)})
             return 0
+        if args.command == "eval-typesafe":
+            result = run_eval(_read_json(args.packet), args.out, api_key=eval_key(), model=args.model, timeout=args.timeout)
+            _print({"status": result["status"], "out": str(args.out), "requires_independent_review": True})
+            return 0 if result["status"] == "SCORED" else 1
         if args.command == "route-shadow-typesafe":
             tasks = _read_json(args.tasks)
             if not isinstance(tasks, list):
