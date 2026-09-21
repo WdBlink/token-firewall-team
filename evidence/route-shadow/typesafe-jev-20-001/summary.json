@@ -1,0 +1,23 @@
+{
+  "schema": "token-firewall/typesafe-route-shadow-summary@0.1",
+  "tasks": 20,
+  "current_vs_expert": {
+    "matches": 20,
+    "rate": 1.0
+  },
+  "jev_vs_expert": {
+    "matches": 19,
+    "rate": 0.95
+  },
+  "current_vs_jev": {
+    "matches": 19,
+    "rate": 0.95
+  },
+  "usage": {
+    "input_tokens": 15220,
+    "output_tokens": 3098
+  },
+  "disagreement_task_ids": [
+    "S03"
+  ]
+}
