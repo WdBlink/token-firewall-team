@@ -1,0 +1,862 @@
+[
+  {
+    "task_id": "S01",
+    "category": "repository-research",
+    "current_route": "luna",
+    "jev_route": "luna",
+    "expert_reference_route": "luna",
+    "expert_reason": "只读代码库侦察属于 Luna explorer。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "read_only_reconnaissance",
+        "confidence": 1.0,
+        "probabilities": {
+          "semantic_implementation": 0.0,
+          "high_risk": 0.0,
+          "bounded_implementation": 0.0,
+          "read_only_reconnaissance": 1.0
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.65
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.07
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.86
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.05
+      }
+    },
+    "usage": {
+      "input_tokens": 758,
+      "output_tokens": 157
+    },
+    "latency_ms": 629
+  },
+  {
+    "task_id": "S02",
+    "category": "architecture-comparison",
+    "current_route": "luna",
+    "jev_route": "luna",
+    "expert_reference_route": "luna",
+    "expert_reason": "以资料检索和结构化比较为主；最终结论由根 Agent 审阅。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "read_only_reconnaissance",
+        "confidence": 1.0,
+        "probabilities": {
+          "read_only_reconnaissance": 1.0,
+          "bounded_implementation": 0.0,
+          "semantic_implementation": 0.0,
+          "high_risk": 0.0
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.93
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.05
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.81
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.06
+      }
+    },
+    "usage": {
+      "input_tokens": 765,
+      "output_tokens": 157
+    },
+    "latency_ms": 470
+  },
+  {
+    "task_id": "S03",
+    "category": "documentation",
+    "current_route": "m3",
+    "jev_route": "sol",
+    "expert_reference_route": "m3",
+    "expert_reason": "文案和文件范围明确且有链接检查器。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "bounded_implementation",
+        "confidence": 1.0,
+        "probabilities": {
+          "high_risk": 0.0,
+          "semantic_implementation": 0.0,
+          "bounded_implementation": 1.0,
+          "read_only_reconnaissance": 0.0
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.22
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.57
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.86
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.05
+      }
+    },
+    "usage": {
+      "input_tokens": 754,
+      "output_tokens": 155
+    },
+    "latency_ms": 539
+  },
+  {
+    "task_id": "S04",
+    "category": "bugfix",
+    "current_route": "m3",
+    "jev_route": "m3",
+    "expert_reference_route": "m3",
+    "expert_reason": "局部缺陷、正反例明确、确定性测试充分。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "bounded_implementation",
+        "confidence": 1.0,
+        "probabilities": {
+          "read_only_reconnaissance": 0.0,
+          "bounded_implementation": 1.0,
+          "semantic_implementation": 0.0,
+          "high_risk": 0.0
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.17
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.88
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.9
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.08
+      }
+    },
+    "usage": {
+      "input_tokens": 766,
+      "output_tokens": 155
+    },
+    "latency_ms": 490
+  },
+  {
+    "task_id": "S05",
+    "category": "configuration-migration",
+    "current_route": "sol",
+    "jev_route": "sol",
+    "expert_reference_route": "sol",
+    "expert_reason": "跨配置兼容和策略语义需要架构判断。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "semantic_implementation",
+        "confidence": 0.8,
+        "probabilities": {
+          "read_only_reconnaissance": 0.0,
+          "semantic_implementation": 0.85,
+          "bounded_implementation": 0.15,
+          "high_risk": 0.0
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.71
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.38
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.5
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.44
+      }
+    },
+    "usage": {
+      "input_tokens": 764,
+      "output_tokens": 155
+    },
+    "latency_ms": 491
+  },
+  {
+    "task_id": "S06",
+    "category": "authentication",
+    "current_route": "sol",
+    "jev_route": "sol",
+    "expert_reference_route": "sol",
+    "expert_reason": "认证、授权和安全均为 Sol 硬门。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "high_risk",
+        "confidence": 0.94,
+        "probabilities": {
+          "high_risk": 0.95,
+          "read_only_reconnaissance": 0.0,
+          "semantic_implementation": 0.05,
+          "bounded_implementation": 0.0
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.83
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.04
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.41
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.95
+      }
+    },
+    "usage": {
+      "input_tokens": 762,
+      "output_tokens": 153
+    },
+    "latency_ms": 537
+  },
+  {
+    "task_id": "S07",
+    "category": "database-migration",
+    "current_route": "sol",
+    "jev_route": "sol",
+    "expert_reference_route": "sol",
+    "expert_reason": "破坏性迁移和数据损失风险必须由 Sol 处理。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "high_risk",
+        "confidence": 1.0,
+        "probabilities": {
+          "read_only_reconnaissance": 0.0,
+          "bounded_implementation": 0.0,
+          "high_risk": 1.0,
+          "semantic_implementation": 0.0
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.84
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.09
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.47
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.97
+      }
+    },
+    "usage": {
+      "input_tokens": 768,
+      "output_tokens": 153
+    },
+    "latency_ms": 490
+  },
+  {
+    "task_id": "S08",
+    "category": "concurrency",
+    "current_route": "sol",
+    "jev_route": "sol",
+    "expert_reference_route": "sol",
+    "expert_reason": "并发、资金和外部副作用叠加。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "high_risk",
+        "confidence": 0.99,
+        "probabilities": {
+          "high_risk": 0.99,
+          "bounded_implementation": 0.0,
+          "read_only_reconnaissance": 0.0,
+          "semantic_implementation": 0.01
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.56
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.04
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.45
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.96
+      }
+    },
+    "usage": {
+      "input_tokens": 764,
+      "output_tokens": 153
+    },
+    "latency_ms": 513
+  },
+  {
+    "task_id": "S09",
+    "category": "schema",
+    "current_route": "m3",
+    "jev_route": "m3",
+    "expert_reference_route": "m3",
+    "expert_reason": "闭集 schema 变更和反例测试可机械验收。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "bounded_implementation",
+        "confidence": 1.0,
+        "probabilities": {
+          "high_risk": 0.0,
+          "read_only_reconnaissance": 0.0,
+          "semantic_implementation": 0.0,
+          "bounded_implementation": 1.0
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.3
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.74
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.84
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.18
+      }
+    },
+    "usage": {
+      "input_tokens": 754,
+      "output_tokens": 155
+    },
+    "latency_ms": 518
+  },
+  {
+    "task_id": "S10",
+    "category": "ui-design",
+    "current_route": "sol",
+    "jev_route": "sol",
+    "expert_reference_route": "sol",
+    "expert_reason": "产品取舍与主观视觉目标高度依赖语义判断。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "semantic_implementation",
+        "confidence": 0.98,
+        "probabilities": {
+          "high_risk": 0.0,
+          "bounded_implementation": 0.0,
+          "read_only_reconnaissance": 0.02,
+          "semantic_implementation": 0.98
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.94
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.04
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.33
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.13
+      }
+    },
+    "usage": {
+      "input_tokens": 759,
+      "output_tokens": 155
+    },
+    "latency_ms": 500
+  },
+  {
+    "task_id": "S11",
+    "category": "structured-document",
+    "current_route": "m3",
+    "jev_route": "m3",
+    "expert_reference_route": "m3",
+    "expert_reason": "固定模板、来源闭集和字段检查形成确定性边界。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "bounded_implementation",
+        "confidence": 1.0,
+        "probabilities": {
+          "read_only_reconnaissance": 0.0,
+          "semantic_implementation": 0.0,
+          "bounded_implementation": 1.0,
+          "high_risk": 0.0
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.12
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.7
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.9
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.07
+      }
+    },
+    "usage": {
+      "input_tokens": 765,
+      "output_tokens": 155
+    },
+    "latency_ms": 461
+  },
+  {
+    "task_id": "S12",
+    "category": "knowledge-synthesis",
+    "current_route": "sol",
+    "jev_route": "sol",
+    "expert_reference_route": "sol",
+    "expert_reason": "证据综合和矛盾消解决定最终知识表达。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "semantic_implementation",
+        "confidence": 0.94,
+        "probabilities": {
+          "bounded_implementation": 0.02,
+          "high_risk": 0.0,
+          "semantic_implementation": 0.95,
+          "read_only_reconnaissance": 0.03
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.92
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.05
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.43
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.15
+      }
+    },
+    "usage": {
+      "input_tokens": 762,
+      "output_tokens": 155
+    },
+    "latency_ms": 476
+  },
+  {
+    "task_id": "S13",
+    "category": "test-inventory",
+    "current_route": "luna",
+    "jev_route": "luna",
+    "expert_reference_route": "luna",
+    "expert_reason": "只读、读密集的测试侦察。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "read_only_reconnaissance",
+        "confidence": 0.99,
+        "probabilities": {
+          "read_only_reconnaissance": 0.99,
+          "high_risk": 0.0,
+          "semantic_implementation": 0.0,
+          "bounded_implementation": 0.01
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.39
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.61
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.87
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.1
+      }
+    },
+    "usage": {
+      "input_tokens": 758,
+      "output_tokens": 157
+    },
+    "latency_ms": 536
+  },
+  {
+    "task_id": "S14",
+    "category": "release",
+    "current_route": "sol",
+    "jev_route": "sol",
+    "expert_reference_route": "sol",
+    "expert_reason": "发布和不可静默回滚的外部写入属于高风险边界。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "high_risk",
+        "confidence": 0.96,
+        "probabilities": {
+          "high_risk": 0.97,
+          "semantic_implementation": 0.0,
+          "read_only_reconnaissance": 0.0,
+          "bounded_implementation": 0.03
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.34
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.65
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.72
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.87
+      }
+    },
+    "usage": {
+      "input_tokens": 758,
+      "output_tokens": 153
+    },
+    "latency_ms": 488
+  },
+  {
+    "task_id": "S15",
+    "category": "explicit-external-harness",
+    "current_route": "external:claude",
+    "jev_route": "external:claude",
+    "expert_reference_route": "external:claude",
+    "expert_reason": "用户明确指定外部 Harness，平台选择优先于模型层级。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "bounded_implementation",
+        "confidence": 0.85,
+        "probabilities": {
+          "read_only_reconnaissance": 0.01,
+          "high_risk": 0.1,
+          "semantic_implementation": 0.01,
+          "bounded_implementation": 0.88
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.35
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.55
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.8
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.31
+      }
+    },
+    "usage": {
+      "input_tokens": 752,
+      "output_tokens": 155
+    },
+    "latency_ms": 504
+  },
+  {
+    "task_id": "S16",
+    "category": "dependency-audit",
+    "current_route": "luna",
+    "jev_route": "luna",
+    "expert_reference_route": "luna",
+    "expert_reason": "只读依赖清点适合 Luna。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "read_only_reconnaissance",
+        "confidence": 0.78,
+        "probabilities": {
+          "read_only_reconnaissance": 0.83,
+          "semantic_implementation": 0.0,
+          "bounded_implementation": 0.17,
+          "high_risk": 0.0
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.3
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.63
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.88
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.08
+      }
+    },
+    "usage": {
+      "input_tokens": 754,
+      "output_tokens": 157
+    },
+    "latency_ms": 533
+  },
+  {
+    "task_id": "S17",
+    "category": "mechanical-cleanup",
+    "current_route": "m3",
+    "jev_route": "m3",
+    "expert_reference_route": "m3",
+    "expert_reason": "修改点枚举完整且检查器可复验。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "bounded_implementation",
+        "confidence": 1.0,
+        "probabilities": {
+          "read_only_reconnaissance": 0.0,
+          "high_risk": 0.0,
+          "semantic_implementation": 0.0,
+          "bounded_implementation": 1.0
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.08
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.82
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.91
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.04
+      }
+    },
+    "usage": {
+      "input_tokens": 761,
+      "output_tokens": 155
+    },
+    "latency_ms": 453
+  },
+  {
+    "task_id": "S18",
+    "category": "performance-refactor",
+    "current_route": "sol",
+    "jev_route": "sol",
+    "expert_reference_route": "sol",
+    "expert_reason": "跨模块性能取舍且缺少冻结基线，不能安全下放。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "semantic_implementation",
+        "confidence": 0.98,
+        "probabilities": {
+          "semantic_implementation": 0.98,
+          "high_risk": 0.01,
+          "read_only_reconnaissance": 0.0,
+          "bounded_implementation": 0.01
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.74
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.11
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.49
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.46
+      }
+    },
+    "usage": {
+      "input_tokens": 760,
+      "output_tokens": 155
+    },
+    "latency_ms": 492
+  },
+  {
+    "task_id": "S19",
+    "category": "data-visualization",
+    "current_route": "m3",
+    "jev_route": "m3",
+    "expert_reference_route": "m3",
+    "expert_reason": "输入输出和视觉合同均已冻结，可由快照验证。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "bounded_implementation",
+        "confidence": 1.0,
+        "probabilities": {
+          "bounded_implementation": 1.0,
+          "read_only_reconnaissance": 0.0,
+          "high_risk": 0.0,
+          "semantic_implementation": 0.0
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.09
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.86
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.89
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.05
+      }
+    },
+    "usage": {
+      "input_tokens": 766,
+      "output_tokens": 155
+    },
+    "latency_ms": 540
+  },
+  {
+    "task_id": "S20",
+    "category": "security-review",
+    "current_route": "sol",
+    "jev_route": "sol",
+    "expert_reference_route": "sol",
+    "expert_reason": "即使只读，安全验证也需要 Sol 权威。",
+    "model": "jev-1.13.0",
+    "answers": {
+      "task_shape": {
+        "type": "choice",
+        "choice": "high_risk",
+        "confidence": 0.53,
+        "probabilities": {
+          "high_risk": 0.65,
+          "semantic_implementation": 0.0,
+          "read_only_reconnaissance": 0.35,
+          "bounded_implementation": 0.0
+        }
+      },
+      "has_semantic_ambiguity": {
+        "type": "noul",
+        "noul": 0.58
+      },
+      "has_sufficient_oracle": {
+        "type": "noul",
+        "noul": 0.06
+      },
+      "is_safely_bounded": {
+        "type": "noul",
+        "noul": 0.78
+      },
+      "has_high_impact_risk": {
+        "type": "noul",
+        "noul": 0.92
+      }
+    },
+    "usage": {
+      "input_tokens": 770,
+      "output_tokens": 153
+    },
+    "latency_ms": 494
+  }
+]

@@ -35,6 +35,7 @@ from .runtime import (
 )
 from .schema import SchemaRegistry, SchemaValidationError
 from .state import Conductor, StateTransitionError, atomic_write_json
+from .routing_shadow import api_key_from_env, run_shadow, write_shadow_artifacts
 
 
 def _read_json(path: Path | str) -> Any:
@@ -249,6 +250,17 @@ def build_parser() -> argparse.ArgumentParser:
     inspect_export.add_argument("protocol", type=Path)
     inspect_export.add_argument("pairs", type=Path, nargs="+")
     inspect_export.add_argument("--out-dir", type=Path, required=True)
+
+    route_shadow = subparsers.add_parser(
+        "route-shadow-typesafe",
+        help="compare the current native route with non-authoritative TypeSafe Jev advice",
+    )
+    route_shadow.add_argument("tasks", type=Path, help="JSON array of redacted routing tasks")
+    route_shadow.add_argument("--out-dir", type=Path, required=True)
+    route_shadow.add_argument("--model", default="jev-1.13.0")
+    route_shadow.add_argument("--api-key-env", default="TYPESAFE_API_KEY")
+    route_shadow.add_argument("--endpoint", default="https://api.typesafe.ai/v1/systemone")
+    route_shadow.add_argument("--timeout", type=float, default=30.0)
     return parser
 
 
@@ -556,6 +568,20 @@ def main(argv: Sequence[str] | None = None) -> int:
                 registry=registry,
             )
             _print({"ok": True, "manifest": result["manifest"], "out_dir": str(args.out_dir)})
+            return 0
+        if args.command == "route-shadow-typesafe":
+            tasks = _read_json(args.tasks)
+            if not isinstance(tasks, list):
+                raise ValueError("route shadow tasks input must be a JSON array")
+            records = run_shadow(
+                tasks,
+                api_key=api_key_from_env(args.api_key_env),
+                model=args.model,
+                endpoint=args.endpoint,
+                timeout=args.timeout,
+            )
+            summary = write_shadow_artifacts(records, args.out_dir)
+            _print({"ok": True, "summary": summary, "out_dir": str(args.out_dir)})
             return 0
     except (OSError, ValueError, json.JSONDecodeError, SchemaValidationError, StateTransitionError, ExternalRunStateError) as exc:
         _print({"ok": False, "error": str(exc)})

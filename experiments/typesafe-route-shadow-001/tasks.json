@@ -1,0 +1,102 @@
+[
+  {
+    "id": "S01", "category": "repository-research", "request": "阅读当前项目，梳理 Research Studio 的模块边界、数据流和已有测试，不修改任何文件。",
+    "mutation": "none", "scope_bounded": true, "deterministic_oracle": false, "semantic_boundary_defined": true, "risk_signals": [], "external_harness_requested": null,
+    "current_task_shape": "read-heavy", "expert_reference_route": "luna", "expert_reason": "只读代码库侦察属于 Luna explorer。"
+  },
+  {
+    "id": "S02", "category": "architecture-comparison", "request": "比较 Codex CLI、Claude Code、Hermes 和 Mastra 的长期 Agent 架构，给出有来源的适用性分析，不改仓库。",
+    "mutation": "none", "scope_bounded": true, "deterministic_oracle": false, "semantic_boundary_defined": true, "risk_signals": [], "external_harness_requested": null,
+    "current_task_shape": "read-heavy", "expert_reference_route": "luna", "expert_reason": "以资料检索和结构化比较为主；最终结论由根 Agent 审阅。"
+  },
+  {
+    "id": "S03", "category": "documentation", "request": "按给定文案修改 README 顶部卖点、中文切换链接和 License badge，并运行 markdown link checker。",
+    "mutation": "repository", "scope_bounded": true, "deterministic_oracle": true, "semantic_boundary_defined": true, "risk_signals": [], "external_harness_requested": null,
+    "current_task_shape": "routine", "expert_reference_route": "m3", "expert_reason": "文案和文件范围明确且有链接检查器。"
+  },
+  {
+    "id": "S04", "category": "bugfix", "request": "修复 duration parser 对 0ms 和负数输入的边界错误，只改 parser.py 和对应测试，pytest 必须通过。",
+    "mutation": "repository", "scope_bounded": true, "deterministic_oracle": true, "semantic_boundary_defined": true, "risk_signals": [], "external_harness_requested": null,
+    "current_task_shape": "routine", "expert_reference_route": "m3", "expert_reason": "局部缺陷、正反例明确、确定性测试充分。"
+  },
+  {
+    "id": "S05", "category": "configuration-migration", "request": "把 agentRouting 的 tier 体系从旧模型名称迁移为新的三层策略，并保持所有项目级覆盖配置兼容。",
+    "mutation": "repository", "scope_bounded": false, "deterministic_oracle": true, "semantic_boundary_defined": false, "risk_signals": [], "external_harness_requested": null,
+    "current_task_shape": "semantic", "expert_reference_route": "sol", "expert_reason": "跨配置兼容和策略语义需要架构判断。"
+  },
+  {
+    "id": "S06", "category": "authentication", "request": "修改 API token 刷新和权限校验逻辑，解决管理员会话偶发失效问题。",
+    "mutation": "repository", "scope_bounded": false, "deterministic_oracle": false, "semantic_boundary_defined": false, "risk_signals": ["authentication", "authorization", "security"], "external_harness_requested": null,
+    "current_task_shape": "high-risk", "expert_reference_route": "sol", "expert_reason": "认证、授权和安全均为 Sol 硬门。"
+  },
+  {
+    "id": "S07", "category": "database-migration", "request": "合并两个生产表并删除旧列，迁移过程中不能丢失历史记录。",
+    "mutation": "repository", "scope_bounded": false, "deterministic_oracle": false, "semantic_boundary_defined": true, "risk_signals": ["data_loss", "destructive_migration", "production_release"], "external_harness_requested": null,
+    "current_task_shape": "high-risk", "expert_reference_route": "sol", "expert_reason": "破坏性迁移和数据损失风险必须由 Sol 处理。"
+  },
+  {
+    "id": "S08", "category": "concurrency", "request": "修复任务调度器偶发重复执行同一个支付任务的竞态条件。",
+    "mutation": "repository", "scope_bounded": false, "deterministic_oracle": false, "semantic_boundary_defined": false, "risk_signals": ["concurrency", "financial_execution", "external_side_effect"], "external_harness_requested": null,
+    "current_task_shape": "high-risk", "expert_reference_route": "sol", "expert_reason": "并发、资金和外部副作用叠加。"
+  },
+  {
+    "id": "S09", "category": "schema", "request": "为现有 JSON manifest 增加必填 checksum 字段、非法路径反例和 schema 单元测试。",
+    "mutation": "repository", "scope_bounded": true, "deterministic_oracle": true, "semantic_boundary_defined": true, "risk_signals": [], "external_harness_requested": null,
+    "current_task_shape": "routine", "expert_reference_route": "m3", "expert_reason": "闭集 schema 变更和反例测试可机械验收。"
+  },
+  {
+    "id": "S10", "category": "ui-design", "request": "重新设计插件对话框，让历史消息更清晰、视觉更高级，并决定应该保留哪些信息。",
+    "mutation": "repository", "scope_bounded": false, "deterministic_oracle": false, "semantic_boundary_defined": false, "risk_signals": [], "external_harness_requested": null,
+    "current_task_shape": "semantic", "expert_reference_route": "sol", "expert_reason": "产品取舍与主观视觉目标高度依赖语义判断。"
+  },
+  {
+    "id": "S11", "category": "structured-document", "request": "按固定 DOCX 模板把本周已列出的工作条目填入对应章节，不新增内容，并检查所有必填字段。",
+    "mutation": "repository", "scope_bounded": true, "deterministic_oracle": true, "semantic_boundary_defined": true, "risk_signals": [], "external_harness_requested": null,
+    "current_task_shape": "routine", "expert_reference_route": "m3", "expert_reason": "固定模板、来源闭集和字段检查形成确定性边界。"
+  },
+  {
+    "id": "S12", "category": "knowledge-synthesis", "request": "消化三篇自迭代研究论文并重构 Wiki 中的长期 Agent 方法论页面，处理相互矛盾的结论。",
+    "mutation": "repository", "scope_bounded": true, "deterministic_oracle": false, "semantic_boundary_defined": false, "risk_signals": [], "external_harness_requested": null,
+    "current_task_shape": "semantic", "expert_reference_route": "sol", "expert_reason": "证据综合和矛盾消解决定最终知识表达。"
+  },
+  {
+    "id": "S13", "category": "test-inventory", "request": "盘点仓库所有测试、隐藏测试入口和 CI 命令，输出结构化清单，不修改文件。",
+    "mutation": "none", "scope_bounded": true, "deterministic_oracle": true, "semantic_boundary_defined": true, "risk_signals": [], "external_harness_requested": null,
+    "current_task_shape": "read-heavy", "expert_reference_route": "luna", "expert_reason": "只读、读密集的测试侦察。"
+  },
+  {
+    "id": "S14", "category": "release", "request": "更新版本、创建 Git tag、生成 GitHub Release 并发布新的安装包。",
+    "mutation": "repository", "scope_bounded": true, "deterministic_oracle": true, "semantic_boundary_defined": true, "risk_signals": ["production_release", "external_side_effect"], "external_harness_requested": null,
+    "current_task_shape": "high-risk", "expert_reference_route": "sol", "expert_reason": "发布和不可静默回滚的外部写入属于高风险边界。"
+  },
+  {
+    "id": "S15", "category": "explicit-external-harness", "request": "明确通过 Claude Code 运行这个冻结 Work Order，并保留 stream-json 交付记录。",
+    "mutation": "repository", "scope_bounded": true, "deterministic_oracle": true, "semantic_boundary_defined": true, "risk_signals": [], "external_harness_requested": "claude",
+    "current_task_shape": "routine", "expert_reference_route": "external:claude", "expert_reason": "用户明确指定外部 Harness，平台选择优先于模型层级。"
+  },
+  {
+    "id": "S16", "category": "dependency-audit", "request": "列出当前项目依赖及其许可证，标记重复依赖和未使用依赖，不做升级。",
+    "mutation": "none", "scope_bounded": true, "deterministic_oracle": true, "semantic_boundary_defined": true, "risk_signals": [], "external_harness_requested": null,
+    "current_task_shape": "read-heavy", "expert_reference_route": "luna", "expert_reason": "只读依赖清点适合 Luna。"
+  },
+  {
+    "id": "S17", "category": "mechanical-cleanup", "request": "按给定清单修复三个文档中的 12 个拼写错误，不改段落结构，运行现有文档检查。",
+    "mutation": "repository", "scope_bounded": true, "deterministic_oracle": true, "semantic_boundary_defined": true, "risk_signals": [], "external_harness_requested": null,
+    "current_task_shape": "routine", "expert_reference_route": "m3", "expert_reason": "修改点枚举完整且检查器可复验。"
+  },
+  {
+    "id": "S18", "category": "performance-refactor", "request": "重构回测引擎以显著降低内存占用，但不能改变任何策略结果；当前没有性能基线。",
+    "mutation": "repository", "scope_bounded": false, "deterministic_oracle": false, "semantic_boundary_defined": true, "risk_signals": [], "external_harness_requested": null,
+    "current_task_shape": "semantic", "expert_reference_route": "sol", "expert_reason": "跨模块性能取舍且缺少冻结基线，不能安全下放。"
+  },
+  {
+    "id": "S19", "category": "data-visualization", "request": "用冻结 CSV 重新生成 README 中两张 SVG 图，轴、颜色、标题和输出路径已经明确，并运行快照校验。",
+    "mutation": "repository", "scope_bounded": true, "deterministic_oracle": true, "semantic_boundary_defined": true, "risk_signals": [], "external_harness_requested": null,
+    "current_task_shape": "routine", "expert_reference_route": "m3", "expert_reason": "输入输出和视觉合同均已冻结，可由快照验证。"
+  },
+  {
+    "id": "S20", "category": "security-review", "request": "审查新的 OAuth 回调实现是否存在越权、重放或开放重定向漏洞，只输出审查结论。",
+    "mutation": "none", "scope_bounded": true, "deterministic_oracle": false, "semantic_boundary_defined": true, "risk_signals": ["authentication", "authorization", "security"], "external_harness_requested": null,
+    "current_task_shape": "high-risk", "expert_reference_route": "sol", "expert_reason": "即使只读，安全验证也需要 Sol 权威。"
+  }
+]

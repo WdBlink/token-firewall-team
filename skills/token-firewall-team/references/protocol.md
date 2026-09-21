@@ -41,11 +41,11 @@ Risk routing:
 
 | Risk | Initial implementation | Independent verification | Final decision |
 |---|---|---|---|
-| low | native `minimax_m3` for bounded/evaluable work; otherwise Terra-preferred | fresh non-M3 native verifier | bounded root review |
-| medium | native `minimax_m3` only with tight scope and deterministic oracle; otherwise Terra or GPT-5.6 | fresh non-M3 native verifier for M3; otherwise fresh native verifier | bounded root review |
-| high | native GPT-5.6 with explicit security boundaries | fresh native deep verifier | high-effort root review |
-| critical | native GPT-5.6 or explicitly approved specialist | independent deep verification | root review/user boundary |
+| low | native `minimax_m3` for bounded/evaluable mutation; GPT-5.6 Luna for read-only reconnaissance; otherwise Sol | fresh Luna verifier for M3 | bounded Sol/root review |
+| medium | native `minimax_m3` only with tight scope and deterministic oracle; otherwise Sol | fresh Luna verifier for mechanical M3 specs; Sol for semantic uncertainty | bounded Sol/root review |
+| high | GPT-5.6 Sol with explicit security boundaries | fresh Sol-led deep verifier | high-effort Sol/root review |
+| critical | GPT-5.6 Sol or explicitly approved specialist | independent Sol-led deep verification | Sol/root review and user boundary |
 
-M3 is never the sole authority for authentication, authorization, data loss, destructive migration, security, concurrency, external side effects, or ambiguous semantic boundaries. Its output is a proposal until Git truth, deterministic validators, and a fresh non-M3 Verifier agree.
+M3 is never the sole authority for authentication, authorization, data loss, destructive migration, security, concurrency, external side effects, or ambiguous semantic boundaries. Its output is a proposal until Git truth, deterministic validators, and a fresh non-M3 Verifier agree. Terra is not a default production route.
 
 Fail closed on dirty source state, path overlap, missing Session ID, malformed delivery, mismatched commit, hidden-test disclosure, unsafe Mavis isolation, or archive/hash mismatch. An M3 route also fails closed on a missing custom agent, unexpected effective model identity, absent deterministic oracle, or missing independent non-M3 verification. Unknown model identity or incomplete usage fails any model-specific cost claim or benchmark; it remains explicitly recorded but does not invalidate a native delivery whose Git and acceptance evidence pass.

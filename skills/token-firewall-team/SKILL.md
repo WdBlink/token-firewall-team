@@ -1,6 +1,6 @@
 ---
 name: token-firewall-team
-description: Run Codex Agent Teams through the native subagent lifecycle, including an optional MiniMax-M3 economy Worker for bounded work, while preserving contracts, Git truth, deterministic validation, independent verification, and blind final review. Use an external CLI Adapter only when the user explicitly requests execution through an external harness such as Claude Code, MiniMax Code, or OpenCode.
+description: Run Codex Agent Teams through the native subagent lifecycle, using MiniMax-M3 for bounded economy execution, GPT-5.6 Luna for fresh read-only reconnaissance and independent verification, and GPT-5.6 Sol for semantic or high-risk authority, while preserving contracts, Git truth, deterministic validation, and blind final review. Use an external CLI Adapter only when the user explicitly requests execution through an external harness such as Claude Code, MiniMax Code, or OpenCode.
 ---
 
 # Token Firewall Team
@@ -30,7 +30,7 @@ Use Codex's native Agent lifecycle for creation, messaging, status/wait, follow-
 
 Use the native route by default for ordinary research, implementation, and review inside a capable Codex host. Do not start a nested `codex exec` process for this route.
 
-Route native roles according to the official [Codex subagents guidance](https://learn.chatgpt.com/docs/agent-configuration/subagents): use the configured `minimax_m3` role for low-risk and selected medium-risk bounded work with an explicit oracle; use Terra for read-heavy reconnaissance and bounded routine work when M3 is unavailable or not yet evidence-qualified for the task class; use GPT-5.6 for ambiguous semantic implementation, architecture, security, and high-stakes review. An M3 delivery always requires a fresh non-M3 Verifier. When the current Agent API exposes no selector, leave the model unpinned and let Codex balance intelligence, speed, and price. Record the requested `agent_type`, whether a model was pinned or host-routed, and the effective identity when exposed; never invent per-child usage that the host did not expose.
+Route native roles through three default tiers: use `minimax_m3` for low-risk and selected medium-risk bounded implementation with an explicit oracle; use GPT-5.6 Luna for fresh read-only reconnaissance and eligible M3 verification; use GPT-5.6 Sol for ambiguous semantic implementation, architecture, security, concurrency, and high-stakes review. Terra is not a default production tier. If M3 is unavailable or ineligible, route to Sol or leave the model unpinned; never silently substitute Terra.
 
 Model vendor and execution platform are different routing dimensions. A request for MiniMax or M3 uses the native `minimax_m3` role when available. Select an external Runtime only when the user explicitly requests execution through an external harness such as Claude Code CLI, MiniMax Code/Mavis, or OpenCode. Token or cost pressure alone never authorizes an external Adapter, and a native failure never silently falls back to one.
 
@@ -107,13 +107,13 @@ An inactivity stall, overall timeout, or caller interruption terminates Claude's
 
 ## Route Work
 
-Use this evidence-calibrated default:
+Use this conservative native default:
 
-- Choose the native `minimax_m3` custom agent as an economy Worker for low-risk and selected medium-risk repository reading, bulk drafting, routine implementation, and test repair when the Work Order has tight allowed paths, positive/negative/boundary cases, and a deterministic validator. Give it narrow context instead of an unbounded full-history fork.
-- Choose a native Codex `explorer`/Terra-preferred Agent for repository scans, large-file reading, documentation work, structured test inventory, and UX observation.
-- Choose a native Codex `worker`/Terra-preferred Agent for bounded routine implementation with an explicit oracle.
-- Choose a native GPT-5.6-preferred Agent for ambiguous semantic implementation, integration, architecture, security, concurrency, destructive migration, or high-stakes verification. Use the host's recommended effort level and let it auto-route when profiles are unavailable.
-- Use a fresh native Verifier and a bounded root Reviewer. An M3 Worker must be verified by a fresh non-M3 Agent; do not use M3 as its own Verifier or final Reviewer. Keep all mutating-task Git and validator gates.
+- Choose a native GPT-5.6 Luna `explorer` for repository scans, large-file reading, documentation inspection, structured test inventory, and UX observation.
+- Choose the native `minimax_m3` custom Agent for bounded routine implementation with an explicit oracle.
+- Choose a fresh GPT-5.6 Luna verifier for bounded low/medium M3 deliveries with deterministic acceptance.
+- Choose GPT-5.6 Sol for ambiguous semantic implementation, integration, architecture, security, concurrency, destructive migration, high-risk verification, and final acceptance.
+- Do not select Terra by default. Never use M3 as its own Verifier or final Reviewer.
 - If the user explicitly asks to run through Claude Code, MiniMax Code/Mavis, or OpenCode, freeze that external Harness and model for the attempt. Naming MiniMax-M3 alone selects the native role, not an external Adapter.
 
 Do not route based only on file count. Authentication, data loss, external side effects, migrations, concurrency, and ambiguous semantic boundaries raise risk.
@@ -126,7 +126,11 @@ Do not route based only on file count. Authentication, data loss, external side 
 - Treat an M3 delivery as a cost-optimized proposal: constrain its paths and semantics, prohibit opportunistic refactors, and escalate ambiguity rather than letting it improvise. Additional turns, retries, and verifier effort count against realized savings.
 - Keep failed calls, retries, timeout Sessions, and rework in evaluation accounting.
 - Distinguish gross accounted tokens from vendor-native tokens. Optimize the expensive Sol total; retain both measures for audit.
-- Refuse a release claim when usage is incomplete or the frozen Evaluation Protocol lacks enough pairs. Keep conclusions route- and dataset-specific even after a non-inferiority gate passes; never transfer Terra evidence to M3, Claude, or a different task distribution without replication.
+- Refuse a release claim when usage is incomplete or the frozen Evaluation Protocol lacks enough pairs. Keep conclusions route- and dataset-specific even after a non-inferiority gate passes; never transfer Terra evidence to Luna, M3, Claude, or a different task distribution without replication.
+
+## Optional TypeSafe shadow routing
+
+TypeSafe Jev may evaluate redacted task summaries in shadow mode. Its output is advisory only: hard risk rules, explicit external-Harness requests, Agent availability, Git gates, verification, and acceptance remain deterministic. Do not let Jev change production routing until a frozen, independently adjudicated dataset validates thresholds and false-cheap-route risk.
 
 ## Recover Safely
 

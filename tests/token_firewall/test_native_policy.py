@@ -30,8 +30,9 @@ class NativePolicyTests(unittest.TestCase):
     def test_native_codex_is_the_default_control_plane(self) -> None:
         skill = SKILL.read_text(encoding="utf-8")
         self.assertIn("Use Codex's native Agent lifecycle", skill)
-        self.assertIn("Terra for read-heavy reconnaissance", skill)
-        self.assertIn("GPT-5.6 for ambiguous semantic implementation", skill)
+        self.assertIn("GPT-5.6 Luna for fresh read-only reconnaissance", skill)
+        self.assertIn("GPT-5.6 Sol for ambiguous semantic implementation", skill)
+        self.assertIn("Terra is not a default production tier", skill)
 
     def test_external_adapters_require_an_explicit_third_party_request(self) -> None:
         skill = SKILL.read_text(encoding="utf-8")
