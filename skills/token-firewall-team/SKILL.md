@@ -18,7 +18,7 @@ def run_token_firewall(request, repository):
     result = runbook.execute_native_agents(route, mission, work_orders)
     require_git_gate_and_fresh_verifier(result)
     review_packet = build_bounded_blind_review_packet(result)
-    jev_scores = evaluate_with_jev(review_packet)  # attach to independent review
+    review_packet.jev_scores = evaluate_with_jev(review_packet)
     if review_packet.requires_sol_decision:
         request_sol_review(review_packet)
     evidence.calibrate_route(route, result.benchmark_records)
@@ -104,7 +104,7 @@ Run `python3 "$SKILL_ROOT/scripts/token_firewall.py" --help` only when using Run
 7. Dispatch only the narrow Work Order. Do not send raw conversation history, the full repository, hidden tests, or unrelated files to a Worker.
 8. Use native Agent status/wait tools for the default route. Poll `observe-status` at low frequency only for explicit external Runtime runs. Report state changes, elapsed heartbeat, Agent/Session ID, usage availability, and delivery summary; do not stream full terminals into the main task.
 9. Require the deterministic Delivery Gate and a fresh independent verifier before Sol review. For an eligible M3 delivery, prefer a new read-only GPT-5.6 Luna Session that did not participate in implementation; escalate any semantic, security, or high-risk uncertainty to Sol. If `.git` is protected, accept `CHANGES_READY`; let the Broker validate and commit.
-10. Build the blind Review Packet. Sol must see bounded context slices, the patch, acceptance evidence, unresolved risks, and no Worker/model/cost identity.
+10. Build the blind Review Packet and run Jev semantic eval following `references/jev-eval.md`. On first use without `TYPESAFE_API_KEY`, prompt the user to configure their TypeSafe API key in the runtime environment or use the CLI's hidden terminal prompt. Attach the score record to independent review. Sol must see bounded context slices, the patch, acceptance evidence, unresolved risks, and no Worker/model/cost identity. Disclose missing credentials or service failures; retain independent review and never claim Jev scoring completed when unavailable.
 11. On `REWORK`, compile findings into the next Work Order revision. Do not ask the Worker to reinterpret prose. Preserve every failed attempt and deduplicate cost only by identical Session ID.
 12. Run hidden evaluation only after all compared model stages end. Archive final and important failed Runs, verify each archive, then import immutable Benchmark Records into an Evaluation Lab.
 
